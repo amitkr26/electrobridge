@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { supabase, isConfigured } from "@/lib/supabase";
 import type { NewsArticle } from "@/types";
 import NewsCard from "@/components/NewsCard";
 import SearchBar from "@/components/SearchBar";
@@ -15,29 +14,22 @@ export default function NewsPage() {
   const fetchNews = useCallback(async () => {
     setLoading(true);
 
-    if (!isConfigured) {
-      setArticles([]);
-      setLoading(false);
-      return;
-    }
-
     try {
-      let query = supabase
-        .from("news_articles")
-        .select("*")
-        .order("published_at", { ascending: false })
-        .limit(50);
+      const params = new URLSearchParams();
+      params.set("limit", "50");
+      if (search) params.set("search", search);
 
-      if (search) {
-        query = query.or(
-          `title.ilike.%${search}%,summary.ilike.%${search}%`
-        );
+      const res = await fetch(`/api/news?${params}`);
+      const data = await res.json();
+
+      if (data.articles) {
+        setArticles(data.articles);
+      } else {
+        setArticles([]);
       }
-
-      const { data } = await query;
-      setArticles(data || []);
     } catch (error) {
       console.error("Error fetching news:", error);
+      setArticles([]);
     } finally {
       setLoading(false);
     }
@@ -80,10 +72,17 @@ export default function NewsPage() {
         </div>
       ) : articles.length === 0 ? (
         <div className="text-center py-20">
-          <p className="text-text-muted">No news articles yet.</p>
-          <p className="text-text-muted text-sm mt-1">
+          <p className="text-text-muted text-lg mb-2">No news articles yet.</p>
+          <p className="text-text-muted text-sm">
             News will appear here once fetched from RSS feeds.
           </p>
+          <button
+            onClick={fetchNews}
+            className="mt-4 inline-flex items-center gap-2 bg-cyan text-navy font-semibold rounded-lg px-4 py-2 text-sm hover:bg-cyan/90 transition-colors"
+          >
+            <RefreshCw className="w-4 h-4" />
+            Try Again
+          </button>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { supabase, isConfigured } from "@/lib/supabase";
+import { supabaseAdmin, isAdminConfigured } from "@/lib/supabase";
 
 export async function GET() {
-  if (!isConfigured) {
+  if (!isAdminConfigured) {
     return NextResponse.json(
       { error: "Database not configured" },
       { status: 503 }
@@ -11,7 +11,7 @@ export async function GET() {
 
   try {
     const today = new Date().toISOString().split("T")[0];
-    const { data } = await supabase
+    const { data } = await supabaseAdmin
       .from("opportunities")
       .select("organization")
       .eq("is_active", true)

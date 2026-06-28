@@ -1,17 +1,17 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase";
 import type { Opportunity } from "@/types";
 import OpportunityCard from "./OpportunityCard";
 
 async function getExpiringOpportunities(): Promise<Opportunity[]> {
-  if (!supabase?.from) return [];
+  if (!supabaseAdmin?.from) return [];
   const today = new Date().toISOString().split("T")[0];
   const sevenDaysLater = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
     .toISOString()
     .split("T")[0];
 
-  const { data } = await supabase
+  const { data } = await supabaseAdmin
     .from("opportunities")
     .select("*")
     .eq("is_active", true)
@@ -45,7 +45,9 @@ export default async function ExpiringSoon() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {opportunities.map((opp) => (
-            <OpportunityCard key={opp.id} opportunity={opp} />
+            <div key={opp.id} className="relative border-l-4 border-orange-500 rounded-lg overflow-hidden">
+              <OpportunityCard opportunity={opp} />
+            </div>
           ))}
         </div>
       </div>

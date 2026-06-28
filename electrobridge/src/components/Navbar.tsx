@@ -31,12 +31,6 @@ export default function Navbar() {
             >
               Organizations
             </Link>
-            <Link
-              href="/admin"
-              className="text-text-muted hover:text-text-primary transition-colors text-sm font-medium"
-            >
-              Admin
-            </Link>
           </div>
         </div>
       </div>

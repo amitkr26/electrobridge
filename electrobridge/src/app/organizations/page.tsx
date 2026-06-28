@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Building2 } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase";
 
 interface OrgItem {
   name: string;
@@ -9,9 +9,9 @@ interface OrgItem {
 }
 
 async function getOrganizations(): Promise<OrgItem[]> {
-  if (!supabase?.from) return [];
+  if (!supabaseAdmin?.from) return [];
   const today = new Date().toISOString().split("T")[0];
-  const { data } = await supabase
+  const { data } = await supabaseAdmin
     .from("opportunities")
     .select("organization")
     .eq("is_active", true)

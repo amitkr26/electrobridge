@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase";
 import type { Opportunity } from "@/types";
 import OpportunityCard from "@/components/OpportunityCard";
 
@@ -19,13 +19,13 @@ function slugToOrgName(slug: string): string {
 async function getOrganizationOpportunities(
   slug: string
 ): Promise<{ name: string; opportunities: Opportunity[] }> {
-  if (!supabase?.from) return { name: slugToOrgName(slug), opportunities: [] };
+  if (!supabaseAdmin?.from) return { name: slugToOrgName(slug), opportunities: [] };
 
   const today = new Date().toISOString().split("T")[0];
 
   // Try exact match first, then ilike match
   const orgName = slugToOrgName(slug);
-  let { data } = await supabase
+  let { data } = await supabaseAdmin
     .from("opportunities")
     .select("*")
     .eq("is_active", true)
@@ -35,7 +35,7 @@ async function getOrganizationOpportunities(
 
   if (!data || data.length === 0) {
     // Try case-insensitive search
-    const { data: data2 } = await supabase
+    const { data: data2 } = await supabaseAdmin
       .from("opportunities")
       .select("*")
       .eq("is_active", true)

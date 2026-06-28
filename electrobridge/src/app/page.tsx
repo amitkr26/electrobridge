@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, TrendingUp, Newspaper, Zap, Bell } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase";
 import type { Opportunity, NewsArticle } from "@/types";
 import OpportunityCard from "@/components/OpportunityCard";
 import NewsCard from "@/components/NewsCard";
@@ -8,7 +8,7 @@ import SubscribeSection from "@/components/SubscribeSection";
 import ExpiringSoon from "@/components/ExpiringSoon";
 
 async function getStats() {
-  if (!supabase?.from) {
+  if (!supabaseAdmin?.from) {
     return { total: 0, jrf: 0, phd: 0, govt: 0, addedThisWeek: 0, newsToday: 0 };
   }
 
@@ -23,30 +23,30 @@ async function getStats() {
     { count: addedThisWeekCount },
     { count: newsTodayCount },
   ] = await Promise.all([
-    supabase
+    supabaseAdmin
       .from("opportunities")
       .select("*", { count: "exact", head: true })
       .eq("is_active", true)
       .or(`deadline.gte.${today},deadline.is.null`),
-    supabase
+    supabaseAdmin
       .from("opportunities")
       .select("*", { count: "exact", head: true })
       .eq("is_active", true)
       .eq("category", "JRF")
       .or(`deadline.gte.${today},deadline.is.null`),
-    supabase
+    supabaseAdmin
       .from("opportunities")
       .select("*", { count: "exact", head: true })
       .eq("is_active", true)
       .eq("category", "PhD")
       .or(`deadline.gte.${today},deadline.is.null`),
-    supabase
+    supabaseAdmin
       .from("opportunities")
       .select("*", { count: "exact", head: true })
       .eq("is_active", true)
       .gte("posted_at", weekAgo)
       .or(`deadline.gte.${today},deadline.is.null`),
-    supabase
+    supabaseAdmin
       .from("news_articles")
       .select("*", { count: "exact", head: true })
       .gte("published_at", yesterday),
@@ -63,9 +63,9 @@ async function getStats() {
 }
 
 async function getLatestOpportunities(): Promise<Opportunity[]> {
-  if (!supabase?.from) return [];
+  if (!supabaseAdmin?.from) return [];
   const today = new Date().toISOString().split("T")[0];
-  const { data } = await supabase
+  const { data } = await supabaseAdmin
     .from("opportunities")
     .select("*")
     .eq("is_active", true)
@@ -77,8 +77,8 @@ async function getLatestOpportunities(): Promise<Opportunity[]> {
 }
 
 async function getLatestNews(): Promise<NewsArticle[]> {
-  if (!supabase?.from) return [];
-  const { data } = await supabase
+  if (!supabaseAdmin?.from) return [];
+  const { data } = await supabaseAdmin
     .from("news_articles")
     .select("*")
     .order("published_at", { ascending: false })
@@ -88,8 +88,8 @@ async function getLatestNews(): Promise<NewsArticle[]> {
 }
 
 async function getTrendingTags() {
-  if (!supabase?.from) return [];
-  const { data } = await supabase
+  if (!supabaseAdmin?.from) return [];
+  const { data } = await supabaseAdmin
     .from("opportunities")
     .select("tags")
     .eq("is_active", true);

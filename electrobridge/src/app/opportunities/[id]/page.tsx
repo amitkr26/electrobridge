@@ -1,39 +1,52 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, MapPin, Currency, Calendar, ExternalLink, Clock } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase";
 import { formatDate, isExpired } from "@/lib/utils";
 import CategoryBadge from "@/components/CategoryBadge";
 import DeadlineCountdown from "@/components/DeadlineCountdown";
 import ApplyButton from "@/components/ApplyButton";
 import ShareButtons from "@/components/ShareButtons";
 import SimilarOpportunities from "@/components/SimilarOpportunities";
+import CopyLinkButton from "@/components/CopyLinkButton";
 
 interface Props {
   params: { id: string };
 }
 
 export async function generateMetadata({ params }: Props) {
-  if (!supabase?.from) return { title: "Opportunity | ElectroBridge" };
+  if (!supabaseAdmin?.from) return { title: "Opportunity | ElectroBridge" };
 
-  const { data: opportunity } = await supabase
+  const { data: opportunity } = await supabaseAdmin
     .from("opportunities")
-    .select("title, organization")
+    .select("title, organization, location, deadline, eligibility")
     .eq("id", params.id)
     .single();
 
   if (!opportunity) return { title: "Opportunity Not Found" };
 
+  const desc = [
+    opportunity.title,
+    "at",
+    opportunity.organization,
+    opportunity.location ? `— ${opportunity.location}` : "",
+    opportunity.deadline ? `| Deadline: ${new Date(opportunity.deadline).toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}` : "",
+    opportunity.eligibility ? `| Eligibility: ${opportunity.eligibility}` : "",
+    "| ElectroBridge",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return {
     title: `${opportunity.title} - ${opportunity.organization} | ElectroBridge`,
-    description: `${opportunity.title} at ${opportunity.organization}`,
+    description: desc,
   };
 }
 
 export default async function OpportunityDetailPage({ params }: Props) {
-  if (!supabase?.from) notFound();
+  if (!supabaseAdmin?.from) notFound();
 
-  const { data: opportunity, error } = await supabase
+  const { data: opportunity, error } = await supabaseAdmin
     .from("opportunities")
     .select("*")
     .eq("id", params.id)
@@ -180,13 +193,14 @@ export default async function OpportunityDetailPage({ params }: Props) {
           </div>
         )}
 
-        <div className="mt-6">
+        <div className="mt-6 flex items-center gap-3 flex-wrap">
           <ShareButtons
             title={opportunity.title}
             organization={opportunity.organization}
             deadline={opportunity.deadline}
             opportunityUrl={`https://electrobridge.vercel.app/opportunities/${opportunity.id}`}
           />
+          <CopyLinkButton url={`https://electrobridge.vercel.app/opportunities/${opportunity.id}`} />
         </div>
       </div>
 

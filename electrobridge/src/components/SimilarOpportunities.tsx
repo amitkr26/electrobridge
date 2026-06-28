@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase";
 import type { Opportunity } from "@/types";
 import OpportunityCard from "./OpportunityCard";
 
@@ -8,10 +8,10 @@ interface SimilarOpportunitiesProps {
 }
 
 async function getSimilar(id: string, tags: string[]): Promise<Opportunity[]> {
-  if (!supabase?.from || !tags.length) return [];
+  if (!supabaseAdmin?.from || !tags.length) return [];
   const today = new Date().toISOString().split("T")[0];
 
-  const { data } = await supabase
+  const { data } = await supabaseAdmin
     .from("opportunities")
     .select("*")
     .eq("is_active", true)

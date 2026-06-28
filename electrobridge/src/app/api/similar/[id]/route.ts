@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase, isConfigured } from "@/lib/supabase";
+import { supabaseAdmin, isAdminConfigured } from "@/lib/supabase";
 
 export async function GET(
   _request: NextRequest,
   { params }: { params: { id: string } }
 ) {
-  if (!isConfigured) {
+  if (!isAdminConfigured) {
     return NextResponse.json(
       { error: "Database not configured" },
       { status: 503 }
@@ -13,7 +13,7 @@ export async function GET(
   }
 
   try {
-    const { data: current } = await supabase
+    const { data: current } = await supabaseAdmin
       .from("opportunities")
       .select("tags, id")
       .eq("id", params.id)
@@ -25,7 +25,7 @@ export async function GET(
 
     const today = new Date().toISOString().split("T")[0];
 
-    const { data: similar } = await supabase
+    const { data: similar } = await supabaseAdmin
       .from("opportunities")
       .select("*")
       .eq("is_active", true)

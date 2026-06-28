@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { supabase, supabaseAdmin, isConfigured } from "@/lib/supabase";
+import { supabaseAdmin, isAdminConfigured } from "@/lib/supabase";
 import { postToTelegram } from "@/lib/telegram-bot";
 
 export async function GET(request: NextRequest) {
-  if (!isConfigured) {
+  if (!isAdminConfigured) {
     return NextResponse.json(
-      { error: "Database not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY." },
+      { error: "Database not configured." },
       { status: 503 }
     );
   }
@@ -20,7 +20,7 @@ export async function GET(request: NextRequest) {
 
     const today = new Date().toISOString().split("T")[0];
 
-    let query = supabase
+    let query = supabaseAdmin
       .from("opportunities")
       .select("*")
       .eq("is_active", true)
@@ -83,7 +83,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  if (!isConfigured) {
+  if (!isAdminConfigured) {
     return NextResponse.json(
       { error: "Database not configured." },
       { status: 503 }
