@@ -1,7 +1,7 @@
 import type { ScrapedOpportunity, ScrapeResult } from "./types";
 import { scrapeISRO } from "./isro-scraper";
-import { scrapeDRDO } from "./drdo-scraper";
 import { scrapeCSIR } from "./csir-scraper";
+import { scrapeGovtJobs } from "./govt-scraper";
 
 export interface ScrapeAllResult {
   opportunities: ScrapedOpportunity[];
@@ -12,8 +12,8 @@ export interface ScrapeAllResult {
 export async function scrapeAllOpportunities(): Promise<ScrapeAllResult> {
   const sources = [
     { name: "ISRO", scraper: scrapeISRO },
-    { name: "DRDO", scraper: scrapeDRDO },
     { name: "CSIR", scraper: scrapeCSIR },
+    { name: "GovtJobs", scraper: () => scrapeGovtJobs().then(r => r.opportunities) },
   ];
 
   const allResults: ScrapeResult[] = [];
