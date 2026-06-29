@@ -12,6 +12,8 @@ export default function Navbar() {
     { href: "/news", label: "News" },
     { href: "/organizations", label: "Organizations" },
     { href: "/resources", label: "Resources" },
+    { href: "/match", label: "Find My Match" },
+    { href: "/chat", label: "Ask AI" },
     { href: "/about", label: "About" },
   ];
 

@@ -5,7 +5,8 @@ import { supabase } from "@/lib/supabase";
 import type { Opportunity, Subscriber } from "@/types";
 import { CATEGORIES } from "@/lib/utils";
 import { NEWS_SOURCES } from "@/lib/scrapers/rss-parser";
-import { Loader2, Trash2, Plus, RefreshCw, Check, List, History, ShieldCheck, ShieldAlert, ShieldQuestion, ExternalLink, Edit3, RotateCcw } from "lucide-react";
+import { Loader2, Trash2, Plus, RefreshCw, Check, List, History, ShieldCheck, ShieldAlert, ShieldQuestion, ExternalLink, Edit3, RotateCcw, Sparkles } from "lucide-react";
+import AIAnalyticsPanel from "@/components/AIAnalyticsPanel";
 import { isConfigured } from "@/lib/supabase";
 
 interface ScrapeLog {
@@ -24,7 +25,7 @@ export default function AdminPage() {
   const [authenticated, setAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [activeTab, setActiveTab] = useState<"opportunities" | "verification" | "add" | "subscribers" | "sources" | "logs" | "popular">(
+  const [activeTab, setActiveTab] = useState<"opportunities" | "verification" | "add" | "subscribers" | "sources" | "logs" | "popular" | "ai">(
     "opportunities"
   );
 
@@ -50,6 +51,7 @@ export default function AdminPage() {
 
   const [formStatus, setFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [formMessage, setFormMessage] = useState("");
+  const [aiFilling, setAiFilling] = useState(false);
   const [scrapeStatus, setScrapeStatus] = useState("");
   const [scrapeLogs, setScrapeLogs] = useState<ScrapeLog[]>([]);
   const [sourcesEnabled, setSourcesEnabled] = useState<Record<string, boolean>>(() => {
@@ -204,11 +206,11 @@ export default function AdminPage() {
       <h1 className="font-display text-3xl font-bold text-text-primary mb-6">Admin Panel</h1>
 
       <div className="flex gap-2 mb-6 border-b border-gray-800 pb-4 overflow-x-auto">
-        {(["opportunities", "verification", "add", "subscribers", "sources", "logs", "popular"] as const).map((tab) => (
+        {(["opportunities", "verification", "add", "subscribers", "sources", "logs", "popular", "ai"] as const).map((tab) => (
           <button key={tab} onClick={() => setActiveTab(tab)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${activeTab === tab ? "bg-cyan/20 text-cyan" : "text-text-muted hover:text-text-primary"}`}
           >
-            {tab === "opportunities" ? "Opportunities" : tab === "verification" ? "Verification Queue" : tab === "add" ? "Add New" : tab === "subscribers" ? "Subscribers" : tab === "sources" ? "News Sources" : tab === "popular" ? "Most Popular" : "Scrape Logs"}
+            {tab === "opportunities" ? "Opportunities" : tab === "verification" ? "Verification Queue" : tab === "add" ? "Add New" : tab === "subscribers" ? "Subscribers" : tab === "sources" ? "News Sources" : tab === "popular" ? "Most Popular" : tab === "ai" ? "AI Usage" : "Scrape Logs"}
           </button>
         ))}
       </div>
@@ -365,9 +367,43 @@ export default function AdminPage() {
               <input value={form.eligibility} onChange={(e) => setForm({ ...form, eligibility: e.target.value })} placeholder="NET/GATE, MSc Electronics" className="w-full bg-gray-800 border border-gray-700 text-text-primary text-sm rounded-lg px-3 py-2.5 focus:ring-cyan focus:border-cyan outline-none" />
             </div>
             <div>
-              <label className="block text-text-muted text-xs font-medium mb-1">Description</label>
-              <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={3} className="w-full bg-gray-800 border border-gray-700 text-text-primary text-sm rounded-lg px-3 py-2.5 focus:ring-cyan focus:border-cyan outline-none" />
-            </div>
+                <label className="block text-text-muted text-xs font-medium mb-1">Description</label>
+                <div className="flex gap-2">
+                  <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={3} className="w-full bg-gray-800 border border-gray-700 text-text-primary text-sm rounded-lg px-3 py-2.5 focus:ring-cyan focus:border-cyan outline-none" />
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      if (!form.description || !form.title) return;
+                      setAiFilling(true);
+                      try {
+                        const res = await fetch("/api/ai/summarize", {
+                          method: "POST",
+                          headers: { "Content-Type": "application/json" },
+                          body: JSON.stringify({ rawDescription: form.description, title: form.title, org: form.organization }),
+                        });
+                        if (res.ok) {
+                          const data = await res.json();
+                          setForm((prev) => ({
+                            ...prev,
+                            title: data.clean_title || prev.title,
+                            eligibility: data.eligibility_points?.join("; ") || prev.eligibility,
+                            tags: data.suggested_tags?.join(", ") || prev.tags,
+                            stipend: data.stipend_extracted || prev.stipend,
+                            deadline: data.deadline_extracted || prev.deadline,
+                          }));
+                        }
+                      } catch {}
+                      setAiFilling(false);
+                    }}
+                    disabled={aiFilling || !form.description || !form.title}
+                    className="flex items-center gap-1 bg-purple-500/20 text-purple-400 border border-purple-500/30 rounded-lg px-3 py-2 text-xs font-medium hover:bg-purple-500/30 transition-colors disabled:opacity-50 flex-shrink-0"
+                    title="AI Auto-Fill: extracts tags, eligibility, stipend, deadline from description"
+                  >
+                    {aiFilling ? <Loader2 className="w-4 h-4 animate-spin" /> : <Sparkles className="w-4 h-4" />}
+                    AI
+                  </button>
+                </div>
+              </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-text-muted text-xs font-medium mb-1">Apply Link</label>
@@ -497,6 +533,13 @@ export default function AdminPage() {
               ))}
             </div>
           )}
+        </div>
+      )}
+
+      {activeTab === "ai" && (
+        <div>
+          <h2 className="font-display text-xl font-bold text-text-primary mb-4">AI Usage Monitor</h2>
+          <AIAnalyticsPanel />
         </div>
       )}
 

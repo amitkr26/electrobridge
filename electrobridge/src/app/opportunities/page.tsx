@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import type { Opportunity } from "@/types";
 import OpportunityCard from "@/components/OpportunityCard";
 import FilterBar from "@/components/FilterBar";
 import SearchBar from "@/components/SearchBar";
-import { Loader2, ShieldCheck, Eye, EyeOff } from "lucide-react";
+import { Loader2, ShieldCheck, Eye, EyeOff, Sparkles, X } from "lucide-react";
 
 export default function OpportunitiesPage() {
   const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
@@ -16,6 +16,9 @@ export default function OpportunitiesPage() {
   const [deadline, setDeadline] = useState("All");
   const [search, setSearch] = useState("");
   const [showUnverified, setShowUnverified] = useState(false);
+  const [aiChips, setAiChips] = useState<Record<string, string>>({});
+  const [aiSearching, setAiSearching] = useState(false);
+  const lastAISearch = useRef("");
 
   const fetchOpportunities = useCallback(async () => {
     setLoading(true);
@@ -45,6 +48,35 @@ export default function OpportunitiesPage() {
     }
   }, [category, eligibility, location, deadline, search, showUnverified]);
 
+  const handleSearch = useCallback(async (query: string) => {
+    setSearch(query);
+
+    if (query.length > 5 && query !== lastAISearch.current) {
+      lastAISearch.current = query;
+      setAiSearching(true);
+      try {
+        const res = await fetch("/api/ai/search", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const chips: Record<string, string> = {};
+          if (data.filters?.category) chips.category = data.filters.category;
+          if (data.filters?.location) chips.location = data.filters.location;
+          if (data.filters?.eligibility) chips.eligibility = data.filters.eligibility;
+          if (data.filters?.organization_hint) chips.organization = data.filters.organization_hint;
+          setAiChips(chips);
+        }
+      } catch {
+        // AI search failed, fall back to normal search
+      } finally {
+        setAiSearching(false);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     fetchOpportunities();
   }, [fetchOpportunities]);
@@ -63,7 +95,13 @@ export default function OpportunitiesPage() {
       <div className="space-y-4 mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div className="flex-1 max-w-md">
-            <SearchBar onSearch={setSearch} />
+            <SearchBar onSearch={handleSearch} />
+            {aiSearching && (
+              <div className="flex items-center gap-1 mt-1 text-[10px] text-purple-400">
+                <Sparkles className="w-3 h-3" />
+                AI analyzing query...
+              </div>
+            )}
           </div>
           <button
             onClick={() => setShowUnverified(!showUnverified)}
@@ -81,6 +119,29 @@ export default function OpportunitiesPage() {
             {showUnverified ? "Hiding unverified" : "Show unverified"}
           </button>
         </div>
+        {Object.keys(aiChips).length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {Object.entries(aiChips).map(([key, value]) => (
+              <span
+                key={key}
+                className="inline-flex items-center gap-1 px-2 py-1 bg-purple-900/30 text-purple-300 rounded text-xs border border-purple-500/30"
+              >
+                <Sparkles className="w-3 h-3" />
+                {key}: {value}
+                <button
+                  onClick={() => {
+                    const newChips = { ...aiChips };
+                    delete newChips[key];
+                    setAiChips(newChips);
+                  }}
+                  className="hover:text-white"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
         <FilterBar
           selectedCategory={category}
           selectedEligibility={eligibility}

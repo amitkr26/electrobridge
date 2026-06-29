@@ -1,5 +1,6 @@
 import { supabaseAdmin, isAdminConfigured } from "./supabase";
 import type { Opportunity, Subscriber } from "@/types";
+import { generateWeeklyDigest } from "@/lib/ai/newsletter";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const FROM_EMAIL = process.env.FROM_EMAIL || "digest@electrobridge.vercel.app";
@@ -143,8 +144,27 @@ export async function sendDigest() {
     return { sent: 0, error: "No active subscribers" };
   }
 
-  const html = buildDigestHTML(data);
-  const subject = `⚡ ElectroBridge Weekly Digest — ${new Date().toLocaleDateString("en-IN", { month: "long", day: "numeric", year: "numeric" })}`;
+  let html = buildDigestHTML(data);
+  let subject = `⚡ ElectroBridge Weekly Digest — ${new Date().toLocaleDateString("en-IN", { month: "long", day: "numeric", year: "numeric" })}`;
+
+  try {
+    const aiDigest = await generateWeeklyDigest(data.newThisWeek, []);
+    if (aiDigest) {
+      const aiSection = `
+        <div style="background: #0F172A; border: 1px solid #1E293B; border-radius: 12px; padding: 24px; margin-bottom: 24px;">
+          <h2 style="color: #8B5CF6; font-size: 16px; font-weight: 600; margin: 0 0 16px;">
+            🤖 AI Editor&apos;s Note
+          </h2>
+          <p style="color: #94A3B8; font-size: 13px; line-height: 1.6; margin: 0; white-space: pre-wrap;">${aiDigest.replace(/\n/g, "<br>")}</p>
+        </div>`;
+      html = html.replace(
+        '<div style="text-align: center; padding: 24px 0;">',
+        `${aiSection}<div style="text-align: center; padding: 24px 0;">`
+      );
+    }
+  } catch {
+    // Fall back to non-AI digest if AI fails
+  }
 
   const { Resend } = await import("resend");
   const resend = new Resend(RESEND_API_KEY);

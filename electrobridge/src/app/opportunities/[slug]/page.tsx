@@ -12,6 +12,7 @@ import CopyLinkButton from "@/components/CopyLinkButton";
 import VerificationBadge from "@/components/VerificationBadge";
 import LinkTypeIndicator from "@/components/LinkTypeIndicator";
 import OpportunityDisclaimer from "@/components/OpportunityDisclaimer";
+import AIOpportunitySummary from "@/components/AIOpportunitySummary";
 
 interface Props {
   params: { slug: string };
@@ -316,6 +317,9 @@ export default async function OpportunityDetailPage({ params }: Props) {
           <CopyLinkButton url={`https://electrobridge.vercel.app/opportunities/${opportunity.slug}`} />
         </div>
       </div>
+
+      {/* AI Summary */}
+      <AIOpportunitySummary slug={params.slug} />
 
       {/* Disclaimer */}
       <div className="mt-6">
