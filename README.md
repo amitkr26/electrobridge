@@ -23,7 +23,7 @@ Open [http://localhost:3000](http://localhost:3000).
 - **Opportunities** — JRF, SRF, PhD, Govt Jobs, Private Sector, International (7 categories)
 - **Tech News** — RSS scraper with AI-powered filtering from 18 electronics sources
 - **Organizations** — Browse by organization
-- **Resource Guides** — JRF guide, VLSI careers, International fellowships, NET vs GATE
+- **Resource Guides** — JRF guide, PhD admission guide, VLSI careers, International fellowships, NET vs GATE comparison
 - **AI Integration** — Smart search, opportunity matcher, chat assistant, summarizer, weekly digest
 - **Match** — Find opportunities matching your profile
 - **Email Digests** — Weekly newsletter with personalized recommendations

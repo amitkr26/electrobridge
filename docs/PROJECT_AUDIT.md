@@ -81,6 +81,7 @@ JobsAI/
         │   ├── resources/jrf-guide/page.tsx
         │   └── resources/vlsi-careers/page.tsx
         │   ├── resources/net-vs-gate/page.tsx
+        │   ├── resources/phd-guide/page.tsx
         │   ├── api/
         │   │   ├── admin/recheck-link/route.ts
         │   │   ├── ai/
@@ -161,6 +162,9 @@ JobsAI/
 | `/` | `src/app/page.tsx` | ✅ Live - Stats bar, ExpiringSoon, latest opps & news |
 | `/admin` | `src/app/admin/page.tsx` | ✅ Live - Password-protected dashboard |
 | `/admin/add-news` | `src/app/admin/add-news/page.tsx` | ✅ Live - Add news articles manually |
+| `/admin/add-opportunity` | `src/app/admin/add-opportunity/page.tsx` | ✅ Live - Add opportunities manually |
+| `/categories` | `src/app/categories/page.tsx` | ✅ Live - 6 category cards with DB counts |
+| `/resources/phd-guide` | `src/app/resources/phd-guide/page.tsx` | ✅ Live - PhD admission guide |
 | `/admin/edit-opportunity/[id]` | `src/app/admin/edit-opportunity/[id]/page.tsx` | ✅ Live - Edit/delete opportunities |
 | `/about` | `src/app/about/page.tsx` | ✅ Live |
 | `/categories` | `src/app/categories/page.tsx` | ✅ Live |
@@ -697,6 +701,9 @@ PROVIDER_ORDER: ["groq", "gemini", "openrouter", "cloudflare", "huggingface"]
 - SEO metadata added for chat, match, organizations pages
 - Admin: edit/delete opportunity page (`/admin/edit-opportunity/[id]`)
 - Admin: add news article page (`/admin/add-news`)
+| `/admin/add-opportunity` | `src/app/admin/add-opportunity/page.tsx` | ✅ Live - Add opportunities manually |
+| `/categories` | `src/app/categories/page.tsx` | ✅ Live - 6 category cards with DB counts |
+| `/resources/phd-guide` | `src/app/resources/phd-guide/page.tsx` | ✅ Live - PhD admission guide |
 - Admin: add opportunity page (`/admin/add-opportunity`)
 - Rate limiting added to subscribe API (3 req/IP/hour via in-memory Map)
 - Sitemap guard added (gracefully falls back to static URLs when DB unconfigured)
@@ -706,6 +713,13 @@ PROVIDER_ORDER: ["groq", "gemini", "openrouter", "cloudflare", "huggingface"]
 - Homepage stats fixed: 6 cards, full-ISO deadline comparison, govt counter works
 - Plausible analytics script added to layout.tsx
 - News image `onError` extracted to client `NewsImage` component (fixes SSG build)
+    - Resources hub with 5 dedicated guide pages (JRF, PhD, VLSI, Intl Fellowships, NET vs GATE)
+    - Categories page with 6 gradient cards and live DB counts
+    - NET vs GATE page: full comparison table, FAQPage schema, live feed
+    - PhD guide page: 3 admission routes, 7 institutions, 5 funding options, timeline
+    - Navbar + Footer: Resources dropdown includes all 5 guides
+    - Sitemap: phd-guide added to resource pages
+    - Opportunity RSS: replaced FindAPhD (CF-blocked) with Academic Positions, Scholarship Roar, Jobs.ac.uk
 
 ### Immediate (Security)
 1. **Rotate and remove secrets from git**: Rotate `SUPABASE_SERVICE_ROLE_KEY`, `CRON_SECRET`, review admin password. Delete `.env.local` from git tracking, add to `.gitignore`. Consider using `git-filter-repo` to scrub history.

@@ -36,11 +36,13 @@ Your gateway to electronics & semiconductor opportunities in India and globally.
 
 ### Resource Guides
 - JRF Complete Guide (FAQPage schema, stipend table, live feed)
+- PhD Admission Guide (3 admission routes, top institutions, funding, timeline, live feed)
 - International Fellowships (DAAD, SINGA, MEXT, Marie Curie comparison)
 - VLSI Career Guide (roles, companies, salary tables)
-- NET vs GATE Comparison
+- NET vs GATE Comparison (full table, FAQPage schema, live feed)
 
 ### Other Features
+- Categories page (6 cards with live DB counts)
 - Organization pages (per-org opportunity listings)
 - Find My Match (profile-based matching)
 - Admin panel (add/edit/expire opportunities, add news, add opportunity, view subscribers, AI analytics, trigger scrapes)
