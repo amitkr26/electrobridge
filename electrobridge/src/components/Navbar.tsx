@@ -16,6 +16,7 @@ const OPPORTUNITY_LINKS = [
 
 const RESOURCE_LINKS = [
   { href: "/resources/jrf-guide", label: "JRF Complete Guide" },
+  { href: "/resources/phd-guide", label: "PhD Admission Guide" },
   { href: "/resources/international-fellowships", label: "International Fellowships" },
   { href: "/resources/vlsi-careers", label: "VLSI Career Guide" },
   { href: "/resources/net-vs-gate", label: "NET vs GATE" },

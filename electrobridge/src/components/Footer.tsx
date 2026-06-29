@@ -40,6 +40,7 @@ export default function Footer() {
             <h4 className="font-display text-sm font-semibold text-text-primary mb-4">Resources</h4>
             <div className="flex flex-col gap-2.5">
               <Link href="/resources/jrf-guide" className="text-text-muted hover:text-cyan transition-colors text-sm">JRF Complete Guide</Link>
+              <Link href="/resources/phd-guide" className="text-text-muted hover:text-cyan transition-colors text-sm">PhD Admission Guide</Link>
               <Link href="/resources/international-fellowships" className="text-text-muted hover:text-cyan transition-colors text-sm">International Fellowships</Link>
               <Link href="/resources/vlsi-careers" className="text-text-muted hover:text-cyan transition-colors text-sm">VLSI Career Guide</Link>
               <Link href="/resources/net-vs-gate" className="text-text-muted hover:text-cyan transition-colors text-sm">NET vs GATE Guide</Link>

@@ -17,6 +17,7 @@ const CATEGORY_PAGES = ["jrf", "srf", "phd", "govt-job", "fellowship", "private"
 
 const RESOURCE_PAGES = [
   "jrf-guide",
+  "phd-guide",
   "international-fellowships",
   "vlsi-careers",
   "net-vs-gate",
