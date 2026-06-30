@@ -1,6 +1,8 @@
 import { Router } from 'express';
-import { supabase, isConfigured } from '../lib/supabase.js';
+import { supabase } from '../lib/supabase.js';
 import { requireCronSecret, requireDatabase } from '../middleware/auth.js';
+import { runAllScrapers } from '../lib/scrapers/opportunity-scraper.js';
+import { runRssNewsScrapers } from '../lib/scrapers/rss-parser.js';
 
 export const scrapeRouter = Router();
 
@@ -8,19 +10,36 @@ scrapeRouter.use(requireCronSecret);
 
 scrapeRouter.get('/', requireDatabase, async (_req, res) => {
   try {
-    res.json({ data: { scraped: 0, updated: 0, errors: [], message: 'Scraper endpoints ready. Individual scrapers will be ported from legacy.' } });
+    res.json({ data: { message: 'Scrapers ready. Use GET /opportunities and GET /news' } });
   } catch (error) {
     console.error('Scrape error:', error);
     res.status(500).json({ error: 'Scrape failed' });
   }
 });
 
+scrapeRouter.get('/news', requireDatabase, async (_req, res) => {
+  try {
+    const result = await runRssNewsScrapers();
+    await supabase!.from('ai_usage_log').insert([{
+      feature: 'scrape-news', provider: 'rss', success: true,
+    }]).maybeSingle();
+    res.json({ data: { ...result, message: 'News scraped successfully' } });
+  } catch (error) {
+    console.error('Scrape news error:', error);
+    res.status(500).json({ error: 'News scraping failed' });
+  }
+});
+
 scrapeRouter.get('/opportunities', requireDatabase, async (_req, res) => {
   try {
-    res.json({ data: { scraped: 0, errors: [], message: 'Scraper logic to be ported from legacy codebase.' } });
+    const result = await runAllScrapers();
+    await supabase!.from('ai_usage_log').insert([{
+      feature: 'scrape-opportunities', provider: 'cheerio', success: true,
+    }]).maybeSingle();
+    res.json({ data: { ...result, message: 'Opportunities scraped successfully' } });
   } catch (error) {
     console.error('Scrape opportunities error:', error);
-    res.status(500).json({ error: 'Scrape failed' });
+    res.status(500).json({ error: 'Opportunity scraping failed' });
   }
 });
 
@@ -40,22 +59,14 @@ scrapeRouter.get('/check-links', requireDatabase, async (_req, res) => {
       for (const url of urls) {
         try {
           const response = await fetch(url!, { method: 'HEAD', signal: AbortSignal.timeout(10000) });
-          const status = response.ok ? 'valid' : 'broken';
           if (!response.ok) broken++;
-
           await supabase!.from('link_check_logs').insert([{
-            opportunity_id: opp.id,
-            url,
-            status,
-            status_code: response.status,
-            checked_at: new Date().toISOString(),
+            opportunity_id: opp.id, url, status: response.ok ? 'valid' : 'broken',
+            status_code: response.status, checked_at: new Date().toISOString(),
           }]);
-        } catch {
-          broken++;
-        }
+        } catch { broken++; }
       }
     }
-
     res.json({ data: { checked: opportunities?.length || 0, broken } });
   } catch (error) {
     console.error('Check links error:', error);
@@ -68,26 +79,19 @@ scrapeRouter.get('/cleanup-news', requireDatabase, async (_req, res) => {
     const { data, error } = await supabase!
       .from('news_articles')
       .select('id, source_url');
-
     if (error) throw error;
 
     const seen = new Map<string, string[]>();
     const toRemove: string[] = [];
-
     for (const article of data || []) {
       if (!article.source_url) continue;
       const key = article.source_url.replace(/\/$/, '').trim().toLowerCase();
-      if (seen.has(key)) {
-        toRemove.push(article.id);
-      } else {
-        seen.set(key, [article.id]);
-      }
+      if (seen.has(key)) toRemove.push(article.id);
+      else seen.set(key, [article.id]);
     }
-
     if (toRemove.length > 0) {
       await supabase!.from('news_articles').delete().in('id', toRemove);
     }
-
     res.json({ data: { removed: toRemove.length } });
   } catch (error) {
     console.error('Cleanup news error:', error);

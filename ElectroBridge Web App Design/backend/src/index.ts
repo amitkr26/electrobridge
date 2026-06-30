@@ -9,6 +9,7 @@ import { adminRouter } from './routes/admin.js';
 import { aiRouter } from './routes/ai.js';
 import { organizationsRouter } from './routes/organizations.js';
 import { scrapeRouter } from './routes/scrape.js';
+import { newsletterRouter } from './routes/newsletter.js';
 import { isConfigured } from './lib/supabase.js';
 import { checkConnection } from './lib/neon.js';
 
@@ -36,6 +37,7 @@ app.use('/api/admin', adminRouter);
 app.use('/api/ai', aiRouter);
 app.use('/api/organizations', organizationsRouter);
 app.use('/api/scrape', scrapeRouter);
+app.use('/api/newsletter', newsletterRouter);
 
 app.use((_req, res) => {
   res.status(404).json({ error: 'Not found' });

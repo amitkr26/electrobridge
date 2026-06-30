@@ -1,0 +1,62 @@
+services:
+  - type: web
+    name: electrobridge-api
+    runtime: node
+    repo: https://github.com/your-org/electrobridge
+    rootDir: backend
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: CORS_ORIGIN
+        value: https://electrobridge.netlify.app
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: CRON_SECRET
+        sync: false
+
+  - type: cron
+    name: scrape-opportunities
+    runtime: node
+    schedule: "0 */6 * * *"
+    buildCommand: npm ci
+    startCommand: npm run scrape
+    rootDir: backend
+
+  - type: cron
+    name: scrape-news
+    runtime: node
+    schedule: "*/30 * * * *"
+    buildCommand: npm ci
+    startCommand: npm run scrape:news
+    rootDir: backend
+
+  - type: cron
+    name: expire-opportunities
+    runtime: node
+    schedule: "0 0 * * *"
+    buildCommand: npm ci
+    startCommand: npm run expire
+    rootDir: backend
+
+  - type: cron
+    name: send-weekly-digest
+    runtime: node
+    schedule: "0 9 * * 1"
+    buildCommand: npm ci
+    startCommand: npm run newsletter
+    rootDir: backend
