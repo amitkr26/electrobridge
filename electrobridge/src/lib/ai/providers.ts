@@ -1,6 +1,6 @@
 import { supabaseAdmin } from "@/lib/supabase";
 
-export type AIProvider = "groq" | "nvidia" | "gemini" | "openrouter" | "cloudflare" | "huggingface";
+export type AIProvider = "bedrock" | "groq" | "nvidia" | "gemini" | "openrouter" | "cloudflare" | "huggingface";
 
 export interface AIResponse {
   text: string;
@@ -36,6 +36,7 @@ async function logAIUsage(entry: AILogEntry) {
 }
 
 const PROVIDER_ORDER: AIProvider[] = [
+  "bedrock",    // AWS Bedrock (your provisioned token)
   "groq",       // Fastest, 14,400 req/day free
   "nvidia",     // High quality, generous free credits
   "gemini",     // 1,500 req/day free
@@ -45,6 +46,7 @@ const PROVIDER_ORDER: AIProvider[] = [
 ];
 
 const PROVIDER_MODELS: Record<AIProvider, string> = {
+  bedrock: "amazon.nova-lite-v1:0",
   groq: "llama-3.1-8b-instant",
   nvidia: "meta/llama-3.1-8b-instruct",
   gemini: "gemini-1.5-flash",
@@ -52,6 +54,30 @@ const PROVIDER_MODELS: Record<AIProvider, string> = {
   cloudflare: "@cf/meta/llama-3.1-8b-instruct",
   huggingface: "mistralai/Mistral-7B-Instruct-v0.3",
 };
+
+async function callBedrock(prompt: string, systemPrompt?: string): Promise<string> {
+  const response = await fetch(
+    "https://bedrock-runtime.us-east-1.amazonaws.com/model/amazon.nova-lite-v1:0/converse",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.AWS_BEARER_TOKEN_BEDROCK}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        messages: [{ role: "user", content: [{ text: prompt }] }],
+        ...(systemPrompt ? { system: [{ text: systemPrompt }] } : {}),
+        inferenceConfig: { maxTokens: 1024, temperature: 0.3 },
+      }),
+    }
+  );
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Bedrock error ${response.status}: ${error}`);
+  }
+  const data = await response.json();
+  return data.output?.message?.content?.[0]?.text ?? "";
+}
 
 async function callGemini(prompt: string, systemPrompt?: string): Promise<string> {
   const response = await fetch(
@@ -242,6 +268,7 @@ export async function callAI(
   for (const provider of order) {
     const model = PROVIDER_MODELS[provider];
     const envKey: Record<AIProvider, string> = {
+      bedrock: "AWS_BEARER_TOKEN_BEDROCK",
       groq: "GROQ_API_KEY",
       nvidia: "NVIDIA_NIM_API_KEY",
       gemini: "GEMINI_API_KEY",
@@ -258,6 +285,9 @@ export async function callAI(
     try {
       let text: string;
       switch (provider) {
+        case "bedrock":
+          text = await callBedrock(prompt, systemPrompt);
+          break;
         case "groq":
           text = await callGroq(prompt, systemPrompt);
           break;
