@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Loader2, Target, ExternalLink, GraduationCap, MapPin, Sparkles } from "lucide-react";
 import { CATEGORIES } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/client";
 
 interface MatchItem {
   id?: string;
@@ -30,6 +31,26 @@ export default function MatchPage() {
   const [loading, setLoading] = useState(false);
   const [searched, setSearched] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(async ({ data }) => {
+      if (data?.user) {
+        const { data: profile } = await supabase
+          .from("user_profiles")
+          .select("*")
+          .eq("id", data.user.id)
+          .single();
+        if (profile) {
+          if (profile.qualification) setQualification(profile.qualification);
+          if (profile.specialization) setSpecialization(profile.specialization);
+          if (profile.has_net) setHasNET(true);
+          if (profile.has_gate) setHasGATE(true);
+          if (profile.preferred_location) setLocation(profile.preferred_location);
+        }
+      }
+    });
+  }, []);
 
   const toggleLooking = (cat: string) => {
     setLookingFor((prev) =>
