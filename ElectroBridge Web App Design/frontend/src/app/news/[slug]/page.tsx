@@ -1,12 +1,14 @@
 'use client';
 
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { ChevronRight, ExternalLink } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { NEWS_ITEMS } from '@/data/news';
 
-export default function NewsDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const slug = params.then?.((p) => p.slug) || '1';
+export default function NewsDetailPage() {
+  const params = useParams();
+  const slug = (params.slug as string) || '1';
   const article = NEWS_ITEMS.find((n) => n.id === Number(slug)) || NEWS_ITEMS[0];
 
   return (

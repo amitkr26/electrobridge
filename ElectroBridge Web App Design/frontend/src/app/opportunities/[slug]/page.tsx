@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
+import { useParams, notFound } from 'next/navigation';
 import {
   ChevronRight, MapPin, Zap, Clock, ExternalLink, Bookmark, Share2,
   Flag, Bot, CheckCircle, Award, ThumbsUp, MessageCircle,
@@ -46,9 +46,10 @@ const aiInsights = [
   { icon: '⚡', title: 'Key Skill Gap', val: 'Arch Sim', sub: 'Add gem5 or MachSuite to your resume to improve match' },
 ];
 
-export default function OpportunityDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+export default function OpportunityDetailPage() {
   const [saved, setSaved] = useState(false);
-  const slug = params.then?.((p) => p.slug) || '3';
+  const params = useParams();
+  const slug = (params.slug as string) || '3';
   const opp = OPPORTUNITIES.find((o) => o.id === Number(slug)) || OPPORTUNITIES[2];
   const daysLeft = 64;
 
