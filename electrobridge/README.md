@@ -82,14 +82,13 @@ Create `.env.local`:
 NEXT_PUBLIC_SUPABASE_URL=your_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-NEXT_PUBLIC_ADMIN_PASSWORD=electrobridge2026
-CRON_SECRET=mysecretcron2026
+NEXT_PUBLIC_ADMIN_PASSWORD=your_strong_password
+CRON_SECRET=your_random_secret
 
 # AI Providers (optional — each is auto-detected)
 GROQ_API_KEY=
 NVIDIA_NIM_API_KEY=
 GEMINI_API_KEY=
-OPENAI_API_KEY=
 OPENROUTER_API_KEY=
 HUGGINGFACE_API_KEY=
 CLOUDFLARE_AI_TOKEN=
@@ -119,7 +118,7 @@ curl http://localhost:3000/api/seed
 
 ## Admin Panel
 
-Access `/admin` with password (default: `electrobridge2026`).
+Access `/admin` with the password set via `NEXT_PUBLIC_ADMIN_PASSWORD` environment variable.
 
 Tabs:
 - **Dashboard** — Stats overview

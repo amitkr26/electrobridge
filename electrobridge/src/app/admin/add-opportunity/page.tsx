@@ -31,7 +31,11 @@ export default function AddOpportunityPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "electrobridge2026";
+    const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
+    if (!adminPassword) {
+      setAuthError("Admin password not configured");
+      return;
+    }
     if (password === adminPassword) {
       setAuthenticated(true);
       setAuthError("");

@@ -19,7 +19,10 @@ async function checkUrl(url: string): Promise<{ status: number; reachable: boole
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get("authorization");
-  const expectedSecret = process.env.CRON_SECRET || "mysecretcron2026";
+  const expectedSecret = process.env.CRON_SECRET;
+  if (!expectedSecret) {
+    return NextResponse.json({ error: "CRON_SECRET not configured" }, { status: 500 });
+  }
   if (authHeader !== `Bearer ${expectedSecret}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
