@@ -27,21 +27,19 @@ export default function ShareButtons({
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-1 px-3 py-1.5 bg-green-600/20 text-green-400 rounded-lg text-xs font-medium hover:bg-green-600/30 transition-colors border border-green-600/30"
+        className="w-7 h-7 rounded-xl bg-[#111827] border border-[#1F2937] flex items-center justify-center hover:bg-[#1A2438] transition-colors"
         title="Share on WhatsApp"
       >
-        <MessageCircle className="w-3.5 h-3.5" />
-        WhatsApp
+        <MessageCircle className="w-3.5 h-3.5 text-[#94A3B8]" />
       </a>
       <a
         href={twitterUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-600/20 text-blue-400 rounded-lg text-xs font-medium hover:bg-blue-600/30 transition-colors border border-blue-600/30"
+        className="w-7 h-7 rounded-xl bg-[#111827] border border-[#1F2937] flex items-center justify-center hover:bg-[#1A2438] transition-colors"
         title="Share on Twitter/X"
       >
-        <Twitter className="w-3.5 h-3.5" />
-        Twitter
+        <Twitter className="w-3.5 h-3.5 text-[#94A3B8]" />
       </a>
     </div>
   );

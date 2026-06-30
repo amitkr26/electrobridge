@@ -49,9 +49,9 @@ export default function ContactPage() {
   if (submitted) {
     return (
       <div className="max-w-lg mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-        <CheckCircle className="w-16 h-16 text-cyan mx-auto mb-4" />
-        <h1 className="font-display text-2xl font-bold text-text-primary mb-2">Thank You!</h1>
-        <p className="text-text-muted text-sm">
+        <CheckCircle className="w-16 h-16 text-[#00E5FF] mx-auto mb-4" />
+        <h1 className="font-display text-2xl font-bold text-white mb-2">Thank You!</h1>
+        <p className="text-[#94A3B8] text-sm">
           Your suggestion has been submitted. We review all feedback and will get back to you if needed.
         </p>
       </div>
@@ -60,22 +60,22 @@ export default function ContactPage() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="font-display text-3xl font-bold text-text-primary mb-2">Contact & Suggestions</h1>
-      <p className="text-text-muted text-sm mb-8">
+      <h1 className="font-display text-3xl font-bold text-white mb-2">Contact & Suggestions</h1>
+      <p className="text-[#94A3B8] text-sm mb-8">
         Found a missing opportunity? Want to suggest a new feature? Let us know.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label htmlFor="type" className="block text-sm font-medium text-text-primary mb-1.5">
-            Type <span className="text-cyan">*</span>
+          <label htmlFor="type" className="block text-sm font-medium text-white mb-1.5">
+            Type <span className="text-[#00E5FF]">*</span>
           </label>
           <select
             id="type"
             value={type}
             onChange={(e) => setType(e.target.value)}
             required
-            className="w-full bg-navy-light border border-gray-700 rounded-lg px-4 py-2.5 text-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-cyan/50 focus:border-cyan/50"
+            className="w-full bg-[#1A2438] border border-[#1F2937] rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan/50 focus:border-cyan/50"
           >
             <option value="">Select a type...</option>
             {SUGGESTION_TYPES.map((t) => (
@@ -85,7 +85,7 @@ export default function ContactPage() {
         </div>
 
         <div>
-          <label htmlFor="url" className="block text-sm font-medium text-text-primary mb-1.5">
+          <label htmlFor="url" className="block text-sm font-medium text-white mb-1.5">
             URL (optional)
           </label>
           <input
@@ -94,13 +94,13 @@ export default function ContactPage() {
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             placeholder="https://example.com/opportunity"
-            className="w-full bg-navy-light border border-gray-700 rounded-lg px-4 py-2.5 text-text-primary text-sm placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-cyan/50 focus:border-cyan/50"
+            className="w-full bg-[#1A2438] border border-[#1F2937] rounded-lg px-4 py-2.5 text-white text-sm placeholder:text-[#94A3B8]/50 focus:outline-none focus:ring-2 focus:ring-cyan/50 focus:border-cyan/50"
           />
         </div>
 
         <div>
-          <label htmlFor="notes" className="block text-sm font-medium text-text-primary mb-1.5">
-            Notes <span className="text-cyan">*</span>
+          <label htmlFor="notes" className="block text-sm font-medium text-white mb-1.5">
+            Notes <span className="text-[#00E5FF]">*</span>
           </label>
           <textarea
             id="notes"
@@ -109,12 +109,12 @@ export default function ContactPage() {
             required
             rows={4}
             placeholder="Describe your suggestion, issue, or feedback..."
-            className="w-full bg-navy-light border border-gray-700 rounded-lg px-4 py-2.5 text-text-primary text-sm placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-cyan/50 focus:border-cyan/50 resize-y"
+            className="w-full bg-[#1A2438] border border-[#1F2937] rounded-lg px-4 py-2.5 text-white text-sm placeholder:text-[#94A3B8]/50 focus:outline-none focus:ring-2 focus:ring-cyan/50 focus:border-cyan/50 resize-y"
           />
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-text-primary mb-1.5">
+          <label htmlFor="email" className="block text-sm font-medium text-white mb-1.5">
             Email (optional)
           </label>
           <input
@@ -123,7 +123,7 @@ export default function ContactPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
-            className="w-full bg-navy-light border border-gray-700 rounded-lg px-4 py-2.5 text-text-primary text-sm placeholder:text-text-muted/50 focus:outline-none focus:ring-2 focus:ring-cyan/50 focus:border-cyan/50"
+            className="w-full bg-[#1A2438] border border-[#1F2937] rounded-lg px-4 py-2.5 text-white text-sm placeholder:text-[#94A3B8]/50 focus:outline-none focus:ring-2 focus:ring-cyan/50 focus:border-cyan/50"
           />
         </div>
 
@@ -136,7 +136,7 @@ export default function ContactPage() {
         <button
           type="submit"
           disabled={loading}
-          className="inline-flex items-center gap-2 bg-cyan text-navy font-semibold rounded-lg px-6 py-2.5 text-sm hover:bg-cyan/90 transition-colors disabled:opacity-50"
+          className="inline-flex items-center gap-2 bg-[#00E5FF] text-[#0B1120] font-semibold rounded-lg px-6 py-2.5 text-sm hover:bg-[#00E5FF]/90 transition-colors disabled:opacity-50"
         >
           {loading ? (
             <Loader2 className="w-4 h-4 animate-spin" />

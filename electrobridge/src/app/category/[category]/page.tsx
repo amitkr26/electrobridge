@@ -132,33 +132,33 @@ export default async function CategoryPage({ params }: { params: { category: str
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
-      <Link href="/opportunities" className="inline-flex items-center gap-1 text-text-muted hover:text-text-primary transition-colors text-sm mb-6">
+      <Link href="/opportunities" className="inline-flex items-center gap-1 text-[#94A3B8] hover:text-white transition-colors text-sm mb-6">
         <ArrowLeft className="w-4 h-4" />
         All Opportunities
       </Link>
 
       <div className="mb-8">
-        <h1 className="font-display text-3xl font-bold text-text-primary">{config.h1}</h1>
-        <p className="text-text-muted mt-2 text-sm">{config.subline}</p>
-        <p className="text-cyan text-sm mt-1 font-medium">{opportunities.length} active {config.slugLabel.toLowerCase().replace("job", "jobs")} positions</p>
+        <h1 className="font-display text-3xl font-bold text-white">{config.h1}</h1>
+        <p className="text-[#94A3B8] mt-2 text-sm">{config.subline}</p>
+        <p className="text-[#00E5FF] text-sm mt-1 font-medium">{opportunities.length} active {config.slugLabel.toLowerCase().replace("job", "jobs")} positions</p>
       </div>
 
-      <div className="bg-navy-light border border-gray-800 rounded-xl p-6 mb-8">
-        <p className="text-text-muted text-sm leading-relaxed">{config.description}</p>
+      <div className="bg-[#1A2438] border border-[#1F2937] rounded-xl p-6 mb-8">
+        <p className="text-[#94A3B8] text-sm leading-relaxed">{config.description}</p>
       </div>
 
       {/* Quick resource links */}
       <div className="flex flex-wrap gap-2 mb-8">
-        <Link href="/resources/jrf-guide" className="px-3 py-1.5 bg-cyan/10 text-cyan rounded-full text-xs font-medium border border-cyan/20 hover:bg-cyan/20 transition-colors">
+        <Link href="/resources/jrf-guide" className="px-3 py-1.5 bg-[#00E5FF]/10 text-[#00E5FF] rounded-full text-xs font-medium border border-cyan/20 hover:bg-[#00E5FF]/20 transition-colors">
           JRF Complete Guide →
         </Link>
-        <Link href="/resources/phd-guide" className="px-3 py-1.5 bg-cyan/10 text-cyan rounded-full text-xs font-medium border border-cyan/20 hover:bg-cyan/20 transition-colors">
+        <Link href="/resources/phd-guide" className="px-3 py-1.5 bg-[#00E5FF]/10 text-[#00E5FF] rounded-full text-xs font-medium border border-cyan/20 hover:bg-[#00E5FF]/20 transition-colors">
           PhD Guide →
         </Link>
-        <Link href="/resources/international-fellowships" className="px-3 py-1.5 bg-cyan/10 text-cyan rounded-full text-xs font-medium border border-cyan/20 hover:bg-cyan/20 transition-colors">
+        <Link href="/resources/international-fellowships" className="px-3 py-1.5 bg-[#00E5FF]/10 text-[#00E5FF] rounded-full text-xs font-medium border border-cyan/20 hover:bg-[#00E5FF]/20 transition-colors">
           International Fellowships →
         </Link>
-        <Link href="/resources/vlsi-careers" className="px-3 py-1.5 bg-cyan/10 text-cyan rounded-full text-xs font-medium border border-cyan/20 hover:bg-cyan/20 transition-colors">
+        <Link href="/resources/vlsi-careers" className="px-3 py-1.5 bg-[#00E5FF]/10 text-[#00E5FF] rounded-full text-xs font-medium border border-cyan/20 hover:bg-[#00E5FF]/20 transition-colors">
           VLSI Careers →
         </Link>
       </div>
@@ -169,21 +169,21 @@ export default async function CategoryPage({ params }: { params: { category: str
             <Link
               key={opp.id}
               href={`/opportunities/${opp.slug}`}
-              className="bg-navy-light border border-gray-800 rounded-lg p-4 hover:border-cyan/30 transition-all hover:translate-y-[-2px] block"
+              className="bg-[#1A2438] border border-[#1F2937] rounded-lg p-4 hover:border-cyan/30 transition-all hover:translate-y-[-2px] block"
             >
               <div className="flex items-center gap-2 mb-2">
                 <CategoryBadge category={opp.category} />
                 {opp.deadline && (
-                  <span className="text-[10px] text-text-muted">
+                  <span className="text-[10px] text-[#94A3B8]">
                     {new Date(opp.deadline).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
                   </span>
                 )}
               </div>
-              <h3 className="text-text-primary text-sm font-semibold line-clamp-2 leading-snug">{opp.title}</h3>
-              <p className="text-text-muted text-xs mt-1">{opp.organization}</p>
+              <h3 className="text-white text-sm font-semibold line-clamp-2 leading-snug">{opp.title}</h3>
+              <p className="text-[#94A3B8] text-xs mt-1">{opp.organization}</p>
               {(opp.stipend || opp.location) && (
-                <p className="text-text-muted text-xs mt-1">
-                  {opp.stipend && <span className="text-cyan font-medium">{opp.stipend}</span>}
+                <p className="text-[#94A3B8] text-xs mt-1">
+                  {opp.stipend && <span className="text-[#00E5FF] font-medium">{opp.stipend}</span>}
                   {opp.stipend && opp.location && <span> • </span>}
                   {opp.location && <span>{opp.location}</span>}
                 </p>
@@ -192,27 +192,27 @@ export default async function CategoryPage({ params }: { params: { category: str
           ))}
         </div>
       ) : (
-        <div className="text-center py-12 bg-navy-light border border-gray-800 rounded-xl mb-12">
-          <Briefcase className="w-12 h-12 text-cyan/30 mx-auto mb-3" />
-          <p className="text-text-muted text-lg mb-1">No active {config.slugLabel.toLowerCase().replace("job", "jobs")} positions right now.</p>
-          <p className="text-text-muted text-sm">New positions are added daily. Check back soon or browse all opportunities.</p>
-          <Link href="/opportunities" className="inline-flex items-center gap-2 mt-4 bg-cyan text-navy font-semibold rounded-lg px-4 py-2 text-sm hover:bg-cyan/90 transition-colors">
+        <div className="text-center py-12 bg-[#1A2438] border border-[#1F2937] rounded-xl mb-12">
+          <Briefcase className="w-12 h-12 text-[#00E5FF]/30 mx-auto mb-3" />
+          <p className="text-[#94A3B8] text-lg mb-1">No active {config.slugLabel.toLowerCase().replace("job", "jobs")} positions right now.</p>
+          <p className="text-[#94A3B8] text-sm">New positions are added daily. Check back soon or browse all opportunities.</p>
+          <Link href="/opportunities" className="inline-flex items-center gap-2 mt-4 bg-[#00E5FF] text-[#0B1120] font-semibold rounded-lg px-4 py-2 text-sm hover:bg-[#00E5FF]/90 transition-colors">
             Browse All Opportunities
           </Link>
         </div>
       )}
 
       {/* FAQ Section */}
-      <div className="bg-navy-light border border-gray-800 rounded-xl p-6">
-        <h2 className="font-display text-xl font-bold text-text-primary mb-6">Frequently Asked Questions</h2>
+      <div className="bg-[#1A2438] border border-[#1F2937] rounded-xl p-6">
+        <h2 className="font-display text-xl font-bold text-white mb-6">Frequently Asked Questions</h2>
         <div className="space-y-4">
           {getFAQ(params.category).map((faq: any, i: number) => (
             <details key={i} className="group">
-              <summary className="text-text-primary text-sm font-medium cursor-pointer list-none flex items-center justify-between py-2">
+              <summary className="text-white text-sm font-medium cursor-pointer list-none flex items-center justify-between py-2">
                 {faq.name}
-                <span className="text-cyan text-xs group-open:rotate-180 transition-transform">▼</span>
+                <span className="text-[#00E5FF] text-xs group-open:rotate-180 transition-transform">▼</span>
               </summary>
-              <p className="text-text-muted text-sm mt-2 leading-relaxed pl-4 border-l-2 border-cyan/30">
+              <p className="text-[#94A3B8] text-sm mt-2 leading-relaxed pl-4 border-l-2 border-cyan/30">
                 {faq.acceptedAnswer.text}
               </p>
             </details>

@@ -125,7 +125,7 @@ export default async function OpportunityDetailPage({ params }: Props) {
 
       <Link
         href="/opportunities"
-        className="inline-flex items-center gap-1 text-text-muted hover:text-text-primary transition-colors text-sm mb-6"
+        className="inline-flex items-center gap-1 text-[#94A3B8] hover:text-white transition-colors text-sm mb-6"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to Opportunities
@@ -133,7 +133,7 @@ export default async function OpportunityDetailPage({ params }: Props) {
 
       {opportunity.deadline && isExpired(opportunity.deadline) && (
         <div className="bg-red-900/30 border border-red-500/30 rounded-lg p-3 mb-4 text-center">
-          <p className="text-red-400 text-sm font-medium">
+          <p className="text-[#EF4444] text-sm font-medium">
             This opportunity has expired. The deadline was {formatDate(opportunity.deadline)}.
           </p>
         </div>
@@ -142,20 +142,20 @@ export default async function OpportunityDetailPage({ params }: Props) {
       {/* Verification status banner */}
       {opportunity.verification_status === "unverified" && (
         <div className="bg-amber-900/20 border border-amber-500/20 rounded-lg p-4 mb-4">
-          <p className="text-amber-400 text-xs">
+          <p className="text-[#F59E0B] text-xs">
             ⚠️ This opportunity was auto-scraped and is pending manual verification. Always confirm details on the official website before applying.
           </p>
         </div>
       )}
       {opportunity.verification_status === "link_unavailable" && (
         <div className="bg-red-900/20 border border-red-500/20 rounded-lg p-4 mb-4">
-          <p className="text-red-400 text-xs">
+          <p className="text-[#EF4444] text-xs">
             ⚠️ The apply link appears to be temporarily unavailable. Use the official website link below to find this opportunity.
           </p>
         </div>
       )}
 
-      <div className="bg-navy-light border border-gray-800 rounded-xl p-6 sm:p-8">
+      <div className="bg-[#1A2438] border border-[#1F2937] rounded-xl p-6 sm:p-8">
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-3 flex-wrap">
@@ -163,17 +163,17 @@ export default async function OpportunityDetailPage({ params }: Props) {
               {opportunity.deadline && <DeadlineCountdown deadline={opportunity.deadline} />}
               {opportunity.verification_status && <VerificationBadge status={opportunity.verification_status} />}
             </div>
-            <h1 className="font-display text-2xl sm:text-3xl font-bold text-text-primary">
+            <h1 className="font-display text-2xl sm:text-3xl font-bold text-white">
               {opportunity.title}
             </h1>
-            <p className="text-text-muted mt-1">{opportunity.organization}</p>
+            <p className="text-[#94A3B8] mt-1">{opportunity.organization}</p>
             {opportunity.verified_at && (
-              <p className="flex items-center gap-1 text-green-400/70 text-xs mt-2">
+              <p className="flex items-center gap-1 text-[#10B981]/70 text-xs mt-2">
                 ✓ Link verified {formatDate(opportunity.verified_at)}
               </p>
             )}
             {opportunity.created_at && (
-              <p className="flex items-center gap-1 text-text-muted text-xs mt-1">
+              <p className="flex items-center gap-1 text-[#94A3B8] text-xs mt-1">
                 <Clock className="w-3 h-3" />
                 Last updated: {formatDate(opportunity.created_at)}
               </p>
@@ -181,40 +181,40 @@ export default async function OpportunityDetailPage({ params }: Props) {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 bg-gray-800/50 rounded-lg mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 p-4 bg-[#111827]/50 rounded-lg mb-6">
           {opportunity.location && (
             <div className="flex items-center gap-2">
-              <MapPin className="w-4 h-4 text-cyan" />
+              <MapPin className="w-4 h-4 text-[#00E5FF]" />
               <div>
-                <p className="text-text-muted text-xs">Location</p>
-                <p className="text-text-primary text-sm font-medium">{opportunity.location}</p>
+                <p className="text-[#94A3B8] text-xs">Location</p>
+                <p className="text-white text-sm font-medium">{opportunity.location}</p>
               </div>
             </div>
           )}
           {opportunity.stipend && (
             <div className="flex items-center gap-2">
-              <Currency className="w-4 h-4 text-cyan" />
+              <Currency className="w-4 h-4 text-[#00E5FF]" />
               <div>
-                <p className="text-text-muted text-xs">Stipend/Salary</p>
-                <p className="text-text-primary text-sm font-medium">{opportunity.stipend}</p>
+                <p className="text-[#94A3B8] text-xs">Stipend/Salary</p>
+                <p className="text-white text-sm font-medium">{opportunity.stipend}</p>
               </div>
             </div>
           )}
           {opportunity.deadline && (
             <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-cyan" />
+              <Calendar className="w-4 h-4 text-[#00E5FF]" />
               <div>
-                <p className="text-text-muted text-xs">Deadline</p>
-                <p className="text-text-primary text-sm font-medium">{formatDate(opportunity.deadline)}</p>
+                <p className="text-[#94A3B8] text-xs">Deadline</p>
+                <p className="text-white text-sm font-medium">{formatDate(opportunity.deadline)}</p>
               </div>
             </div>
           )}
           {opportunity.eligibility && (
             <div className="flex items-center gap-2">
-              <GraduationCap className="w-4 h-4 text-cyan" />
+              <GraduationCap className="w-4 h-4 text-[#00E5FF]" />
               <div>
-                <p className="text-text-muted text-xs">Eligibility</p>
-                <p className="text-text-primary text-sm font-medium">{opportunity.eligibility}</p>
+                <p className="text-[#94A3B8] text-xs">Eligibility</p>
+                <p className="text-white text-sm font-medium">{opportunity.eligibility}</p>
               </div>
             </div>
           )}
@@ -222,20 +222,20 @@ export default async function OpportunityDetailPage({ params }: Props) {
 
         {opportunity.description && (
           <div className="mb-6">
-            <h2 className="font-display text-lg font-bold text-text-primary mb-3">Description</h2>
-            <p className="text-text-muted text-sm leading-relaxed whitespace-pre-wrap">{opportunity.description}</p>
+            <h2 className="font-display text-lg font-bold text-white mb-3">Description</h2>
+            <p className="text-[#94A3B8] text-sm leading-relaxed whitespace-pre-wrap">{opportunity.description}</p>
           </div>
         )}
 
         {opportunity.tags && opportunity.tags.length > 0 && (
           <div className="mb-6">
-            <h2 className="font-display text-sm font-bold text-text-primary mb-3">Tags</h2>
+            <h2 className="font-display text-sm font-bold text-white mb-3">Tags</h2>
             <div className="flex flex-wrap gap-2">
               {opportunity.tags.map((tag: string) => (
                 <Link
                   key={tag}
                   href={`/opportunities?search=${tag}`}
-                  className="px-3 py-1 bg-gray-800 border border-gray-700 rounded-full text-text-muted text-xs hover:border-cyan/50 hover:text-cyan transition-colors"
+                  className="px-3 py-1 bg-[#111827] border border-[#1F2937] rounded-full text-[#94A3B8] text-xs hover:border-cyan/50 hover:text-[#00E5FF] transition-colors"
                 >
                   {tag}
                 </Link>
@@ -266,7 +266,7 @@ export default async function OpportunityDetailPage({ params }: Props) {
               href={opportunity.official_page_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 border border-gray-700 text-text-primary font-medium rounded-lg px-4 py-2.5 text-sm hover:border-cyan/50 transition-colors"
+              className="inline-flex items-center gap-2 border border-[#1F2937] text-white font-medium rounded-lg px-4 py-2.5 text-sm hover:border-cyan/50 transition-colors"
             >
               <ExternalLink className="w-4 h-4" />
               Official Website
@@ -275,7 +275,7 @@ export default async function OpportunityDetailPage({ params }: Props) {
           {opportunity.id && (
             <a
               href={`/api/calendar-export/${opportunity.id}`}
-              className="inline-flex items-center gap-2 border border-gray-700 text-text-primary font-medium rounded-lg px-4 py-2.5 text-sm hover:border-cyan/50 transition-colors"
+              className="inline-flex items-center gap-2 border border-[#1F2937] text-white font-medium rounded-lg px-4 py-2.5 text-sm hover:border-cyan/50 transition-colors"
               download
             >
               📅 Add to Calendar
@@ -284,36 +284,36 @@ export default async function OpportunityDetailPage({ params }: Props) {
         </div>
 
         {/* Quick Facts */}
-        <div className="mt-6 p-4 bg-gray-800/30 border border-gray-700/50 rounded-lg">
-          <h3 className="font-display text-sm font-bold text-text-primary mb-3 flex items-center gap-2">
-            <Briefcase className="w-4 h-4 text-cyan" />
+        <div className="mt-6 p-4 bg-[#111827]/30 border border-[#1F2937]/50 rounded-lg">
+          <h3 className="font-display text-sm font-bold text-white mb-3 flex items-center gap-2">
+            <Briefcase className="w-4 h-4 text-[#00E5FF]" />
             Quick Facts
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
             <div>
-              <span className="text-text-muted">Position Type</span>
-              <p className="text-text-primary font-medium">{opportunity.category}</p>
+              <span className="text-[#94A3B8]">Position Type</span>
+              <p className="text-white font-medium">{opportunity.category}</p>
             </div>
             <div>
-              <span className="text-text-muted">Organization Type</span>
-              <p className="text-text-primary font-medium">
+              <span className="text-[#94A3B8]">Organization Type</span>
+              <p className="text-white font-medium">
                 {opportunity.organization.match(/ISRO|DRDO|CSIR|IIT|NIT|Govt/i) ? "Government" : opportunity.organization.match(/TI|Texas|Intel|Qualcomm|Samsung|IBM/i) ? "Private" : "Research"}
               </p>
             </div>
             <div>
-              <span className="text-text-muted">Work Location</span>
-              <p className="text-text-primary font-medium">On-site</p>
+              <span className="text-[#94A3B8]">Work Location</span>
+              <p className="text-white font-medium">On-site</p>
             </div>
             {opportunity.eligibility?.match(/NET|GATE/i) && (
               <div>
-                <span className="text-text-muted">NET/GATE Required</span>
-                <p className="text-green-400 font-medium">Yes</p>
+                <span className="text-[#94A3B8]">NET/GATE Required</span>
+                <p className="text-[#10B981] font-medium">Yes</p>
               </div>
             )}
             {opportunity.stipend && (
               <div>
-                <span className="text-text-muted">Compensation</span>
-                <p className="text-text-primary font-medium">{opportunity.stipend}</p>
+                <span className="text-[#94A3B8]">Compensation</span>
+                <p className="text-white font-medium">{opportunity.stipend}</p>
               </div>
             )}
           </div>

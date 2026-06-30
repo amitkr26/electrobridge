@@ -52,18 +52,18 @@ export default async function OrganizationsPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
-        <h1 className="font-display text-3xl font-bold text-text-primary">
+        <h1 className="font-display text-3xl font-bold text-white">
           Organizations
         </h1>
-        <p className="text-text-muted mt-2 text-sm">
+        <p className="text-[#94A3B8] mt-2 text-sm">
           Browse opportunities by organization ({organizations.length} total).
         </p>
       </div>
 
       {organizations.length === 0 ? (
         <div className="text-center py-20">
-          <Building2 className="w-12 h-12 text-text-muted mx-auto mb-4" />
-          <p className="text-text-muted">No organizations found.</p>
+          <Building2 className="w-12 h-12 text-[#94A3B8] mx-auto mb-4" />
+          <p className="text-[#94A3B8]">No organizations found.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -71,11 +71,11 @@ export default async function OrganizationsPage() {
             <Link
               key={org.slug}
               href={`/organizations/${org.slug}`}
-              className="bg-navy-light border border-gray-800 rounded-lg p-5 hover:border-cyan/30 transition-all duration-300 hover:translate-y-[-2px] group"
+              className="bg-[#1A2438] border border-[#1F2937] rounded-lg p-5 hover:border-cyan/30 transition-all duration-300 hover:translate-y-[-2px] group"
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-cyan/10 flex items-center justify-center flex-shrink-0">
-                  <span className="text-cyan text-sm font-bold">
+                  <span className="text-[#00E5FF] text-sm font-bold">
                     {org.name
                       .split(" ")
                       .map((w) => w[0])
@@ -85,15 +85,15 @@ export default async function OrganizationsPage() {
                   </span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-text-primary font-semibold text-sm group-hover:text-cyan transition-colors truncate">
+                  <h3 className="text-white font-semibold text-sm group-hover:text-[#00E5FF] transition-colors truncate">
                     {org.name}
                   </h3>
-                  <p className="text-text-muted text-xs mt-0.5">
+                  <p className="text-[#94A3B8] text-xs mt-0.5">
                     {org.count} active{" "}
                     {org.count === 1 ? "opportunity" : "opportunities"}
                   </p>
                 </div>
-                <ArrowRight className="w-4 h-4 text-text-muted group-hover:text-cyan transition-colors flex-shrink-0" />
+                <ArrowRight className="w-4 h-4 text-[#94A3B8] group-hover:text-[#00E5FF] transition-colors flex-shrink-0" />
               </div>
             </Link>
           ))}

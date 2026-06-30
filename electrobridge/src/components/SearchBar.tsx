@@ -21,13 +21,13 @@ export default function SearchBar({
 
   return (
     <form onSubmit={handleSubmit} className="relative">
-      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8]" />
       <input
         type="text"
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder={placeholder}
-        className="w-full bg-gray-800 border border-gray-700 text-text-primary text-sm rounded-lg pl-10 pr-4 py-2.5 focus:ring-cyan focus:border-cyan outline-none placeholder:text-text-muted/50"
+        className="w-full bg-[#111827] border border-[#1F2937] text-white text-sm rounded-xl pl-10 pr-4 py-2.5 focus:border-[#00E5FF]/40 outline-none placeholder:text-[#94A3B8] transition-colors"
       />
     </form>
   );

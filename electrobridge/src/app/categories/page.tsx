@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const CATEGORIES_CONFIG = [
-  { slug: "jrf", label: "JRF", icon: GraduationCap, description: "Junior Research Fellowship positions at DRDO, ISRO, CSIR, IITs for NET/GATE qualified MSc holders. Stipend: ₹37,000/month.", color: "from-cyan/20 to-blue-500/20 border-cyan/30", iconBg: "bg-cyan/10", iconColor: "text-cyan" },
+  { slug: "jrf", label: "JRF", icon: GraduationCap, description: "Junior Research Fellowship positions at DRDO, ISRO, CSIR, IITs for NET/GATE qualified MSc holders. Stipend: ₹37,000/month.", color: "from-cyan/20 to-blue-500/20 border-cyan/30", iconBg: "bg-cyan/10", iconColor: "text-[#00E5FF]" },
   { slug: "srf", label: "SRF", icon: FlaskConical, description: "Senior Research Fellowship for experienced researchers (2+ years JRF or PhD). Stipend: ₹42,000/month.", color: "from-purple-500/20 to-pink-500/20 border-purple-500/30", iconBg: "bg-purple-500/10", iconColor: "text-purple-400" },
   { slug: "phd", label: "PhD", icon: BookOpen, description: "Funded doctoral opportunities at IITs, IISc, CSIR labs, and international universities with JRF/INSPIRE/PMRF funding.", color: "from-emerald-500/20 to-teal-500/20 border-emerald-500/30", iconBg: "bg-emerald-500/10", iconColor: "text-emerald-400" },
   { slug: "govt-job", label: "Govt Job", icon: Building2, description: "Scientist, engineer, and technical positions at DRDO, ISRO, BARC, CSIR. Stable careers with 7th CPC pay scales.", color: "from-amber-500/20 to-orange-500/20 border-amber-500/30", iconBg: "bg-amber-500/10", iconColor: "text-amber-400" },
@@ -33,8 +33,8 @@ export default async function CategoriesPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="font-display text-3xl font-bold text-text-primary mb-2">Browse by Category</h1>
-      <p className="text-text-muted text-sm mb-10">Find opportunities across all electronics research categories.</p>
+      <h1 className="font-display text-3xl font-bold text-white mb-2">Browse by Category</h1>
+      <p className="text-[#94A3B8] text-sm mb-10">Find opportunities across all electronics research categories.</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {CATEGORIES_CONFIG.map((cat) => {
@@ -43,16 +43,16 @@ export default async function CategoriesPage() {
             <Link
               key={cat.slug}
               href={`/category/${cat.slug}`}
-              className={`bg-navy-light border bg-gradient-to-br ${cat.color} rounded-xl p-6 hover:translate-y-[-2px] transition-all duration-300 group`}
+              className={`bg-[#1A2438] border bg-gradient-to-br ${cat.color} rounded-xl p-6 hover:translate-y-[-2px] transition-all duration-300 group`}
             >
               <div className={`w-12 h-12 rounded-xl ${cat.iconBg} flex items-center justify-center mb-4`}>
                 <Icon className={`w-6 h-6 ${cat.iconColor}`} />
               </div>
-              <h2 className="font-display text-lg font-bold text-text-primary mb-2">{cat.label}</h2>
-              <p className="text-text-muted text-sm leading-relaxed mb-4">{cat.description}</p>
+              <h2 className="font-display text-lg font-bold text-white mb-2">{cat.label}</h2>
+              <p className="text-[#94A3B8] text-sm leading-relaxed mb-4">{cat.description}</p>
               <div className="flex items-center justify-between">
-                <span className="text-cyan text-sm font-semibold">{counts[cat.slug] || 0} active</span>
-                <span className="text-text-muted text-sm group-hover:text-cyan transition-colors">Browse &rarr;</span>
+                <span className="text-[#00E5FF] text-sm font-semibold">{counts[cat.slug] || 0} active</span>
+                <span className="text-[#94A3B8] text-sm group-hover:text-[#00E5FF] transition-colors">Browse &rarr;</span>
               </div>
             </Link>
           );

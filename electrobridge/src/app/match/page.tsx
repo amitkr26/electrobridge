@@ -77,24 +77,24 @@ export default function MatchPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
-        <h1 className="font-display text-3xl font-bold text-text-primary flex items-center gap-3">
-          <Target className="w-8 h-8 text-cyan" />
+        <h1 className="font-display text-3xl font-bold text-white flex items-center gap-3">
+          <Target className="w-8 h-8 text-[#00E5FF]" />
           Find My Match
         </h1>
-        <p className="text-text-muted mt-2 text-sm">
+        <p className="text-[#94A3B8] mt-2 text-sm">
           Tell us about your profile and we&apos;ll find the best opportunities for you using AI.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-navy-light border border-gray-800 rounded-xl p-6 mb-8">
+      <form onSubmit={handleSubmit} className="bg-[#1A2438] border border-[#1F2937] rounded-xl p-6 mb-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
-            <label className="block text-text-muted text-xs font-medium mb-1">Highest Qualification</label>
+            <label className="block text-[#94A3B8] text-xs font-medium mb-1">Highest Qualification</label>
             <select
               value={qualification}
               onChange={(e) => setQualification(e.target.value)}
               required
-              className="w-full bg-gray-800 border border-gray-700 text-text-primary text-sm rounded-lg px-3 py-2.5 focus:ring-cyan focus:border-cyan outline-none"
+              className="w-full bg-[#111827] border border-gray-700 text-white text-sm rounded-lg px-3 py-2.5 focus:ring-cyan focus:border-cyan outline-none"
             >
               <option value="">Select...</option>
               <option value="MSc Electronics">MSc Electronics</option>
@@ -108,12 +108,12 @@ export default function MatchPage() {
             </select>
           </div>
           <div>
-            <label className="block text-text-muted text-xs font-medium mb-1">Specialization</label>
+            <label className="block text-[#94A3B8] text-xs font-medium mb-1">Specialization</label>
             <input
               value={specialization}
               onChange={(e) => setSpecialization(e.target.value)}
               placeholder="thin film, spintronics, VLSI, embedded..."
-              className="w-full bg-gray-800 border border-gray-700 text-text-primary text-sm rounded-lg px-3 py-2.5 focus:ring-cyan focus:border-cyan outline-none"
+              className="w-full bg-[#111827] border border-gray-700 text-white text-sm rounded-lg px-3 py-2.5 focus:ring-cyan focus:border-cyan outline-none"
             />
           </div>
         </div>
@@ -126,7 +126,7 @@ export default function MatchPage() {
               onChange={(e) => setHasNET(e.target.checked)}
               className="accent-cyan"
             />
-            <span className="text-text-primary text-sm">NET Qualified</span>
+            <span className="text-white text-sm">NET Qualified</span>
           </label>
           <label className="flex items-center gap-2 cursor-pointer">
             <input
@@ -135,12 +135,12 @@ export default function MatchPage() {
               onChange={(e) => setHasGATE(e.target.checked)}
               className="accent-cyan"
             />
-            <span className="text-text-primary text-sm">GATE Qualified</span>
+            <span className="text-white text-sm">GATE Qualified</span>
           </label>
         </div>
 
         <div className="mb-4">
-          <label className="block text-text-muted text-xs font-medium mb-2">Looking For</label>
+          <label className="block text-[#94A3B8] text-xs font-medium mb-2">Looking For</label>
           <div className="flex flex-wrap gap-2">
             {filterCats.map((cat) => (
               <button
@@ -149,8 +149,8 @@ export default function MatchPage() {
                 onClick={() => toggleLooking(cat)}
                 className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                   lookingFor.includes(cat)
-                    ? "bg-cyan text-navy"
-                    : "bg-gray-800 text-text-muted border border-gray-700 hover:border-cyan/30"
+                    ? "bg-[#00E5FF] text-[#0B1120]"
+                    : "bg-[#111827] text-[#94A3B8] border border-gray-700 hover:border-cyan/30"
                 }`}
               >
                 {cat}
@@ -160,19 +160,19 @@ export default function MatchPage() {
         </div>
 
         <div className="mb-6">
-          <label className="block text-text-muted text-xs font-medium mb-1">Preferred Location</label>
+          <label className="block text-[#94A3B8] text-xs font-medium mb-1">Preferred Location</label>
           <input
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             placeholder="Delhi, Bangalore, Hyderabad, International..."
-            className="w-full bg-gray-800 border border-gray-700 text-text-primary text-sm rounded-lg px-3 py-2.5 focus:ring-cyan focus:border-cyan outline-none"
+            className="w-full bg-[#111827] border border-gray-700 text-white text-sm rounded-lg px-3 py-2.5 focus:ring-cyan focus:border-cyan outline-none"
           />
         </div>
 
         <button
           type="submit"
           disabled={loading}
-          className="flex items-center gap-2 bg-cyan text-navy font-semibold rounded-lg px-6 py-2.5 text-sm hover:bg-cyan/90 transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 bg-[#00E5FF] text-[#0B1120] font-semibold rounded-lg px-6 py-2.5 text-sm hover:bg-[#00E5FF]/90 transition-colors disabled:opacity-50"
         >
           {loading ? (
             <><Loader2 className="w-4 h-4 animate-spin" /> Matching...</>
@@ -190,20 +190,20 @@ export default function MatchPage() {
 
       {loading && (
         <div className="flex items-center justify-center py-12">
-          <Loader2 className="w-8 h-8 text-cyan animate-spin" />
+          <Loader2 className="w-8 h-8 text-[#00E5FF] animate-spin" />
         </div>
       )}
 
       {searched && !loading && matches.length === 0 && !error && (
         <div className="text-center py-12">
-          <p className="text-text-muted text-lg">No matching opportunities found.</p>
-          <p className="text-text-muted text-sm mt-1">Try broadening your search criteria.</p>
+          <p className="text-[#94A3B8] text-lg">No matching opportunities found.</p>
+          <p className="text-[#94A3B8] text-sm mt-1">Try broadening your search criteria.</p>
         </div>
       )}
 
       {matches.length > 0 && (
         <div>
-          <h2 className="font-display text-xl font-bold text-text-primary mb-4">
+          <h2 className="font-display text-xl font-bold text-white mb-4">
             Your Matches ({matches.length})
           </h2>
           <div className="space-y-4">
@@ -212,12 +212,12 @@ export default function MatchPage() {
               .map((match, idx) => (
                 <div
                   key={match.id || idx}
-                  className="bg-navy-light border border-gray-800 rounded-lg p-4 hover:border-cyan/30 transition-all"
+                  className="bg-[#1A2438] border border-[#1F2937] rounded-lg p-4 hover:border-cyan/30 transition-all"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <h3 className="text-text-primary font-semibold text-sm">
+                        <h3 className="text-white font-semibold text-sm">
                           {match.title}
                         </h3>
                         <span
@@ -226,16 +226,16 @@ export default function MatchPage() {
                               ? "bg-green-900/40 text-green-400"
                               : match.matchScore >= 60
                                 ? "bg-yellow-900/40 text-yellow-400"
-                                : "bg-gray-800 text-text-muted"
+                                : "bg-[#111827] text-[#94A3B8]"
                           }`}
                         >
                           {match.matchScore}%
                         </span>
                       </div>
-                      <p className="text-text-muted text-xs">
+                      <p className="text-[#94A3B8] text-xs">
                         {match.organization} {match.stipend ? `• ${match.stipend}` : ""}
                       </p>
-                      <p className="text-text-muted text-xs mt-1">
+                      <p className="text-[#94A3B8] text-xs mt-1">
                         <GraduationCap className="w-3 h-3 inline mr-1" />
                         {match.eligibility || "See details"}
                         {match.location && (
@@ -245,12 +245,12 @@ export default function MatchPage() {
                           </>
                         )}
                       </p>
-                      <p className="text-cyan text-xs mt-2 italic">{match.matchReason}</p>
+                      <p className="text-[#00E5FF] text-xs mt-2 italic">{match.matchReason}</p>
                     </div>
                     {match.slug && (
                       <Link
                         href={`/opportunities/${match.slug}`}
-                        className="flex items-center gap-1 text-cyan text-xs font-medium hover:underline flex-shrink-0"
+                        className="flex items-center gap-1 text-[#00E5FF] text-xs font-medium hover:underline flex-shrink-0"
                       >
                         View <ExternalLink className="w-3 h-3" />
                       </Link>

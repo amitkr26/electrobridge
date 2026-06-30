@@ -82,12 +82,12 @@ export default function OpportunitiesPage() {
   }, [fetchOpportunities]);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-[1440px] mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="font-display text-3xl font-bold text-text-primary">
+        <h1 className="text-3xl font-bold text-white">
           All Opportunities
         </h1>
-        <p className="text-text-muted mt-2 text-sm">
+        <p className="text-[#94A3B8] mt-2 text-sm">
           Browse JRF, PhD, government, and private sector opportunities.
         </p>
       </div>
@@ -108,7 +108,7 @@ export default function OpportunitiesPage() {
             className={`inline-flex items-center gap-2 text-xs font-medium px-3 py-2 rounded-lg border transition-colors ${
               showUnverified
                 ? "bg-amber-500/10 border-amber-500/30 text-amber-400"
-                : "bg-gray-800/50 border-gray-700 text-text-muted hover:text-text-primary"
+                : "bg-[#111827]/50 border-[#1F2937] text-[#94A3B8] hover:text-white"
             }`}
           >
             {showUnverified ? (
@@ -156,15 +156,15 @@ export default function OpportunitiesPage() {
 
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="w-6 h-6 text-cyan animate-spin" />
+          <Loader2 className="w-6 h-6 text-[#00E5FF] animate-spin" />
         </div>
       ) : opportunities.length === 0 ? (
         <div className="text-center py-20">
-          <div className="w-16 h-16 bg-gray-800/50 rounded-full flex items-center justify-center mx-auto mb-4">
-            <ShieldCheck className="w-8 h-8 text-text-muted" />
+          <div className="w-16 h-16 bg-[#111827]/50 rounded-full flex items-center justify-center mx-auto mb-4">
+            <ShieldCheck className="w-8 h-8 text-[#94A3B8]" />
           </div>
-          <p className="text-text-muted text-lg mb-2">No opportunities found.</p>
-          <p className="text-text-muted text-sm">
+          <p className="text-[#94A3B8] text-lg mb-2">No opportunities found.</p>
+          <p className="text-[#94A3B8] text-sm">
             Try adjusting your filters, enable unverified listings, or check back later.
           </p>
           <button
@@ -176,7 +176,7 @@ export default function OpportunitiesPage() {
               setSearch("");
               setShowUnverified(true);
             }}
-            className="mt-4 inline-flex items-center gap-2 bg-cyan text-navy font-semibold rounded-lg px-4 py-2 text-sm hover:bg-cyan/90 transition-colors"
+            className="mt-4 inline-flex items-center gap-2 bg-[#00E5FF] text-[#0B1120] font-semibold rounded-lg px-4 py-2 text-sm hover:bg-[#00E5FF]/90 transition-colors"
           >
             Reset & Show All
           </button>

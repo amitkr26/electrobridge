@@ -166,13 +166,13 @@ export default async function NewsDetailPage({ params }: Props) {
 
       <Link
         href="/news"
-        className="inline-flex items-center gap-1 text-text-muted hover:text-text-primary transition-colors text-sm mb-6"
+        className="inline-flex items-center gap-1 text-[#94A3B8] hover:text-white transition-colors text-sm mb-6"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to News
       </Link>
 
-      <article className="bg-navy-light border border-gray-800 rounded-xl p-6 sm:p-8">
+      <article className="bg-[#1A2438] border border-[#1F2937] rounded-xl p-6 sm:p-8">
         {article.image_url && (
           <div className="mb-6 -mx-6 sm:-mx-8 -mt-6 sm:-mt-8 rounded-t-xl overflow-hidden">
             <NewsImage src={article.image_url} alt={article.title} />
@@ -180,23 +180,23 @@ export default async function NewsDetailPage({ params }: Props) {
         )}
 
         <div className="flex items-center gap-3 mb-4 flex-wrap">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-navy border border-gray-700/50 rounded-full text-xs font-medium text-text-muted">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#0B1120] border border-[#1F2937]/50 rounded-full text-xs font-medium text-[#94A3B8]">
             <span className={`w-2.5 h-2.5 rounded-full ${sourceDotColor}`} />
             {article.source}
           </span>
           {article.published_at && (
-            <span className="flex items-center gap-1.5 text-text-muted text-xs">
+            <span className="flex items-center gap-1.5 text-[#94A3B8] text-xs">
               <Calendar className="w-3.5 h-3.5" />
               {formatDate(article.published_at)}
             </span>
           )}
-          <span className="flex items-center gap-1.5 text-text-muted text-xs">
+          <span className="flex items-center gap-1.5 text-[#94A3B8] text-xs">
             <Clock className="w-3.5 h-3.5" />
             {article.published_at ? timeAgo(article.published_at) : ""}
           </span>
         </div>
 
-        <h1 className="font-display text-2xl sm:text-3xl font-bold text-text-primary mb-4 leading-tight">
+        <h1 className="font-display text-2xl sm:text-3xl font-bold text-white mb-4 leading-tight">
           {article.title}
         </h1>
 
@@ -206,7 +206,7 @@ export default async function NewsDetailPage({ params }: Props) {
               <Link
                 key={tag}
                 href={`/news?tag=${encodeURIComponent(tag)}`}
-                className="inline-flex items-center gap-1 px-2.5 py-1 bg-cyan-900/20 text-cyan-400 rounded-full text-xs font-medium border border-cyan-500/15 hover:bg-cyan-900/30 transition-colors"
+                className="inline-flex items-center gap-1 px-2.5 py-1 bg-[#00E5FF]-900/20 text-[#00E5FF]-400 rounded-full text-xs font-medium border border-cyan-500/15 hover:bg-[#00E5FF]-900/30 transition-colors"
               >
                 <Tag className="w-3 h-3" />
                 {tag}
@@ -217,7 +217,7 @@ export default async function NewsDetailPage({ params }: Props) {
 
         {article.summary && (
           <div className="prose prose-invert max-w-none mb-8">
-            <p className="text-text-muted text-base leading-relaxed whitespace-pre-wrap">
+            <p className="text-[#94A3B8] text-base leading-relaxed whitespace-pre-wrap">
               {article.summary}
             </p>
           </div>
@@ -228,7 +228,7 @@ export default async function NewsDetailPage({ params }: Props) {
             href={article.source_url}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-cyan text-navy font-semibold rounded-lg px-5 py-2.5 text-sm hover:bg-cyan/90 transition-colors"
+            className="inline-flex items-center gap-2 bg-[#00E5FF] text-[#0B1120] font-semibold rounded-lg px-5 py-2.5 text-sm hover:bg-[#00E5FF]/90 transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
             Read Original Article
@@ -239,17 +239,17 @@ export default async function NewsDetailPage({ params }: Props) {
       {/* Related News */}
       {relatedNews.length > 0 && (
         <section className="mt-10">
-          <h2 className="font-display text-xl font-bold text-text-primary mb-4">Related News</h2>
+          <h2 className="font-display text-xl font-bold text-white mb-4">Related News</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {relatedNews.map((item: any) => (
               <Link
                 key={item.id}
                 href={`/news/${item.slug || item.id}`}
-                className="bg-navy-light border border-gray-800 rounded-lg p-4 hover:border-cyan/30 transition-all hover:translate-y-[-2px] block"
+                className="bg-[#1A2438] border border-[#1F2937] rounded-lg p-4 hover:border-cyan/30 transition-all hover:translate-y-[-2px] block"
               >
-                <h3 className="text-text-primary text-sm font-semibold line-clamp-2 leading-snug">{item.title}</h3>
-                <p className="text-text-muted text-xs mt-2 line-clamp-2">{item.summary}</p>
-                <p className="text-cyan text-xs mt-2 font-medium">Read More →</p>
+                <h3 className="text-white text-sm font-semibold line-clamp-2 leading-snug">{item.title}</h3>
+                <p className="text-[#94A3B8] text-xs mt-2 line-clamp-2">{item.summary}</p>
+                <p className="text-[#00E5FF] text-xs mt-2 font-medium">Read More →</p>
               </Link>
             ))}
           </div>
@@ -259,17 +259,17 @@ export default async function NewsDetailPage({ params }: Props) {
       {/* Related Opportunities */}
       {relatedOpportunities.length > 0 && (
         <section className="mt-10 mb-10">
-          <h2 className="font-display text-xl font-bold text-text-primary mb-4">Related Opportunities</h2>
+          <h2 className="font-display text-xl font-bold text-white mb-4">Related Opportunities</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {relatedOpportunities.map((opp: any) => (
               <Link
                 key={opp.id}
                 href={`/opportunities/${opp.slug}`}
-                className="bg-navy-light border border-gray-800 rounded-lg p-4 hover:border-cyan/30 transition-all hover:translate-y-[-2px] block"
+                className="bg-[#1A2438] border border-[#1F2937] rounded-lg p-4 hover:border-cyan/30 transition-all hover:translate-y-[-2px] block"
               >
-                <h3 className="text-text-primary text-sm font-semibold line-clamp-2 leading-snug">{opp.title}</h3>
-                <p className="text-text-muted text-xs mt-1">{opp.organization}</p>
-                {opp.stipend && <p className="text-cyan text-xs mt-1 font-medium">{opp.stipend}</p>}
+                <h3 className="text-white text-sm font-semibold line-clamp-2 leading-snug">{opp.title}</h3>
+                <p className="text-[#94A3B8] text-xs mt-1">{opp.organization}</p>
+                {opp.stipend && <p className="text-[#00E5FF] text-xs mt-1 font-medium">{opp.stipend}</p>}
               </Link>
             ))}
           </div>

@@ -58,16 +58,16 @@ export default function NewsPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
         <div>
-          <h1 className="font-display text-3xl font-bold text-text-primary">
+          <h1 className="font-display text-3xl font-bold text-white">
             Tech News
           </h1>
-          <p className="text-text-muted mt-2 text-sm">
+          <p className="text-[#94A3B8] mt-2 text-sm">
             Latest electronics, semiconductor, and research news.
           </p>
         </div>
         <button
           onClick={fetchNews}
-          className="inline-flex items-center gap-2 text-cyan text-sm font-medium hover:underline"
+          className="inline-flex items-center gap-2 text-[#00E5FF] text-sm font-medium hover:underline"
         >
           <RefreshCw className="w-4 h-4" />
           Refresh
@@ -81,8 +81,8 @@ export default function NewsPage() {
             onClick={() => setActiveTag(tab.value)}
             className={`whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
               activeTag === tab.value
-                ? "bg-cyan text-navy"
-                : "bg-navy-light text-text-muted border border-gray-700/50 hover:border-cyan/30"
+                ? "bg-[#00E5FF] text-[#0B1120]"
+                : "bg-[#1A2438] text-[#94A3B8] border border-[#1F2937]/50 hover:border-cyan/30"
             }`}
           >
             {tab.label}
@@ -99,17 +99,17 @@ export default function NewsPage() {
 
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="w-6 h-6 text-cyan animate-spin" />
+          <Loader2 className="w-6 h-6 text-[#00E5FF] animate-spin" />
         </div>
       ) : articles.length === 0 ? (
         <div className="text-center py-20">
-          <p className="text-text-muted text-lg mb-2">No news articles yet.</p>
-          <p className="text-text-muted text-sm">
+          <p className="text-[#94A3B8] text-lg mb-2">No news articles yet.</p>
+          <p className="text-[#94A3B8] text-sm">
             News will appear here once fetched from RSS feeds.
           </p>
           <button
             onClick={fetchNews}
-            className="mt-4 inline-flex items-center gap-2 bg-cyan text-navy font-semibold rounded-lg px-4 py-2 text-sm hover:bg-cyan/90 transition-colors"
+            className="mt-4 inline-flex items-center gap-2 bg-[#00E5FF] text-[#0B1120] font-semibold rounded-lg px-4 py-2 text-sm hover:bg-[#00E5FF]/90 transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
             Try Again

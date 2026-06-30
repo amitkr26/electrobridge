@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 };
 
 const GUIDE_CARDS = [
-  { href: "/resources/jrf-guide", icon: GraduationCap, title: "JRF Complete Guide", description: "Everything about Junior Research Fellowship: eligibility, stipend ₹37,000-42,000/month, age limit, how to apply, documents needed, DRDO/ISRO/CSIR openings.", color: "from-cyan/20 to-blue-500/20 border-cyan/30", iconBg: "bg-cyan/10", iconColor: "text-cyan" },
+  { href: "/resources/jrf-guide", icon: GraduationCap, title: "JRF Complete Guide", description: "Everything about Junior Research Fellowship: eligibility, stipend ₹37,000-42,000/month, age limit, how to apply, documents needed, DRDO/ISRO/CSIR openings.", color: "from-cyan/20 to-blue-500/20 border-cyan/30", iconBg: "bg-cyan/10", iconColor: "text-[#00E5FF]" },
   { href: "/resources/phd-guide", icon: BookOpen, title: "PhD in Electronics Guide", description: "Complete PhD admission guide: 3 admission routes, top institutions with stipends, funding options (CSIR/UGC/INSPIRE/PMRF), professor email template, application timeline.", color: "from-emerald-500/20 to-teal-500/20 border-emerald-500/30", iconBg: "bg-emerald-500/10", iconColor: "text-emerald-400" },
   { href: "/resources/vlsi-careers", icon: Zap, title: "VLSI Career Guide", description: "VLSI career paths in India: roles (design, verification, layout), top companies (Intel, AMD, Qualcomm, TI), salary ranges, required skills, and training resources.", color: "from-purple-500/20 to-pink-500/20 border-purple-500/30", iconBg: "bg-purple-500/10", iconColor: "text-purple-400" },
   { href: "/resources/international-fellowships", icon: Globe, title: "International Fellowships", description: "DAAD (Germany), SINGA (Singapore), MEXT (Japan), Marie Curie (EU) — fully-funded PhD and research fellowships for Indian electronics researchers abroad.", color: "from-blue-500/20 to-indigo-500/20 border-blue-500/30", iconBg: "bg-blue-500/10", iconColor: "text-blue-400" },
@@ -73,8 +73,8 @@ const sections = [
 export default function ResourcesPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="font-display text-3xl font-bold text-text-primary mb-2">Resources</h1>
-      <p className="text-text-muted text-sm mb-10">
+      <h1 className="font-display text-3xl font-bold text-white mb-2">Resources</h1>
+      <p className="text-[#94A3B8] text-sm mb-10">
         Comprehensive guides and information for electronics researchers and professionals.
       </p>
 
@@ -85,18 +85,18 @@ export default function ResourcesPage() {
             <Link
               key={card.href}
               href={card.href}
-              className={`bg-gradient-to-br ${card.color} bg-navy-light border rounded-xl p-5 hover:translate-y-[-2px] transition-all duration-300 group`}
+              className={`bg-gradient-to-br ${card.color} bg-[#1A2438] border rounded-xl p-5 hover:translate-y-[-2px] transition-all duration-300 group`}
             >
               <div className="flex items-start gap-3">
                 <div className={`w-10 h-10 rounded-lg ${card.iconBg} flex items-center justify-center flex-shrink-0`}>
                   <Icon className={`w-5 h-5 ${card.iconColor}`} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h2 className="font-display text-base font-bold text-text-primary mb-1">{card.title}</h2>
-                  <p className="text-text-muted text-xs leading-relaxed line-clamp-2">{card.description}</p>
+                  <h2 className="font-display text-base font-bold text-white mb-1">{card.title}</h2>
+                  <p className="text-[#94A3B8] text-xs leading-relaxed line-clamp-2">{card.description}</p>
                 </div>
               </div>
-              <div className="flex items-center gap-1 text-cyan text-xs font-medium mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="flex items-center gap-1 text-[#00E5FF] text-xs font-medium mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
                 Read Guide <ArrowRight className="w-3 h-3" />
               </div>
             </Link>
@@ -105,19 +105,19 @@ export default function ResourcesPage() {
       </div>
 
       <div className="space-y-8">
-        <h2 className="font-display text-2xl font-bold text-text-primary">Reference Information</h2>
+        <h2 className="font-display text-2xl font-bold text-white">Reference Information</h2>
         {sections.map((section) => (
-          <div key={section.title} className="bg-navy-light border border-gray-800 rounded-xl p-6">
+          <div key={section.title} className="bg-[#1A2438] border border-[#1F2937] rounded-xl p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-lg bg-cyan/10 flex items-center justify-center flex-shrink-0">
-                <section.icon className="w-5 h-5 text-cyan" />
+                <section.icon className="w-5 h-5 text-[#00E5FF]" />
               </div>
-              <h2 className="font-display text-lg font-bold text-text-primary">{section.title}</h2>
+              <h2 className="font-display text-lg font-bold text-white">{section.title}</h2>
             </div>
             <ul className="space-y-2">
               {section.content.map((item, i) => (
-                <li key={i} className="text-text-muted text-sm leading-relaxed flex items-start gap-2">
-                  <span className="text-cyan mt-1 flex-shrink-0">•</span>
+                <li key={i} className="text-[#94A3B8] text-sm leading-relaxed flex items-start gap-2">
+                  <span className="text-[#00E5FF] mt-1 flex-shrink-0">•</span>
                   <span>{item}</span>
                 </li>
               ))}

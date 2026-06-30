@@ -70,15 +70,15 @@ export default async function OrganizationPage({ params }: Props) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <Link
         href="/opportunities"
-        className="inline-flex items-center gap-1 text-text-muted hover:text-text-primary transition-colors text-sm mb-6"
+        className="inline-flex items-center gap-1 text-[#94A3B8] hover:text-white transition-colors text-sm mb-6"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to Opportunities
       </Link>
 
       <div className="mb-8">
-        <h1 className="font-display text-3xl font-bold text-text-primary">{name}</h1>
-        <p className="text-text-muted mt-2 text-sm">
+        <h1 className="font-display text-3xl font-bold text-white">{name}</h1>
+        <p className="text-[#94A3B8] mt-2 text-sm">
           {opportunities.length} active {opportunities.length === 1 ? "opportunity" : "opportunities"}
         </p>
       </div>

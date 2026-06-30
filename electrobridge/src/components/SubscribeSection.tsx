@@ -46,7 +46,7 @@ export default function SubscribeSection() {
 
   return (
     <>
-      <form onSubmit={quickSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+      <form onSubmit={quickSubscribe} className="bg-[#1A2438] border border-[#1F2937] rounded-xl p-6 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
         <div className="flex-1 relative">
           <input
             type="email"
@@ -54,13 +54,13 @@ export default function SubscribeSection() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="you@email.com"
-            className="w-full bg-gray-800/80 border border-gray-700 text-text-primary text-sm rounded-lg px-4 py-3 focus:ring-2 focus:ring-cyan/50 focus:border-cyan outline-none transition-all placeholder:text-gray-500"
+            className="w-full bg-[#111827] border border-[#1F2937] text-white text-sm rounded-xl px-4 py-2.5 focus:border-[#00E5FF]/40 outline-none placeholder:text-[#94A3B8]"
           />
         </div>
         <button
           type="submit"
           disabled={status === "loading"}
-          className="bg-gradient-to-r from-cyan to-cyan/80 text-navy font-semibold rounded-lg px-6 py-3 text-sm hover:from-cyan/90 hover:to-cyan/70 transition-all whitespace-nowrap disabled:opacity-50 flex items-center justify-center gap-2"
+          className="bg-[#00E5FF] text-[#0B1120] font-semibold rounded-xl px-4 py-2.5 text-sm hover:bg-[#00E5FF]/90 transition-colors disabled:opacity-40 flex items-center justify-center gap-2"
         >
           {status === "loading" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Bell className="w-4 h-4" />}
           {status === "loading" ? "..." : "Subscribe"}
@@ -68,7 +68,7 @@ export default function SubscribeSection() {
       </form>
       <button
         onClick={() => setIsModalOpen(true)}
-        className="text-text-muted text-xs mt-3 hover:text-cyan transition-colors underline underline-offset-2 decoration-gray-700 hover:decoration-cyan"
+        className="text-[#94A3B8] text-xs mt-3 hover:text-[#00E5FF] transition-colors underline underline-offset-2 decoration-gray-700 hover:decoration-cyan"
       >
         Set preferences (keywords &amp; categories)
       </button>
