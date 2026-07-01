@@ -5,25 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "worker": "tsx src/workers/index.ts",
-    "scrape": "tsx src/scripts/run-scrapers.ts",
-    "scrape:news": "tsx src/scripts/run-scrapers.ts news",
-    "scrape:opps": "tsx src/scripts/run-scrapers.ts opportunities",
-    "expire": "tsx src/scripts/expire-opportunities.ts",
-    "newsletter": "tsx src/scripts/send-newsletter.ts"
+    "start": "tsx src/index.ts"
   },
   "dependencies": {
     "express": "^5.1.0",
     "cors": "^2.8.5",
     "helmet": "^8.1.0",
     "@supabase/supabase-js": "^2.108.2",
-    "pg": "^8.22.0",
-    "cheerio": "^1.2.0",
-    "rss-parser": "^3.13.0",
-    "resend": "^6.16.0",
-    "date-fns": "^3.6.0",
     "dotenv": "^16.5.0"
   },
   "devDependencies": {
@@ -31,7 +19,6 @@
     "typescript": "^5",
     "@types/node": "^22",
     "@types/express": "^5.0.2",
-    "@types/cors": "^2.8.17",
-    "@types/pg": "^8.11.0"
+    "@types/cors": "^2.8.17"
   }
 }

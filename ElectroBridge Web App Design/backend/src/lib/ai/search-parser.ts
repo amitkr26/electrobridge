@@ -1,4 +1,4 @@
-import { callAI } from "./providers.js";
+import { callGroq } from "./groq.js";
 
 export interface AIFilters {
   category: string | null;
@@ -21,8 +21,8 @@ Return ONLY JSON:
   "organization_hint": "org name or null",
   "eligibility": "NET|GATE|MSc|BTech|null"
 }`;
-    const response = await callAI(prompt, undefined, { preferredProvider: "groq", feature: "search-parser" });
-    return JSON.parse(response.text.replace(/```json|```/g, "").trim());
+    const text = await callGroq(prompt);
+    return JSON.parse(text.replace(/```json|```/g, "").trim());
   } catch {
     return { category: null, location: null, tags: [], organization_hint: null, eligibility: null };
   }

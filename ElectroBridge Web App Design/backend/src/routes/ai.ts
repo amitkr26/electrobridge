@@ -1,11 +1,10 @@
 import { Router } from 'express';
 import { supabase, isConfigured } from '../lib/supabase.js';
 import { requireDatabase } from '../middleware/auth.js';
-import { callAI } from '../lib/ai/providers.js';
+import { callGroq } from '../lib/ai/groq.js';
 import { parseSearchQuery } from '../lib/ai/search-parser.js';
 import { matchOpportunities } from '../lib/ai/matcher.js';
 import { summarizeText } from '../lib/ai/summarizer.js';
-import { expireOpportunities } from '../lib/ai/expiry-checker.js';
 
 export const aiRouter = Router();
 
@@ -17,13 +16,8 @@ aiRouter.post('/chat', async (req, res) => {
     if (!message) return res.status(400).json({ error: 'Message is required' });
 
     try {
-      const { text, provider } = await callAI(message, CHAT_SYSTEM_PROMPT, { feature: 'chat' });
-      if (supabase) {
-        await supabase.from('ai_usage_log').insert([{
-          feature: 'chat', provider, success: true, user_id: (req as any).user?.id || null,
-        }]).maybeSingle();
-      }
-      res.json({ data: { message: text, provider } });
+      const text = await callGroq(message, CHAT_SYSTEM_PROMPT);
+      res.json({ data: { message: text, provider: 'groq' } });
     } catch {
       res.status(503).json({ error: 'AI service unavailable. No providers responded.' });
     }
@@ -95,15 +89,5 @@ aiRouter.post('/summarize', async (req, res) => {
   } catch (error) {
     console.error('Summarize error:', error);
     res.status(500).json({ error: 'Summarization failed' });
-  }
-});
-
-aiRouter.get('/expire', requireDatabase, async (_req, res) => {
-  try {
-    const result = await expireOpportunities();
-    res.json({ data: result });
-  } catch (error) {
-    console.error('Expire error:', error);
-    res.status(500).json({ error: 'Failed to expire opportunities' });
   }
 });
