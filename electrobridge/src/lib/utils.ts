@@ -6,11 +6,12 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function getURL() {
-  let url =
-    process?.env?.NEXT_PUBLIC_SITE_URL ??
-    process?.env?.NEXT_PUBLIC_APP_URL ??
-    process?.env?.NEXT_PUBLIC_VERCEL_URL ??
-    "http://localhost:3000";
+  const siteUrl = process?.env?.NEXT_PUBLIC_SITE_URL?.trim();
+  const appUrl = process?.env?.NEXT_PUBLIC_APP_URL?.trim();
+  const vercelUrl = process?.env?.NEXT_PUBLIC_VERCEL_URL?.trim();
+  const defaultUrl = "http://localhost:3000";
+
+  let url = siteUrl || appUrl || vercelUrl || defaultUrl;
   url = url.startsWith("http") ? url : `https://${url}`;
   url = url.endsWith("/") ? url : `${url}/`;
   return url;

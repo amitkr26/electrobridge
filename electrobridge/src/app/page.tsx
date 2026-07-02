@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { ArrowRight, TrendingUp, Newspaper, Zap, Bell, CheckCircle2, Search, Cpu, CircuitBoard, HardDrive, Wifi, GraduationCap, Activity, Sparkles, Award } from "lucide-react";
+import { ArrowRight, TrendingUp, Newspaper, Zap, Bell, CheckCircle2, Cpu, CircuitBoard, HardDrive, Wifi, GraduationCap, Activity, Sparkles, Award } from "lucide-react";
 import { supabaseAdmin } from "@/lib/supabase";
 import type { Opportunity, NewsArticle } from "@/types";
 import OpportunityCard from "@/components/OpportunityCard";
 import NewsCard from "@/components/NewsCard";
 import SubscribeSection from "@/components/SubscribeSection";
-import ExpiringSoon from "@/components/ExpiringSoon";
+import HeroSearch from "@/components/HeroSearch";
 
 async function getStats() {
   if (!supabaseAdmin?.from) {
@@ -167,13 +167,7 @@ export default async function Home() {
                 Ask AI
               </Link>
             </div>
-            <div className="mt-8 max-w-xl mx-auto">
-              <div className="flex items-center gap-2 bg-surface border border-border rounded-full px-4 py-2.5">
-                <Search className="w-4 h-4 text-text-muted" />
-                <input placeholder="Search JRF, PhD, internships..." className="flex-1 bg-transparent text-text-primary text-sm outline-none placeholder:text-text-muted/50" />
-                <button className="bg-accent text-bg-primary rounded-full px-4 py-1.5 text-xs font-semibold hover:bg-accent-hover">Search</button>
-              </div>
-            </div>
+            <HeroSearch />
             {trendingTags.length > 0 && (
               <div className="mt-4 flex items-center justify-center gap-2 text-xs text-text-muted">
                 <span>Popular:</span>

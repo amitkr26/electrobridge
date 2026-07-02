@@ -25,11 +25,20 @@ const QUICK_ACTIONS = [
   { label: "Career Roadmap", icon: Route, color: "text-accent" },
 ];
 
-const RECENT_CHATS = [
-  "JRF opportunities in VLSI",
-  "CSIR vs DRDO fellowship",
-  "PhD in semiconductor physics",
-];
+function loadRecentChats(): string[] {
+  if (typeof window === "undefined") return [];
+  try {
+    return JSON.parse(localStorage.getItem("recentChats") || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveRecentChats(chats: string[]) {
+  try {
+    localStorage.setItem("recentChats", JSON.stringify(chats.slice(0, 20)));
+  } catch {}
+}
 
 export default function ChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -44,6 +53,7 @@ export default function ChatPage() {
   const [showSuggestions, setShowSuggestions] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [recentChats, setRecentChats] = useState<string[]>(loadRecentChats);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -53,6 +63,11 @@ export default function ChatPage() {
     if (!text.trim() || loading) return;
 
     setShowSuggestions(false);
+    setRecentChats((prev) => {
+      const next = [text, ...prev.filter((c) => c !== text)].slice(0, 20);
+      saveRecentChats(next);
+      return next;
+    });
     const newMessages = [
       ...messages,
       { role: "user" as const, content: text },
@@ -98,26 +113,37 @@ export default function ChatPage() {
         {/* Sidebar */}
         <aside className={`${sidebarOpen ? "block" : "hidden"} lg:block w-[280px] flex-shrink-0`}>
           <div className="bg-surface border border-border rounded-xl p-4 space-y-6 sticky top-24">
-            <button className="w-full flex items-center gap-2 px-3 py-2.5 border border-border rounded-lg text-accent text-sm font-medium hover:border-accent/50 transition-colors">
+            <button
+              onClick={() => {
+                setMessages([{
+                  role: "assistant",
+                  content: "Hi! I'm ElectroBridge Assistant. I can help you find opportunities, understand eligibility criteria, and guide you through research careers in electronics and semiconductor fields. What would you like to know?",
+                }]);
+                setShowSuggestions(true);
+              }}
+              className="w-full flex items-center gap-2 px-3 py-2.5 border border-border rounded-lg text-accent text-sm font-medium hover:border-accent/50 transition-colors"
+            >
               <Plus className="w-4 h-4" />
               + New Chat
             </button>
 
-            <div>
-              <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Recent</p>
-              <div className="space-y-1">
-                {RECENT_CHATS.map((chat) => (
-                  <button
-                    key={chat}
-                    onClick={() => sendMessage(chat)}
-                    className="w-full text-left px-3 py-2 rounded-lg text-sm text-text-secondary hover:text-text-primary hover:bg-surface-elevated/50 transition-colors truncate"
-                  >
-                    <MessageSquare className="w-3.5 h-3.5 inline mr-2 text-text-muted" />
-                    {chat}
-                  </button>
-                ))}
+            {recentChats.length > 0 && (
+              <div>
+                <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Recent</p>
+                <div className="space-y-1">
+                  {recentChats.map((chat) => (
+                    <button
+                      key={chat}
+                      onClick={() => sendMessage(chat)}
+                      className="w-full text-left px-3 py-2 rounded-lg text-sm text-text-secondary hover:text-text-primary hover:bg-surface-elevated/50 transition-colors truncate"
+                    >
+                      <MessageSquare className="w-3.5 h-3.5 inline mr-2 text-text-muted" />
+                      {chat}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             <div>
               <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">Quick Actions</p>
