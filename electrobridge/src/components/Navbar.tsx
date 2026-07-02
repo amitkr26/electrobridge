@@ -31,7 +31,6 @@ const RESOURCE_LINKS = [
 ];
 
 const NAV_ITEMS = [
-  { href: "/", label: "Home", icon: Zap },
   { href: "/opportunities", label: "Opportunities", icon: Briefcase, dropdown: OPPORTUNITY_LINKS },
   { href: "/news", label: "News", icon: Newspaper },
   { href: "/community", label: "Community", icon: MessageSquare },
