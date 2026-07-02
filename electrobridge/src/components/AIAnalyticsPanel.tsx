@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
 import { Loader2, Zap, CheckCircle, XCircle, BarChart3 } from "lucide-react";
 
 interface LogRow {
@@ -36,25 +35,13 @@ export default function AIAnalyticsPanel() {
   const fetchStats = async () => {
     setLoading(true);
     try {
-      const { data: allLogs } = await supabase
-        .from("ai_usage_log")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .limit(100);
+      const res = await fetch("/api/analytics/ai-usage", {
+        headers: { "x-admin-password": "" },
+      });
+      if (!res.ok) throw new Error("Failed to fetch");
+      const data = await res.json();
 
-      if (!allLogs) {
-        setStats({
-          total: 0,
-          success: 0,
-          failed: 0,
-          byProvider: {},
-          byFeature: {},
-          today: 0,
-          thisWeek: 0,
-        });
-        setLogs([]);
-        return;
-      }
+      const allLogs: LogRow[] = data.recent || [];
 
       const byProvider: Record<string, number> = {};
       const byFeature: Record<string, number> = {};
@@ -63,13 +50,15 @@ export default function AIAnalyticsPanel() {
       const today = new Date().toDateString();
       const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
-      for (const log of allLogs) {
-        byProvider[log.provider] = (byProvider[log.provider] || 0) + 1;
-        byFeature[log.feature] = (byFeature[log.feature] || 0) + 1;
-        if (log.success) success++;
-        else failed++;
+      const aggregated = data.aggregated || [];
+      for (const row of aggregated) {
+        byProvider[row.provider] = (byProvider[row.provider] || 0) + Number(row.total_calls);
+        byFeature[row.feature] = (byFeature[row.feature] || 0) + Number(row.total_calls);
+        success += Number(row.successful);
+        failed += Number(row.failed);
       }
 
+      const total = success + failed;
       const todayCount = allLogs.filter(
         (l: LogRow) => new Date(l.created_at).toDateString() === today
       ).length;
@@ -78,7 +67,7 @@ export default function AIAnalyticsPanel() {
       ).length;
 
       setStats({
-        total: allLogs.length,
+        total,
         success,
         failed,
         byProvider,

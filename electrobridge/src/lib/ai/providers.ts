@@ -1,4 +1,4 @@
-import { supabaseAdmin } from "@/lib/supabase";
+import { neonPrimary } from "@/lib/db";
 
 export type AIProvider = "bedrock" | "groq" | "nvidia" | "gemini" | "openrouter" | "cloudflare" | "huggingface";
 
@@ -19,17 +19,13 @@ export interface AILogEntry {
 }
 
 async function logAIUsage(entry: AILogEntry) {
-  if (!supabaseAdmin?.from) return;
   try {
-    await supabaseAdmin.from("ai_usage_log").insert({
-      feature: entry.feature,
-      provider: entry.provider,
-      model: entry.model,
-      prompt_length: entry.prompt_length,
-      response_length: entry.response_length,
-      success: entry.success,
-      error_message: entry.error_message,
-    });
+    await neonPrimary`
+      INSERT INTO ai_usage_log (feature, provider, model, prompt_length, response_length, success, error_message)
+      VALUES (${entry.feature}, ${entry.provider}, ${entry.model},
+              ${entry.prompt_length}, ${entry.response_length},
+              ${entry.success}, ${entry.error_message})
+    `;
   } catch {
     // silently fail — logging should never block the AI call
   }
