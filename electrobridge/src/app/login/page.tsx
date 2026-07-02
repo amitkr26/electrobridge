@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Zap, Loader2, Eye, EyeOff } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { getURL } from "@/lib/utils";
 import { toast } from "sonner";
 
 export default function LoginPage() {
@@ -39,7 +40,7 @@ export default function LoginPage() {
       const supabase = createClient();
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
-        options: { redirectTo: `${window.location.origin}/auth/callback` },
+        options: { redirectTo: `${getURL()}auth/callback` },
       });
       if (error) toast.error(error.message);
     } catch {

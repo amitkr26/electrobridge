@@ -7,9 +7,12 @@
 - Confirm **Email** provider is enabled (enabled by default)
 - Disable "Confirm email" if you want auto-confirm for testing (optional)
 
-### 2. Google OAuth Provider
-1. Go to **Supabase Dashboard → Authentication → Providers → Google**
-2. Click **Configure** (or edit the existing config)
+### 2. Google OAuth Provider (⚠️ Required for Google Login to work)
+
+**If Google login fails with "Unsupported provider: provider is not enabled", you must enable it manually.**
+
+1. Go to **Supabase Dashboard → Authentication → Providers**
+2. Find **Google** in the provider list and **enable the toggle**
 3. You'll need a Google OAuth Client ID and Secret:
 
 #### Creating Google OAuth Credentials
@@ -19,12 +22,20 @@
 4. Click **Create Credentials → OAuth Client ID**
 5. Application type: **Web application**
 6. Name: "ElectroBridge"
-7. Authorized JavaScript origins: `https://electrobridge.vercel.app` (or `http://localhost:3000` for local dev)
-8. Authorized redirect URIs:
+7. Authorized JavaScript origins:
+   - `https://electrobridge.vercel.app`
+   - `http://localhost:3000` (for local dev)
+8. Authorized redirect URIs (add BOTH):
    - `https://electrobridge.vercel.app/auth/callback`
-   - `https://aqauempuwmbizqoaolop.supabase.co/auth/v1/callback` (your Supabase project callback)
-9. Copy the **Client ID** and **Client Secret** into Supabase's Google provider config
-10. Save
+   - `https://aqauempuwmbizqoaolop.supabase.co/auth/v1/callback`
+9. Copy the **Client ID** and **Client Secret**
+10. Paste them into the Supabase Google provider config form
+11. Click **Save**
+
+#### Verify it's working
+- Visit `/login` or `/signup` on the live site
+- Click "Sign in with Google"
+- You should be redirected to Google's consent screen
 
 ### 3. URL Configuration
 In **Supabase Dashboard → Authentication → URL Configuration**:

@@ -1,17 +1,78 @@
-import { clsx, type ClassValue } from "clsx";
+import { clsx } from "clsx";
+import type { ClassValue } from "clsx";
 
 export function cn(...inputs: ClassValue[]) {
   return clsx(inputs);
 }
 
-export function formatDate(dateString: string): string {
-  const date = new Date(dateString);
-  return date.toLocaleDateString("en-IN", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+export function getURL() {
+  let url =
+    process?.env?.NEXT_PUBLIC_SITE_URL ??
+    process?.env?.NEXT_PUBLIC_VERCEL_URL ??
+    "http://localhost:3000";
+  url = url.startsWith("http") ? url : `https://${url}`;
+  url = url.endsWith("/") ? url : `${url}/`;
+  return url;
 }
+
+export const CATEGORIES = [
+  "All",
+  "jrf",
+  "srf",
+  "phd",
+  "govt-job",
+  "fellowship",
+  "private",
+  "internship",
+  "postdoc",
+  "international",
+];
+
+export const CATEGORY_COLORS: Record<string, string> = {
+  jrf: "bg-purple-500/20 text-purple-400 border-purple-500/30",
+  srf: "bg-blue-500/20 text-blue-400 border-blue-500/30",
+  phd: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
+  "govt-job": "bg-amber-500/20 text-amber-400 border-amber-500/30",
+  fellowship: "bg-pink-500/20 text-pink-400 border-pink-500/30",
+  private: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
+  internship: "bg-violet-500/20 text-violet-400 border-violet-500/30",
+  postdoc: "bg-rose-500/20 text-rose-400 border-rose-500/30",
+  international: "bg-indigo-500/20 text-indigo-400 border-indigo-500/30",
+};
+
+export const ELIGIBILITY_OPTIONS = [
+  "All",
+  "B.Tech",
+  "M.Tech",
+  "PhD",
+  "M.Sc",
+  "B.Sc",
+  "Diploma",
+  "Any Graduate",
+];
+
+export const LOCATIONS = [
+  "All India",
+  "Bangalore",
+  "Hyderabad",
+  "Pune",
+  "Mumbai",
+  "Delhi / NCR",
+  "Chennai",
+  "Kolkata",
+  "Ahmedabad",
+  "Multiple Locations",
+  "Remote / WFH",
+  "Abroad",
+];
+
+export const DEADLINE_FILTERS = [
+  "Any Deadline",
+  "Within 7 days",
+  "Within 14 days",
+  "Within 30 days",
+  "Expired",
+];
 
 export function getDaysUntilDeadline(deadline: string): number {
   const now = new Date();
@@ -24,70 +85,32 @@ export function isExpired(deadline: string): boolean {
   return getDaysUntilDeadline(deadline) < 0;
 }
 
-export function getDaysAgo(dateString: string): string {
+export function getDaysAgo(date: string): string {
   const now = new Date();
-  const date = new Date(dateString);
-  const diff = now.getTime() - date.getTime();
+  const posted = new Date(date);
+  const diff = now.getTime() - posted.getTime();
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-  if (days < 0) return "Just now";
-  if (days === 0) return "Posted today";
-  if (days === 1) return "Posted yesterday";
-  if (days <= 7) return `Posted ${days} days ago`;
-  if (days <= 14) return `Posted ${Math.floor(days / 7)} week ago`;
-  if (days <= 30) return `Posted ${Math.floor(days / 7)} weeks ago`;
-  if (days <= 365) return `Posted ${Math.floor(days / 30)} months ago`;
-  return `Posted ${Math.floor(days / 365)} years ago`;
+  if (days === 0) return "Today";
+  if (days === 1) return "Yesterday";
+  if (days < 7) return `${days} days ago`;
+  if (days < 30) return `${Math.floor(days / 7)} weeks ago`;
+  if (days < 365) return `${Math.floor(days / 30)} months ago`;
+  return `${Math.floor(days / 365)} years ago`;
 }
 
-export function isNew(dateString: string): boolean {
+export function isNew(date: string, thresholdDays = 7): boolean {
   const now = new Date();
-  const date = new Date(dateString);
-  const diff = now.getTime() - date.getTime();
+  const posted = new Date(date);
+  const diff = now.getTime() - posted.getTime();
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  return days <= 3;
+  return days < thresholdDays;
 }
 
-export const CATEGORY_COLORS: Record<string, string> = {
-  JRF: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
-  SRF: "bg-cyan-500/20 text-cyan-400 border-cyan-500/30",
-  PhD: "bg-purple-500/20 text-purple-400 border-purple-500/30",
-  "Govt Job": "bg-green-500/20 text-green-400 border-green-500/30",
-  "Private Job": "bg-orange-500/20 text-orange-400 border-orange-500/30",
-  Fellowship: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-};
-
-export const CATEGORIES = [
-  "All",
-  "JRF",
-  "SRF",
-  "PhD",
-  "Govt Job",
-  "Private Job",
-  "Fellowship",
-] as const;
-
-export const ELIGIBILITY_OPTIONS = [
-  "All",
-  "NET",
-  "GATE",
-  "MSc",
-  "BE/BTech",
-  "PhD",
-] as const;
-
-export const LOCATIONS = [
-  "All",
-  "Delhi",
-  "Bangalore",
-  "Mumbai",
-  "International",
-  "Remote",
-] as const;
-
-export const DEADLINE_FILTERS = [
-  "All",
-  "This Week",
-  "This Month",
-  "Later",
-] as const;
+export function formatDate(dateStr: string): string {
+  const date = new Date(dateStr);
+  return date.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+}
