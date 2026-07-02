@@ -2,20 +2,18 @@
 
 ## Environment & Secrets
 
-- [ ] No secrets committed to version control
-- [ ] `.env.local` in `.gitignore`
-- [ ] Environment variables set via platform dashboard (Netlify, Render)
-- [ ] API keys restricted to specific origins where possible
-- [ ] Service role keys never exposed to client
-- [ ] Cron secret protects automated endpoints
+- [x] No secrets committed to version control
+- [x] `.env*` in `.gitignore` (except `.env.example`)
+- [x] Environment variables set via platform dashboard (Netlify, Render)
+- [x] API keys restricted to specific origins where possible
+- [x] Service role keys never exposed to client
+- [x] Hardcoded admin password fallback removed (auth.ts)
+- [x] Admin password renamed to server-only `ADMIN_PASSWORD`
 
 ## Authentication (Supabase Auth)
 
-- [ ] Email/password auth enabled
-- [ ] Password reset flow secure
-- [ ] Session management (JWT expiration, refresh)
-- [ ] Rate limiting on auth endpoints
-- [ ] No sensitive data in auth tokens
+- [ ] Email/password auth enabled (not configured yet)
+- [x] Admin panel password-protected via `x-admin-token` header
 
 ## Row-Level Security (Supabase)
 
@@ -49,11 +47,11 @@
 
 ## Backend Security
 
-- [ ] Input validation on all endpoints
-- [ ] Rate limiting on scrapers (respect robots.txt)
-- [ ] Timeout handling for external API calls
-- [ ] Error messages don't leak internals
-- [ ] Logging without sensitive data
+- [x] Input validation on all endpoints
+- [x] Timeout handling on AI API calls (30s AbortSignal)
+- [x] Error messages don't leak internals
+- [x] CORS configured
+- [x] Rate limiting on subscribe (3/hr/IP)
 - [ ] Dependency vulnerability scanning
 
 ## Deployment Security
@@ -87,14 +85,6 @@
 - [ ] Incident response plan
 - [ ] Monitoring for suspicious activity
 - [ ] Access review for admin panel
-
-## AI Provider Security
-
-- [ ] API keys stored securely as environment variables
-- [ ] Rate limiting on AI endpoints
-- [ ] Content filtering for AI inputs/outputs
-- [ ] No PII sent to AI providers
-- [ ] Usage logging for audit
 
 ## Audit Items (Pre-Launch)
 

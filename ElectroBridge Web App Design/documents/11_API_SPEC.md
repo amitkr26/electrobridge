@@ -2,21 +2,16 @@
 
 ## Base URLs
 
-| Environment | Frontend API (Next.js) | Backend API (Render) |
-|-------------|----------------------|----------------------|
-| Development | http://localhost:3000/api | http://localhost:4000 |
-| Production | https://electrobridge.com/api | https://api.electrobridge.com |
+| Environment | Backend API (Render) |
+|-------------|----------------------|
+| Development | http://localhost:4000 |
+| Production | https://electrobridge-api.onrender.com |
 
 ## Authentication
 
-### Supabase Auth (Frontend)
-- Routes under `/api/` in Next.js use Supabase Auth middleware
-- Public routes: opportunities (GET), news (GET), subscribe (POST)
-- Protected routes: user data, saved opportunities, applications, alerts
-
-### Backend API Key (Render)
-- Backend endpoints protected with `CRON_SECRET` header
-- Header: `x-cron-secret: <CRON_SECRET>`
+### Backend Admin Auth
+- Admin endpoints protected with `ADMIN_PASSWORD` env var
+- Header: `x-admin-token: <ADMIN_PASSWORD>`
 
 ## Endpoints
 

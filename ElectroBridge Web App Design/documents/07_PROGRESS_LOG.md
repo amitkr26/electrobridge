@@ -84,4 +84,20 @@
 - Schema changes from legacy: added `currency`, `min_stipend`, `max_stipend`, `is_featured`, `source_site` columns; removed `telegram` tables
 
 ### Next Phase
-Phase 4-5: Port scrapers and AI modules from legacy codebase
+Phase 4-5 (was): Port scrapers and AI modules from legacy codebase — **cancelled for MVP**
+
+## 2026-06-30 — MVP Simplification (Complete)
+
+### Changes
+1. **Removed dead code (20 files)**: scrapers (9), scripts (3), workers (1), newsletter route, scrape route, expiry-checker, newsletter AI, multi-provider AI, render.yaml.bak, setup-db.mjs
+2. **Single AI provider**: Replaced `providers.ts` (115 lines, 3 providers) with `groq.ts` (25 lines)
+3. **Security fix**: Removed hardcoded `'electrobridge2026'` admin password fallback
+4. **Dynamic routes**: `generateStaticParams` now fetches from API with 5s timeout
+5. **Dependency cleanup**: Removed 9 unused packages across backend and frontend
+6. **Documentation**: Updated all docs to reflect MVP state
+7. **.gitignore fix**: `.env.example` files now tracked
+
+### Net Result
+- **-991 lines** of code (541 insertions, 1532 deletions)
+- Backend: 12 source files, Frontend: 17 page routes
+- Build: both backend and frontend build successfully

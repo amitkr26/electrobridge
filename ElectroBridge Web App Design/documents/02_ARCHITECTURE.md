@@ -1,159 +1,122 @@
-# Architecture
+# Architecture (MVP)
 
 ## System Overview
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│                     Netlify (Frontend)                    │
+│               Netlify (Frontend — Static Export)          │
 │  ┌────────────────────────────────────────────────────┐  │
-│  │              Next.js App Router                    │  │
-│  │  Pages │ API Routes │ Middleware │ Edge Functions  │  │
-│  │  ┌─────┴─────┐ ┌────┴────┐ ┌────┴────┐            │  │
-│  │  │ shadcn/ui │ │Tailwind │ │ TypeScript│           │  │
-│  │  └───────────┘ └─────────┘ └──────────┘            │  │
+│  │              Next.js 15 App Router                 │  │
+│  │  Pages (client-side, fetch from API)               │  │
+│  │  Tailwind CSS v4 │ TypeScript                      │  │
 │  └────────────────────────────────────────────────────┘  │
 └────────────────────────┬─────────────────────────────────┘
                          │
-            HTTPS / JSON / Server-Sent Events
+                    HTTPS / JSON
                          │
 ┌────────────────────────┴─────────────────────────────────┐
-│                    Render (Backend)                       │
+│                  Render (Backend — Express 5)             │
 │  ┌────────────────────────────────────────────────────┐  │
-│  │  Express/Fastify API Server                        │  │
-│  │  ┌──────────┐ ┌───────────┐ ┌──────────────────┐  │  │
-│  │  │ AI       │ │ Scrapers  │ │ Email/Newsletter  │  │  │
-│  │  │ Pipeline │ │ (Cron)    │ │ (Cron)            │  │  │
-│  │  └──────────┘ └───────────┘ └──────────────────┘  │  │
-│  │  ┌──────────┐ ┌───────────┐                      │  │
-│  │  │ Workers  │ │ Webhooks  │                      │  │
-│  │  └──────────┘ └───────────┘                      │  │
-│  └────────────────────────────────────────────────────┘  │
-└────────────────────┬──────────────────┬──────────────────┘
-                     │                  │
-            ┌────────┴──────┐    ┌──────┴──────┐
-            │   Supabase    │    │    Neon      │
-            │  Auth + RLS   │    │ Analytics +  │
-            │  User Data    │    │ Scrape Data  │
-            │  Profiles     │    │ News Archive │
-            └───────────────┘    └──────────────┘
+│  │  Routes: opportunities, news, orgs, subscribe,    │  │
+│  │          admin, ai (chat/match/search/summarize)   │  │
+│  │  AI: Groq (single provider, llama-3.3-70b)        │  │
+│  └────────────────────┬───────────────────────────────┘  │
+│                       │                                    │
+│              ┌────────┴──────┐                            │
+│              │   Supabase    │                            │
+│              │  (primary DB) │                            │
+│              │  12 tables    │                            │
+│              └───────────────┘                            │
+└──────────────────────────────────────────────────────────┘
 ```
 
-## Frontend Architecture (Next.js App Router)
+## Frontend Routes (Active)
 
-### Routes
 ```
-/                       → Homepage (Landing)
-/opportunities          → Opportunity listing
-/opportunities/[slug]   → Opportunity detail
-/news                   → News listing
-/news/[slug]            → News detail
-/categories             → Categories
-/category/[category]    → Per-category opportunities
-/organizations          → Organizations directory
-/organizations/[slug]   → Per-organization opportunities
+/                       → Landing page
+/opportunities          → Opportunity listing (API-fetched, paginated)
+/opportunities/[slug]   → Opportunity detail (API-fetched)
+/news                   → News listing (API-fetched, pill tabs)
+/news/[slug]            → News detail (API-fetched)
+/organizations/[slug]   → Organization detail (API-fetched)
 /chat                   → AI chat assistant
-/match                  → AI opportunity matching
+/login                  → Auth page
+/signup                 → Auth page
 /dashboard              → User dashboard
-/profile                → User profile
-/saved                  → Saved opportunities
-/applications           → Application tracker
-/alerts                 → User alerts
 /admin                  → Admin panel
-/resources              → Resource guides
 /about                  → About page
-/contact                → Contact form
-```
-
-### Component Architecture
-```
-Layout
-├── Navbar
-├── Page Content
-│   ├── Server Components (data fetching)
-│   └── Client Components (interactivity)
-└── Footer
+/contact                → Contact page
+/resume                 → Resume tool
+/community              → Community page
 ```
 
 ### Data Flow
-- Server Components fetch data directly from Supabase/Neon
-- Client Components use Server Actions or API routes for mutations
-- AI features use API routes that proxy to AI providers
-- Auth state managed via Supabase Auth + middleware
+- All pages are `'use client'` — fetch data from the Express API at runtime
+- Static export (`output: 'export'`) — routes are pre-built at deploy time
+- `generateStaticParams` for `[slug]` routes fetches from API during build (with 5s timeout + fallback)
 
-## Backend Architecture (Render)
+## Backend Routes
 
-### Services
-1. **API Server** — Express/Fastify handling non-Next.js API routes
-2. **Scraper Workers** — Cron-based scraping jobs
-3. **AI Workers** — Batch processing, embedding generation
-4. **Email Workers** — Newsletter dispatch, digest generation
+| Router | Endpoints |
+|--------|-----------|
+| `opportunities` | `GET /api/opportunities` (list), `GET /:id` (detail), `POST`, `PATCH`, `DELETE` |
+| `news` | `GET /api/news` (list), `GET /:slug` (detail) |
+| `organizations` | `GET /api/organizations` (list), `GET /:slug` (detail) |
+| `subscribe` | `POST /api/subscribe`, `POST /unsubscribe` |
+| `admin` | `GET /stats`, `POST /add-opportunity`, `POST /add-news` |
+| `ai` | `POST /chat`, `POST /match`, `GET /search`, `POST /summarize` |
 
-### Cron Jobs
-```
-Daily 6 AM   → scrape:all (ISRO, DRDO, CSIR, RSS)
-Daily 12 PM  → check:links (verify opportunity URLs)
-Daily 3 AM   → cleanup:news (deduplicate, filter)
-Weekly Sun   → send:digest (weekly email digest)
-Hourly       → ai:expire (auto-expire outdated listings)
-```
+All data endpoints default to `verification_status='verified'`.
 
 ## AI Architecture
 
-### Providers (Reduced)
-1. **Gemini** — Primary for chat and matching
-2. **Groq** — Primary for fast inference
-3. **OpenRouter** — Fallback
+### Single Provider: Groq
+- Model: `llama-3.3-70b-versatile`
+- Used for: chat assistant, search query parsing, text summarization
+- No fallback chain, no usage logging, no multi-provider abstraction
 
-### Removed Providers
-- AWS Bedrock
-- NVIDIA NIM
-- Cloudflare AI
-- HuggingFace
+### Removed
+- Gemini (was fallback)
+- OpenRouter (was fallback)
+- AWS Bedrock (never used)
+- HuggingFace (never used)
 
-### AI Features
-- Chat assistant (context-aware, opportunity-aware)
-- Opportunity matching (profile → opportunity scoring)
-- Natural language search query parsing
-- Opportunity summarization
-- Expiry detection
-- News relevance filtering
-- Newsletter content generation
+## Database (Supabase Only — 12 tables)
 
-## Database Strategy
+| Table | Purpose |
+|-------|---------|
+| `opportunities` | Verified R&D opportunities (5 seeded) |
+| `news_articles` | Electronics news (5 seeded) |
+| `subscribers` | Newsletter subscribers |
+| `user_profiles` | Linked to auth.users |
+| `saved_opportunities` | User bookmarks |
+| `applications` | Application tracking |
+| `user_alerts` | Keyword/category alerts |
+| `ai_usage_log` | Usage audit trail |
+| `link_check_logs` | Link verification |
+| `opportunity_reports` | User issue reports |
+| `suggestions` | User suggestions |
+| `telegram_subscribers` | Telegram bot |
+| `calendar_exports` | ICS log |
 
-### Supabase (Transactional)
-- Auth users
-- User profiles
-- Saved opportunities
-- Applications
-- User alerts
-- Subscribers
-- AI usage logs
-- Opportunity reports
-- Suggestions
-
-### Neon (Analytical + High-Volume)
-- Opportunities (ingestion target)
-- News articles
-- Link check logs
-- Analytics data
-- Click tracking
+Neon server still connected (health check) but analytics tables not actively used.
 
 ## Deployment
 
 ### Frontend → Netlify
-- Next.js app with ISR/SSR
-- Netlify Functions for server-side APIs
-- Environment variables via Netlify dashboard
-- CDN for static assets
+- Static export from `frontend/out/`
+- Deployed via zip upload or CI (currently needs token)
+- `_redirects` proxies `/api/*` to Render
 
 ### Backend → Render
-- Express/Fastify API server
-- Background workers
-- Cron jobs
-- Docker containerization
+- Node web service, `npm install` + `npx tsx src/index.ts`
+- No TypeScript compilation step
+- Free tier (Oregon), no cron infrastructure
 
-### Email → Resend
-- Transactional emails (welcome, alerts)
-- Weekly digest
-- Newsletter campaigns
+### Email → None (removed for MVP)
+- Subscription endpoint exists (stores to DB)
+- No email delivery pipeline (Resend removed)
+
+### Cron Jobs → None (removed for MVP)
+- No scrapers, no newsletter, no expiry checker
+- Data is added manually via admin panel or direct DB insert

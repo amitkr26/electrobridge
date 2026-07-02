@@ -1,85 +1,55 @@
-# Environment Variables
+# Environment Variables (MVP)
 
-## Frontend (Netlify — Next.js)
+## Frontend (Netlify / .env.local)
 
-| Variable | Required | Status |
-|----------|----------|--------|
-| `NEXT_PUBLIC_SUPABASE_URL` | ✓ | ✅ Set — `https://jbqjipwanfsxyqkfrrpx.supabase.co` |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✓ | ✅ Set (anon key) |
-| `NEXT_PUBLIC_SITE_URL` | | ✅ Set — `https://electrobridge.netlify.app` |
-| `NEXT_PUBLIC_ADMIN_PASSWORD` | | ✅ Set — `electrobridge2026` |
+| Variable | Required | Notes |
+|----------|----------|-------|
+| `NEXT_PUBLIC_API_URL` | ✓ | `http://localhost:4000/api` (dev) or `https://electrobridge-api.onrender.com/api` (prod) |
+| `NEXT_PUBLIC_SUPABASE_URL` | ✓ | `https://jbqjipwanfsxyqkfrrpx.supabase.co` |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✓ | Supabase anon JWT |
+| `NEXT_PUBLIC_SITE_URL` | | `http://localhost:3000` (dev) or `https://electrobridge.netlify.app` (prod) |
 
-## Backend (Render)
-
-Set via Render API (`PUT /v1/services/{id}/env-vars/{key}`) on service `electrobridge-api` (`srv-d91ojvi8qa3s73b00na0`).
+## Backend (Render / .env)
 
 | Variable | Required | Status |
 |----------|----------|--------|
-| `SUPABASE_URL` | ✓ | ✅ Set — `https://jbqjipwanfsxyqkfrrpx.supabase.co` |
+| `SUPABASE_URL` | ✓ | ✅ Set |
 | `SUPABASE_SERVICE_ROLE_KEY` | ✓ | ✅ Set (service role JWT) |
-| `NEON_DATABASE_URL` | ✓ | ✅ Set — `neondb_owner` @ `ep-shy-resonance-atwa1cr9-pooler` (Neon project: `raspy-mouse-45454356`) |
-| `RESEND_API_KEY` | ✓ | ✅ Set |
-| `FROM_EMAIL` | ✓ | ✅ Set — `hello@electrobridge.com` |
-| `CRON_SECRET` | ✓ | ✅ Set |
-| `GROQ_API_KEY` | ✓ | ❌ **Not set** — needs user to provide |
-| `GEMINI_API_KEY` | ✓ | ❌ **Not set** — needs user to provide |
-| `OPENROUTER_API_KEY` | | ❌ Not set (optional) |
-| `TELEGRAM_BOT_TOKEN` | | ❌ Not set (optional) |
-| `TELEGRAM_CHANNEL_ID` | | ❌ Not set (optional) |
-| `NODE_ENV` | | ✅ Set — `production` |
-| `LOG_LEVEL` | | ✅ Set — `info` |
+| `DATABASE_URL` | ✓ | ✅ Set (Neon connection string) |
+| `GROQ_API_KEY` | ✓ | ✅ Set |
+| `ADMIN_PASSWORD` | ✓ | ✅ Set |
+| `CORS_ORIGIN` | | ✅ Set — `https://electrobridge.netlify.app` |
+| `PORT` | | `4000` (default) |
 
-## Deployment Configuration Complete (2026-06-30)
+### Removed (not needed for MVP)
+- `GEMINI_API_KEY` — single provider (Groq only)
+- `OPENROUTER_API_KEY` — single provider
+- `RESEND_API_KEY` — no email pipeline
+- `CRON_SECRET` — no cron infrastructure
+- `TELEGRAM_BOT_TOKEN` / `TELEGRAM_CHANNEL_ID` — no telegram
+- `NEXT_PUBLIC_ADMIN_PASSWORD` — renamed to server-only `ADMIN_PASSWORD`
 
-All services are linked, migrations applied, and env vars set. Missing AI keys (`GROQ_API_KEY`, `GEMINI_API_KEY`) need to be provided by user.
-
-| Service | Status | Key Details |
-|---------|--------|-------------|
-| Supabase | ✅ Linked + Migrations pushed | Project: `ElectroBridge` (`jbqjipwanfsxyqkfrrpx`), Singapore region |
-| Neon | ✅ Database exists | Project: `electrobridge` (`raspy-mouse-45454356`), us-east-1 |
-| Netlify | ✅ Linked + Env vars set | Site: `electrobridge` (`8d7c536f`), URL: `https://electrobridge.netlify.app` |
-| Render | ✅ Service exists + Env vars set | Service: `electrobridge-api` (`srv-d91ojvi8qa3s73b00na0`), URL: `https://electrobridge-api.onrender.com` |
-| Resend | ✅ Key configured in Render | `FROM_EMAIL: hello@electrobridge.com` |
-
-## Local Development (.env.local)
+## Local Development
 
 ```
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+# Backend (.env)
+PORT=4000
+CORS_ORIGIN=http://localhost:3000
+SUPABASE_URL=https://jbqjipwanfsxyqkfrrpx.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-
-# Database
-NEON_DATABASE_URL=your_neon_connection_string
-
-# Email
-RESEND_API_KEY=re_your_key
-FROM_EMAIL=hello@electrobridge.com
-
-# AI
 GROQ_API_KEY=gsk_your_key
-GEMINI_API_KEY=your_gemini_key
-OPENROUTER_API_KEY=your_openrouter_key
+ADMIN_PASSWORD=your_admin_password
 
-# Cron
-CRON_SECRET=your_cron_secret
-
-# Admin
-NEXT_PUBLIC_ADMIN_PASSWORD=electrobridge2026
-
-# Telegram (optional)
-TELEGRAM_BOT_TOKEN=your_bot_token
-TELEGRAM_CHANNEL_ID=@your_channel
-
-# Site
+# Frontend (.env.local)
+NEXT_PUBLIC_API_URL=http://localhost:4000/api
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
+NEXT_PUBLIC_SUPABASE_URL=https://jbqjipwanfsxyqkfrrpx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
 ```
 
 ## Security Notes
-
-- NEVER commit `.env.local` or any `.env` file to version control
-- Rotate keys regularly
-- Use separate keys for development and production
-- Supabase anon key is public (safe for client-side usage)
-- Service role key must NEVER be exposed client-side
-- API keys should be restricted to specific origins where possible
+- NEVER commit `.env` or `.env.local` (gitignored by `.env*` pattern)
+- `.env.example` files are tracked — keep placeholders only
+- `SUPABASE_SERVICE_ROLE_KEY` has full DB access — never expose client-side
+- `GROQ_API_KEY` is server-side only
+- `ADMIN_PASSWORD` is server-side only (removed `NEXT_PUBLIC_` prefix for security)
