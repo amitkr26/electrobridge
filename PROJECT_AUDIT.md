@@ -30,7 +30,7 @@
 | Metric | Value |
 |--------|-------|
 | **Full repo path** | `/workspaces/JobsAI` |
-| **Git remote** | `origin https://github.com/amitk26/JobsAI.git` |
+| **Git remote** | `origin https://github.com/amitkr26/JobsAI.git` |
 | **Default branch** | `main` (only branch, tracks `origin/main`) |
 | **Total commits** | 97 |
 | **Last commit** | `a3a380b` — "docs: update project audit to 2026-07-02" |
@@ -39,7 +39,7 @@
 | **Legacy codebase** | `ElectroBridge Web App Design/` — 10,398 lines of TypeScript/TSX/CSS/JS |
 
 ### GitHub Configuration
-- **Repository:** `amitk26/JobsAI`
+- **Repository:** `amitkr26/JobsAI`
 - **CI/CD:** 3 GitHub Actions workflows (`.github/workflows/`):
   - `ci.yml` — Runs lint, test (31 suites), and build on PRs and pushes to `main`
   - `deploy.yml` — Auto-deploy to Vercel **(BLOCKED — secrets not set)**
