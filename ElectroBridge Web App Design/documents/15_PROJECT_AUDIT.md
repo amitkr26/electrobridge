@@ -27,7 +27,7 @@
 ### Repository
 - **Origin:** `https://github.com/amitkr26/JobsAI`
 - **Fork:** `https://github.com/pogotunes/JobsAI` (push 403 — PAT expired)
-- **Commits:** 75+ | **Branch:** `main`
+- **Commits:** 76+ | **Branch:** `main`
 - **Total files:** ~120 across active codebase
 
 ---
@@ -318,6 +318,8 @@ GET /health → 200
 
 ## 10. Session Changes (July 2, 2026)
 
+All changes committed in `96866b8` and pushed to `origin/main` (`amitkr26/JobsAI`).
+
 | Change | Details |
 |--------|---------|
 | Detail pages refactored | opportunities → `detail?id=`, news → `detail?slug=` (no more `[slug]` routes) |
@@ -330,12 +332,13 @@ GET /health → 200
 | `SkeletonCard` deleted | Unused component |
 | Community nav link removed | From Navbar and Footer (page kept as placeholder) |
 | Unused `Users` icon removed | From Navbar imports |
+| Deploy pending | Code pushed to origin but Netlify CD broken (token denied, fork PAT expired) |
 
 ## 11. Immediate Next Steps
 
 | Priority | Action |
 |----------|--------|
-| 🔴 1 | Generate new Netlify deploy token / fix auto-deploy from GitHub |
+| 🔴 1 | Deploy latest build to Netlify (manual zip upload or new deploy token) |
 | 🔴 2 | Add more seed/verified data (opportunities + news) |
 | 🟡 3 | Configure Supabase Auth (Email + Google OAuth) |
 | 🟡 4 | Set up cron-job.org for periodic backend pings (backup to GH Actions) |
