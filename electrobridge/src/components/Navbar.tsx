@@ -290,21 +290,11 @@ export default function Navbar() {
                     )}
                   </div>
                 ) : (
-                  <>
-                    <Link href="/login"
-                      className="px-3 py-1.5 text-sm font-medium text-text-secondary border border-border rounded-lg hover:text-text-primary hover:border-accent/30 transition-colors">
-                      Login
-                    </Link>
-                    <Link href="/signup"
-                      className="px-3 py-1.5 text-sm font-medium bg-accent text-bg-primary rounded-lg hover:bg-accent-hover transition-colors">
-                      Sign Up
-                    </Link>
-                  </>
+                  <Link href="/login"
+                    className="px-4 py-1.5 text-sm font-medium bg-accent text-bg-primary rounded-lg hover:bg-accent-hover transition-colors">
+                    Get Started
+                  </Link>
                 )}
-                <Link href="/admin"
-                  className="px-2.5 py-1.5 text-xs font-medium text-accent bg-accent/10 rounded-lg hover:bg-accent/20 transition-colors">
-                  Admin
-                </Link>
               </div>
 
               <div className="flex sm:hidden items-center gap-1.5">
@@ -313,10 +303,7 @@ export default function Navbar() {
                     <span className="text-accent text-xs font-bold">{initials(user.user_metadata?.full_name, user.email)}</span>
                   </div>
                 ) : (
-                  <>
-                    <Link href="/login" className="px-2 py-1 text-xs font-medium text-text-secondary rounded-lg hover:bg-surface-elevated/50 transition-colors">Login</Link>
-                    <Link href="/signup" className="px-2 py-1 text-xs font-medium bg-accent text-bg-primary rounded-lg transition-colors">Sign Up</Link>
-                  </>
+                  <Link href="/login" className="px-2.5 py-1 text-xs font-medium bg-accent text-bg-primary rounded-lg transition-colors">Get Started</Link>
                 )}
               </div>
 
@@ -466,20 +453,10 @@ export default function Navbar() {
                   </button>
                 </div>
               ) : (
-                <div className="space-y-2">
-                  <Link href="/login" onClick={() => setMenuOpen(false)}
-                    className="flex items-center justify-center border border-border text-text-secondary font-medium rounded-lg px-4 py-2.5 text-sm hover:text-text-primary hover:border-accent/30 transition-colors w-full">
-                    Login
-                  </Link>
-                  <Link href="/signup" onClick={() => setMenuOpen(false)}
-                    className="flex items-center justify-center bg-accent text-bg-primary font-medium rounded-lg px-4 py-2.5 text-sm hover:bg-accent-hover transition-colors w-full">
-                    Sign Up
-                  </Link>
-                  <Link href="/admin" onClick={() => setMenuOpen(false)}
-                    className="flex items-center justify-center text-accent font-medium rounded-lg px-4 py-2.5 text-sm hover:bg-accent/10 transition-colors w-full">
-                    <Zap className="w-3.5 h-3.5 mr-1.5" /> Admin Panel
-                  </Link>
-                </div>
+                <Link href="/login" onClick={() => setMenuOpen(false)}
+                  className="flex items-center justify-center bg-accent text-bg-primary font-medium rounded-lg px-4 py-2.5 text-sm hover:bg-accent-hover transition-colors w-full">
+                  Get Started
+                </Link>
               )}
             </div>
           </div>
