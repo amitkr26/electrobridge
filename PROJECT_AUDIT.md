@@ -112,8 +112,16 @@
 - `src/components/AIAnalyticsPanel.tsx` — Fetches from Neon API instead of direct Supabase
 - `vercel.json` — Added archive-news + sync-replica cron jobs
 - `.env.local.example` — Added SUPABASE_2_*, NEON_* vars
-- `package.json` — Added @neondatabase/serverless
+- `package.json` — Added @neondatabase/serverless, bumped next@14.2.21 for Node 24 compatibility
 - `PROJECT_AUDIT.md` — This file
+
+### Build Verification (Session 4)
+- **Next.js 14.2.0 → 14.2.21** — Required for Node.js v24 compatibility (v24.14.0 in Codespaces)
+- **64 routes** compiled successfully (36 pages + 28 API routes)
+- **60 static pages** generated
+- **0 TypeScript errors**, 0 build failures
+- **4 new API routes** added: `/api/analytics/ai-usage`, `/api/analytics/platform`, `/api/archive-news`, `/api/sync-replica`
+- 3 pre-existing warnings (Supabase edge runtime, dynamic route static gen) — non-blocking
 
 ---
 
@@ -121,7 +129,7 @@
 
 | Technology | Version | Purpose |
 |------------|---------|---------|
-| Next.js | 14.2.0 | React framework (App Router) |
+| Next.js | 14.2.21 | React framework (App Router) |
 | React | ^18 | UI library |
 | TypeScript | ^5 | Type safety |
 | Tailwind CSS | ^3.4.1 | Styling (dark theme) |
