@@ -3,7 +3,7 @@
 > **Note:** This repo contains two codebases — `electrobridge/` (Next.js 14, 7 AI providers, App Router) and `ElectroBridge Web App Design/` (Next.js 15 static export + Express backend). This audit covers the **`electrobridge/`** codebase, which is the actively developed version.
 > For the other codebase, see `ElectroBridge Web App Design/documents/15_PROJECT_AUDIT.md`
 
-**Updated:** July 2, 2026
+**Updated:** July 2, 2026 (Session 4)
 
 ---
 
@@ -70,6 +70,51 @@
 - `electrobridge/.env.local.example` — Added missing env vars (OPENROUTER, HUGGINGFACE, CLOUDFLARE, BEDROCK)
 - `PROJECT_AUDIT.md` — This file
 
+### Vercel Cron Jobs (Updated)
+- `/api/scrape?mode=all` — Daily 6am UTC
+- `/api/send-digest` — Weekly Sunday 3am UTC
+- `/api/archive-news` — **NEW** Weekly Sunday 2am UTC (moves old news to Supabase 2)
+- `/api/sync-replica` — **NEW** Daily 7am UTC (syncs to Neon read replica)
+
+---
+
+### Multi-Database Architecture (Session 4)
+
+**4 databases now power ElectroBridge:**
+
+| Database | Type | Purpose |
+|----------|------|---------|
+| Supabase Primary (db1) | Supabase | Core data — opportunities, news, auth, community |
+| Supabase Secondary (db2) | Supabase | News archive overflow, subscriber overflow |
+| Neon Primary (neon1) | PostgreSQL | Analytics — ai_usage_log, link_check_logs, platform_analytics |
+| Neon Secondary (neon2) | PostgreSQL | Read replica — opportunities_mirror, news_mirror |
+
+**Smart Router:** `src/lib/db/index.ts` — `getDB(purpose)` routes queries to the correct database based on operation type.
+
+**AI Logging Relocated:** `ai_usage_log` writes now go to Neon Primary (faster writes, no Supabase row limits) instead of Supabase.
+
+**Archival System:** News older than 30 days is automatically moved from Supabase Primary → Supabase Secondary via weekly cron (`/api/archive-news`).
+
+**Read Replica:** Active opportunities and recent news are synced daily to Neon Secondary (`/api/sync-replica`) for fast read-only queries.
+
+### Files Created (Session 4)
+- `src/lib/db/index.ts` — Multi-DB router
+- `src/app/api/archive-news/route.ts` — News archival endpoint
+- `src/app/api/sync-replica/route.ts` — Neon sync endpoint
+- `src/app/api/analytics/ai-usage/route.ts` — AI usage analytics from Neon
+- `src/app/api/analytics/platform/route.ts` — Platform analytics from Neon
+- `supabase/migrations/20260703000001_neon_schema.sql` — Neon schemas
+- `supabase/migrations/20260703000002_supabase2_schema.sql` — Supabase 2 schema
+- `docs/DEPLOYMENT_CHECKLIST.md` — Full deployment checklist
+
+### Files Modified (Session 4)
+- `src/lib/ai/providers.ts` — Switched ai_usage_log writes from Supabase to Neon
+- `src/components/AIAnalyticsPanel.tsx` — Fetches from Neon API instead of direct Supabase
+- `vercel.json` — Added archive-news + sync-replica cron jobs
+- `.env.local.example` — Added SUPABASE_2_*, NEON_* vars
+- `package.json` — Added @neondatabase/serverless
+- `PROJECT_AUDIT.md` — This file
+
 ---
 
 ## Tech Stack (`electrobridge/`)
@@ -82,11 +127,13 @@
 | Tailwind CSS | ^3.4.1 | Styling (dark theme) |
 | Supabase JS | ^2.108.2 | Database client |
 | @supabase/ssr | latest | SSR auth (middleware, client/server clients) |
-| PostgreSQL | (via Supabase) | Database |
+| PostgreSQL | (via Supabase) | Database (Primary) |
+| @neondatabase/serverless | latest | Database (Analytics + Read Replica) |
 | lucide-react | ^0.383.0 | Icons |
 | sonner | ^2.0.7 | Toast notifications |
 
 **Hosting:** Vercel — `https://electrobridge.vercel.app`
+**Databases:** Supabase (Primary + Secondary), Neon (Primary + Secondary)
 
 ---
 
@@ -111,6 +158,11 @@
 | `FROM_EMAIL` | Private | lib/email-digest | Sender email |
 | `TELEGRAM_BOT_TOKEN` | Private | lib/telegram-bot | Telegram bot |
 | `TELEGRAM_CHANNEL_ID` | Private | lib/telegram-bot | Telegram channel |
+| `SUPABASE_2_URL` | Private | lib/db | Supabase Secondary URL |
+| `SUPABASE_2_ANON_KEY` | Public | lib/db | Supabase Secondary anon key |
+| `SUPABASE_2_SERVICE_ROLE_KEY` | Private | lib/db | Supabase Secondary service role |
+| `NEON_1_DATABASE_URL` | Private | lib/db | Neon Primary connection string |
+| `NEON_2_DATABASE_URL` | Private | lib/db | Neon Secondary connection string |
 
 ---
 
@@ -174,6 +226,19 @@
 | `community_comments` | Post comments | **NEW** |
 | `community_votes` | Post upvotes | **NEW** |
 
+### New Tables (Session 4 — Multi-DB)
+
+| Table | Database | Purpose |
+|-------|----------|---------|
+| `ai_usage_log` | Neon Primary | AI provider usage (moved from Supabase) |
+| `link_check_logs` | Neon Primary | Link verification audit |
+| `opportunity_reports` | Neon Primary | User issue reports |
+| `platform_analytics` | Neon Primary | Page views, apply clicks, shares |
+| `opportunities_mirror` | Neon Secondary | Read-only opps copy for fast queries |
+| `news_mirror` | Neon Secondary | Read-only news copy for fast queries |
+| `news_archive` | Supabase Secondary | News older than 30 days |
+| `subscribers_overflow` | Supabase Secondary | Extra subscriber storage |
+
 ---
 
 ## Known Issues
@@ -186,3 +251,8 @@
 | Netlify deploy token denied (in other codebase) | ⚠️ Refer to alternate audit |
 | Community DB migrations need applying to Supabase | ⚠️ Run via Supabase dashboard |
 | Resume DB migration needs applying to Supabase | ⚠️ Run via Supabase dashboard |
+| Neon schemas need running on Neon Primary + Secondary | ⚠️ Run via Neon SQL editor |
+| Supabase 2 schema needs running on Netlify Supabase | ⚠️ Run via Supabase dashboard |
+| SUPABASE_2_* and NEON_* env vars not set in Vercel | ⚠️ Add to Vercel dashboard |
+| News archival has never been triggered | ⚠️ Will run next Sunday 2am UTC |
+| Sync-replica has never been triggered | ⚠️ Will run next daily 7am UTC |
