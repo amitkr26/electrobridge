@@ -1,5 +1,7 @@
 # ElectroBridge Figma Design Refactoring — Complete Summary
 
+> **Note:** This refactoring was done on the **legacy codebase** (`ElectroBridge Web App Design/`). The active codebase (`electrobridge/`) inherits this design system through its Tailwind config and CSS custom properties.
+
 ## Overview
 Refactored the ElectroBridge UI to match the Figma design specification (`ElectroBridge Web App Design/`). All visual tokens, component styles, spacing, typography, shadows, and hover effects now match the Figma prototype exactly.
 

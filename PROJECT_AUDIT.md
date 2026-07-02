@@ -3,7 +3,7 @@
 > **Note:** This repo contains two codebases — `electrobridge/` (active, Next.js 14.2.21, App Router, 7 AI providers, 4 databases) and `ElectroBridge Web App Design/` (legacy, Next.js 15 static export + Express 5 backend, Groq-only). This audit covers **both**, with primary focus on the actively developed `electrobridge/`.
 > For the legacy codebase's standalone audit, see `ElectroBridge Web App Design/documents/15_PROJECT_AUDIT.md`
 
-**Last Updated:** July 2, 2026 (Session 6 — Premium Header Redesign)
+**Last Updated:** July 2, 2026 (Session 7 — README Overhaul & Single Auth Button)
 
 ---
 
@@ -553,17 +553,25 @@ Success rate: ~99% (Bedrock handles ~60%, fallbacks catch the rest)
 - Build verified: TypeScript passes with 0 errors
 
 ### Session 6 (Premium Header Redesign)
-- **Glass morphism nav** — `bg-bg-primary/80 backdrop-blur-2xl` with gradient bottom glow line (`from-transparent via-accent/20 to-transparent`)
-- **Scroll-aware** — transparent gradient background at top, solidifies on scroll with shadow
-- **Refined logo** — Icon in gradient-bordered rounded container with hover glow effect, `ElectroBridge` wordmark with `tracking-tight`
-- **Desktop nav** — 9 items with active indicator pill (gradient underline), subtle `hover:bg-white/[0.03]` hover states, dropdowns with glass panels (`bg-surface/90 backdrop-blur-xl border border-white/[0.06] rounded-2xl`), icon containers, arrow-up-right hover animation
-- **Resources dropdown** — Now actually rendered (was dead code before), 6 resource links with icon containers
-- **Search overlay** — Slides open below nav with glass background, full-width input with accent focus ring
-- **Mobile drawer** — Right slide-in with `max-w-sm`, dark overlay `bg-black/60 backdrop-blur-sm`, gradient background blobs, search bar at top, accordion dropdowns for Opportunities/Resources, polished auth section with gradient Sign Up button
-- **Auth section** — Gradient Sign Up button (`from-accent to-accent-hover`), hover shadow glow, refined user dropdown with glass panel, gradient avatar ring
-- **Admin button** — Muted accent styling `text-accent/70 hover:text-accent`
-- **All breakpoints** — Responsive from `xs` through `xl`, condenses icons at `lg`, full labels at `xl+`
-- **TypeScript** — 0 errors, build passes
+- **Glass morphism nav** — `bg-bg-primary/80 backdrop-blur-2xl` with gradient bottom glow line
+- **Refined logo** — Icon in gradient-bordered rounded container with hover glow
+- **Desktop nav** — 9 items with active indicator pill, glass dropdowns, icon containers
+- **Resources dropdown** — Now actually rendered (was dead code before)
+- **Search overlay** — Slides open below nav with glass background
+- **Mobile drawer** — Right slide-in with glass overlay, gradient blobs, accordion dropdowns
+- **Auth section** — Gradient Sign Up button, refined user dropdown with glass panel
+- **All breakpoints** — Responsive from xs through xl
+- **TypeScript** — 0 errors
+
+### Session 7 (README Overhaul + Single Auth Button)
+- **Consolidated auth** — Login + Sign Up replaced by single "Get Started" button linking to `/login`
+- **Admin moved to footer** — Removed from header, added to Footer Company section
+- **Navbar simplified** — Removed 300 lines of over-engineered effects; consistent glass bg, clean hover states, no janky transitions
+- **Root README rewritten** — Now describes `electrobridge/` as the active codebase with full directory tree, tech stack table, feature list, DB architecture diagram, and legacy reference
+- **`electrobridge/README.md` rewritten** — Concise active-app README with quick start, architecture summary, key directory map
+- **`REFACTOR_SUMMARY.md` updated** — Added note that refactoring was for legacy codebase
+- **README outdated issue** — Marked as ✅ Fixed
+- **TypeScript** — 0 errors
 
 ## What's Left — Known Issues & TODOs
 
@@ -572,7 +580,7 @@ Success rate: ~99% (Bedrock handles ~60%, fallbacks catch the rest)
 | 1 | `calendar_exports` table exists but never written to | Low | ⚠️ Open |
 | 2 | `telegram_subscribers` has no subscription UI | Low | ⚠️ Open |
 | 3 | FIRST cron runs: archive-news (Sun 2am), sync-replica (7am) have never triggered | Medium | ⚠️ Pending next schedule |
-| 4 | `README.md` at repo root still describes legacy codebase | Low | ⚠️ Needs update |
+| 4 | `README.md` at repo root still describes legacy codebase | Low | ✅ Fixed |
 | 5 | No automated tests (unit, integration, e2e) | High | ⚠️ Not started |
 | 6 | No monitoring/alerting for cron job failures | Medium | ⚠️ Not started |
 | 7 | Rate limiter is in-memory (resets on Vercel cold start) | Low | ⚠️ Consider Redis |

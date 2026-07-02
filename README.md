@@ -1,86 +1,97 @@
 # ElectroBridge — Electronics & Semiconductor Opportunities Platform
 
-A one-stop platform for electronics, semiconductor, VLSI, and research opportunities in India. Aggregates verified JRF/PhD/internship/engineering roles from ISRO, DRDO, CSIR, IITs, IISc, TIFR, and industry. Features AI-powered chat, matching, and search.
+AI-powered platform aggregating verified R&D, JRF, PhD, and engineering opportunities from ISRO, DRDO, CSIR, IITs, IISc, TIFR, and industry. Built for India's semiconductor and electronics research community.
 
 | Component | Live URL | Stack |
 |-----------|----------|-------|
-| **Frontend** | [electrobridge.netlify.app](https://electrobridge.netlify.app) | Next.js 15, static export, Tailwind CSS v4 |
-| **Backend** | [electrobridge-api.onrender.com](https://electrobridge-api.onrender.com) | Express 5, tsx runtime |
-| **Database** | Supabase (Singapore) | PostgreSQL, RLS |
-| **AI** | Groq LLaMA 3.3 70B | Single provider |
+| **Active App** | [electrobridge.vercel.app](https://electrobridge.vercel.app) | Next.js 14.2.21, App Router, 7 AI providers |
+| **Legacy Frontend** | [electrobridge.netlify.app](https://electrobridge.netlify.app) | Next.js 15 static export |
+| **Legacy Backend** | [electrobridge-api.onrender.com](https://electrobridge-api.onrender.com) | Express 5 |
 
-## Active Codebase
+## Active Codebase: `electrobridge/`
 
-**`ElectroBridge Web App Design/`** — the refactored MVP:
-- `frontend/` — Next.js 15 App Router, static export, 17 page routes
-- `backend/` — Express 5 API server, 6 route modules
-- `shared/` — Types, constants, utilities
-- `documents/` — Architecture, deployment, API spec, project audit
+**14,725 lines** of TypeScript/TSX/CSS — 30 pages, 34 API routes, 23 components, 4 databases, 7 AI providers.
 
-## Quick Start
-
-```bash
-# Backend
-cd "ElectroBridge Web App Design/backend"
-cp .env.example .env   # fill in keys
-npm install
-npx tsx src/index.ts   # → http://localhost:4000
-
-# Frontend (separate terminal)
-cd "ElectroBridge Web App Design/frontend"
-cp .env.example .env.local   # fill in keys
-npm install
-npm run dev                  # → http://localhost:3000
+```
+electrobridge/
+├── src/
+│   ├── app/                   30 pages + auth callback + sitemap + robots
+│   │   └── api/               34 API endpoints
+│   ├── components/            23 React components
+│   ├── lib/                   18 modules (db, ai, scrapers, utils)
+│   │   ├── db/                Multi-database router (4 DBs)
+│   │   ├── ai/                7-provider AI fallback chain
+│   │   └── scrapers/          ISRO, DRDO, CSIR scrapers + 16 RSS feeds
+│   ├── types/                 TypeScript interfaces
+│   └── middleware.ts          Supabase SSR auth
+├── supabase/migrations/       8 migration files
+├── .vercel/                   Vercel project config
+└── docs/                      Deployment checklist
 ```
 
-## Features
+### Quick Start
 
-- **Verified Opportunities** — R&D roles from top Indian research orgs, all verification_status='verified'
-- **Tech News** — Electronics/semiconductor news with category filters (from API, not scraped live)
-- **Organizations** — Browse by ISRO, DRDO, IISC, TIFR, Intel, Tata Motors, etc.
+```bash
+cd electrobridge
+cp .env.local.example .env.local   # fill in real keys
+npm install
+npm run dev                        # → http://localhost:3000
+```
+
+### Tech Stack
+
+| Category | Technology |
+|----------|-----------|
+| **Framework** | Next.js 14.2.21 (App Router) |
+| **UI** | React 18, Tailwind CSS 3.4 |
+| **Styling** | Dark theme, Space Grotesk + Inter fonts |
+| **Database** | Supabase (Primary + Secondary), Neon (Primary + Secondary) — 36 tables across 4 DBs |
+| **AI** | 7-provider fallback: Bedrock → Groq → NVIDIA → Gemini → OpenRouter → Cloudflare → HuggingFace |
+| **Auth** | Supabase SSR (email/password + Google OAuth) |
+| **Email** | Resend (weekly digests) |
+| **Messaging** | Telegram Bot API (opportunity notifications) |
+| **Icons** | lucide-react |
+| **Scraping** | cheerio (ISRO, DRDO, CSIR), rss-parser (16 RSS sources) |
+| **Hosting** | Vercel (auto-deploy from `main`) |
+
+### Key Features
+
+- **Verified Opportunities** — R&D roles from top Indian research orgs with link verification and expiry detection
+- **Electronics News** — Aggregated from 16 RSS sources with AI relevance filtering
 - **AI Chat** — Career assistant specialized in Indian R&D opportunities
-- **AI Match** — Upload skills, get matched opportunities (tag + description scoring)
-- **AI Search** — Natural language search query parsing
-- **AI Summarize** — Opportunity description summarization
-- **Subscribe** — Email alerts (manual for MVP, no cron)
-- **Admin Panel** — Add/edit opportunities, news, view stats
-- **Static Export** — Pre-rendered detail pages, API-fetched at runtime
+- **AI Match** — Profile-to-opportunity matching with scoring
+- **AI Search** — Natural language query parsing
+- **AI Resume Builder** — 6-step wizard with ATS scoring
+- **Community Forum** — Posts, comments, upvotes
+- **Weekly Digest** — AI-generated email newsletter
+- **Multi-Database** — 4 databases: Supabase for core data + archive, Neon for analytics + read replica
+- **Admin Panel** — Add/edit opportunities/news, view AI usage analytics
 
-## Tech Stack
+### Database Architecture
 
-- **Next.js 15** — App Router, static export
-- **Express 5** — API server, CORS, Helmet
-- **Supabase** — PostgreSQL, RLS, service_role for server queries
-- **Groq** — AI inference (llama-3.3-70b-versatile)
-- **Tailwind CSS v4** — Dark theme, utility-first
-- **Netlify** — Frontend hosting
-- **Render** — Backend hosting
+| DB | Type | Purpose | Tables |
+|----|------|---------|--------|
+| Supabase Primary | PostgreSQL | Core data (opportunities, news, auth, community) | 17 |
+| Supabase Secondary | PostgreSQL | News archive, subscriber overflow | 13 |
+| Neon Primary | PostgreSQL | Analytics (AI usage, platform analytics) | 4 |
+| Neon Secondary | PostgreSQL | Read replica (opportunities mirror, news mirror) | 2 |
 
-## Project Structure
+### Environment Variables
 
-```
-ElectroBridge Web App Design/   ← ACTIVE MVP
-├── frontend/                   Next.js 15 static app
-│   ├── src/app/                17 page routes
-│   ├── src/components/         7 components
-│   └── src/lib/                API client, supabase, utils
-├── backend/                    Express 5 API server
-│   ├── src/routes/             6 route modules
-│   ├── src/lib/                supabase, neon, AI modules
-│   └── src/middleware/         Admin auth
-├── shared/                     Types, constants
-└── documents/                  Architecture, deploy, API spec
+23 variables required — all set in Vercel (Production + Development). See `.env.local.example` for the full list.
 
-electrobridge/                  ← LEGACY (read-only)
-docs/                           ← Legacy documentation
-```
+---
 
-## Admin Access
+## Legacy Codebase: `ElectroBridge Web App Design/`
 
-Set `ADMIN_PASSWORD` env var on the backend. Send it as `x-admin-token` header:
-```bash
-curl -H "x-admin-token: your-password" https://electrobridge-api.onrender.com/api/admin/stats
-```
+Previous version (10,398 LOC):
+- `frontend/` — Next.js 15 static export, 17 page routes
+- `backend/` — Express 5 API, 6 route modules, Groq-only AI
+- Published at `electrobridge.netlify.app` + `electrobridge-api.onrender.com`
+
+See `ElectroBridge Web App Design/documents/` for legacy docs.
+
+---
 
 ## License
 
