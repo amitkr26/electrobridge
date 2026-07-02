@@ -1,28 +1,29 @@
-/**
- * ElectroBridge Multi-Database Router
- *
- * DB1 (Supabase Primary):   Core data — opportunities, news, community, auth
- * DB2 (Supabase Secondary): Overflow — news archive, additional storage
- * DB3 (Neon Primary):       Analytics — ai_usage_log, link_check_logs, reports
- * DB4 (Neon Secondary):     Read replica — opportunities read mirror
- */
-
 import { createClient as createSupabaseClient } from '@supabase/supabase-js';
 import { neon } from '@neondatabase/serverless';
 
-export const db1 = createSupabaseClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+function trySupabase(url: string | undefined, key: string | undefined) {
+  if (!url || !key) return undefined as any;
+  return createSupabaseClient(url, key);
+}
+
+function tryNeon(url: string | undefined) {
+  if (!url) return undefined as any;
+  return neon(url);
+}
+
+export const db1 = trySupabase(
+  process.env.NEXT_PUBLIC_SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-export const db2 = createSupabaseClient(
-  process.env.SUPABASE_2_URL!,
-  process.env.SUPABASE_2_SERVICE_ROLE_KEY!
+export const db2 = trySupabase(
+  process.env.SUPABASE_2_URL,
+  process.env.SUPABASE_2_SERVICE_ROLE_KEY
 );
 
-export const neonPrimary = neon(process.env.NEON_1_DATABASE_URL!);
+export const neonPrimary = tryNeon(process.env.NEON_1_DATABASE_URL);
 
-export const neonSecondary = neon(process.env.NEON_2_DATABASE_URL!);
+export const neonSecondary = tryNeon(process.env.NEON_2_DATABASE_URL);
 
 export function getDB(purpose:
   | 'opportunities'
