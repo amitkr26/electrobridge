@@ -4,6 +4,7 @@ import { fetchAllNews, fetchOpportunitiesFromRSS } from "@/lib/scrapers/rss-pars
 import { scrapeAllOpportunities } from "@/lib/scrapers/opportunity-scraper";
 import { cleanTitle, slugify } from "@/lib/scrapers/utils";
 import { isElectronicsNews, autoTagArticle } from "@/lib/scrapers/news-filter";
+import { enrichOpportunity } from "@/lib/scrapers/deep-scraper";
 
 export async function GET(request: NextRequest) {
   if (!isAdminConfigured) {
@@ -93,6 +94,7 @@ export async function GET(request: NextRequest) {
       const allOpportunities = [...scrapedOpps, ...rssOpps];
       let oppInserted = 0;
       let oppSkipped = 0;
+      const newOppIds: { id: string; source_url: string; title: string; organization: string }[] = [];
 
       for (const opp of allOpportunities) {
         if (!opp.source_url) {
@@ -112,7 +114,7 @@ export async function GET(request: NextRequest) {
           continue;
         }
 
-        const { error } = await supabaseAdmin
+        const { data, error } = await supabaseAdmin
           .from("opportunities")
           .insert([
             {
@@ -129,10 +131,48 @@ export async function GET(request: NextRequest) {
               tags: opp.tags,
               is_active: true,
             },
-          ]);
+          ])
+          .select("id, source_url, title, organization")
+          .single();
 
-        if (!error) oppInserted++;
-        else oppSkipped++;
+        if (!error && data) {
+          oppInserted++;
+          newOppIds.push({ id: data.id, source_url: data.source_url, title: data.title, organization: data.organization });
+        } else {
+          oppSkipped++;
+        }
+      }
+
+      // Deep scrape — enrich newly inserted opportunities with full detail page data
+      let enrichedCount = 0;
+      if (newOppIds.length > 0) {
+        const batchSize = 5;
+        for (const item of newOppIds.slice(0, batchSize)) {
+          const original = allOpportunities.find((o) => o.source_url === item.source_url);
+          if (!original) continue;
+
+          try {
+            const enriched = await enrichOpportunity(original, item.id);
+            if (enriched.description || enriched.eligibility || enriched.stipend || enriched.apply_link_type) {
+              await supabaseAdmin
+                .from("opportunities")
+                .update({
+                  description: enriched.description,
+                  eligibility: enriched.eligibility,
+                  stipend: enriched.stipend,
+                  deadline: enriched.deadline,
+                  location: enriched.location,
+                  tags: enriched.tags,
+                  apply_link_type: enriched.apply_link_type,
+                  official_page_url: enriched.official_page_url,
+                })
+                .eq("id", item.id);
+              enrichedCount++;
+            }
+          } catch {
+            // skip — detail page fetching failed, keep listing data
+          }
+        }
       }
 
       result.opportunities = {
@@ -141,6 +181,8 @@ export async function GET(request: NextRequest) {
         inserted: oppInserted,
         skipped: oppSkipped,
         rss_sources: rssOpps.length,
+        enriched: enrichedCount,
+        enriched_pending: Math.max(0, oppInserted - enrichedCount),
       };
     }
 
