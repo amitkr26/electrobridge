@@ -27,7 +27,7 @@ User Profile:
 - NET Qualified: ${userProfile.hasNET}
 - GATE Qualified: ${userProfile.hasGATE}
 - Preferred Location: ${userProfile.preferredLocation}
-- Looking For: ${userProfile.lookingFor.join(", ")}
+  - Looking For: ${(userProfile.lookingFor ?? []).join(", ")}
 
 Here are available opportunities:
 ${opportunities

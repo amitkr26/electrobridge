@@ -182,7 +182,9 @@ export default function AdminPage() {
     setScrapeStatus("Scraping...");
     addLog({ status: "success", message: "Scraping started..." });
     try {
-      const res = await fetch("/api/scrape");
+      const res = await fetch("/api/scrape", {
+        headers: { "Authorization": `Bearer ${process.env.NEXT_PUBLIC_ADMIN_PASSWORD}` },
+      });
       const data = await res.json();
       const msg = `Done: ${data.inserted} new, ${data.skipped} duplicates`;
       setScrapeStatus(msg);

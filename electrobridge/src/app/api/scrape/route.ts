@@ -19,10 +19,15 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Admin access not configured." }, { status: 503 });
     }
 
-    const authHeader = request.headers.get("authorization");
+    const authHeader = request.headers.get("authorization") || "";
     const cronSecret = process.env.CRON_SECRET;
+    const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD;
 
-    if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
+    const isValidAuth =
+      authHeader === `Bearer ${cronSecret}` ||
+      authHeader === `Bearer ${adminPassword}`;
+
+    if (cronSecret && !isValidAuth) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 

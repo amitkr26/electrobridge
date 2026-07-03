@@ -24,6 +24,7 @@ export interface Opportunity {
   last_link_checked?: string;
   link_check_status?: number;
   admin_notes?: string;
+  company_page_id?: string;
 }
 
 export interface NewsArticle {
@@ -70,4 +71,141 @@ export interface OpportunityReport {
   description: string;
   reported_at: string;
   is_resolved: boolean;
+}
+
+export interface UserProfile {
+  id: string;
+  full_name: string;
+  username: string;
+  headline: string;
+  about: string;
+  avatar_url: string;
+  banner_url: string;
+  current_position: string;
+  current_org: string;
+  qualification: string;
+  specialization: string;
+  has_net: boolean;
+  has_gate: boolean;
+  city: string;
+  country: string;
+  preferred_location: string;
+  website_url: string;
+  skills: string[];
+  is_open_to_work: boolean;
+  open_to_work_types: string[];
+  profile_views: number;
+  follower_count: number;
+  following_count: number;
+  connection_count: number;
+  is_profile_public: boolean;
+  resume_ats_score: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface FeedPost {
+  id: string;
+  user_id: string;
+  content: string;
+  post_type: 'post' | 'article' | 'opportunity_share' | 'achievement' | 'question';
+  media_urls: string[];
+  opportunity_id: string | null;
+  article_title: string | null;
+  tags: string[];
+  likes_count: number;
+  comments_count: number;
+  reposts_count: number;
+  views_count: number;
+  visibility: 'public' | 'connections' | 'followers';
+  is_pinned: boolean;
+  created_at: string;
+  user_profile?: Pick<UserProfile, 'full_name' | 'username' | 'avatar_url' | 'headline'>;
+  user_reaction?: string | null;
+  has_reposted?: boolean;
+  opportunity?: Opportunity | null;
+}
+
+export interface ConnectionRequest {
+  id: string;
+  sender_id: string;
+  receiver_id: string;
+  status: 'pending' | 'accepted' | 'declined' | 'withdrawn';
+  message: string | null;
+  created_at: string;
+}
+
+export interface SkillEndorsement {
+  id: string;
+  profile_owner_id: string;
+  endorser_id: string;
+  skill: string;
+  created_at: string;
+  endorser?: Pick<UserProfile, 'full_name' | 'avatar_url'>;
+}
+
+export interface Recommendation {
+  id: string;
+  author_id: string;
+  recipient_id: string;
+  relationship: string;
+  content: string;
+  is_visible: boolean;
+  created_at: string;
+  author?: Pick<UserProfile, 'full_name' | 'avatar_url' | 'headline'>;
+}
+
+export interface Notification {
+  id: string;
+  user_id: string;
+  type: string;
+  actor_id: string;
+  entity_type: string | null;
+  entity_id: string | null;
+  message: string;
+  is_read: boolean;
+  created_at: string;
+  actor?: Pick<UserProfile, 'full_name' | 'avatar_url' | 'username'>;
+}
+
+export interface Conversation {
+  id: string;
+  participant_1: string;
+  participant_2: string;
+  last_message_at: string;
+  last_message_preview: string | null;
+  unread_count_1: number;
+  unread_count_2: number;
+  created_at: string;
+  other_user?: Pick<UserProfile, 'full_name' | 'avatar_url' | 'headline' | 'username'>;
+}
+
+export interface Message {
+  id: string;
+  conversation_id: string;
+  sender_id: string;
+  content: string;
+  is_read: boolean;
+  created_at: string;
+}
+
+export interface CompanyPage {
+  id: string;
+  slug: string;
+  name: string;
+  tagline: string;
+  description: string;
+  logo_url: string;
+  banner_url: string;
+  website: string;
+  industry: string;
+  company_type: string;
+  headquarters: string;
+  founded_year: number;
+  employee_count_range: string;
+  specialties: string[];
+  follower_count: number;
+  is_verified: boolean;
+  is_claimed: boolean;
+  created_at: string;
 }
