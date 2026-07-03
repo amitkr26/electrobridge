@@ -1046,6 +1046,23 @@ Returns JSON with:
 - Build: 203 static pages, 0 TS errors, 0 lint warnings
 - CI workflow updated to include `npm test`
 
+### Session 9 (Auth Rewrite, Header Redesign, Feature Audit, Deep Scrape, Vercel Deploy)
+- **Auth localhost bug fixed:** `getURL()` in `src/lib/utils.ts` — replaced `??` chain with `||` chain using `.trim()` so empty-string env vars correctly fall through to production URL
+- **Google OAuth root cause identified:** Not a code issue — must be toggled ON in Supabase Dashboard → Authentication → Providers → Google, with Client ID/Secret from Google Cloud Console and redirect URI `https://aqauempuwmbizqoaolop.supabase.co/auth/v1/callback`
+- **Supabase Dashboard configured via API:** `site_url` → `https://electrobridge.vercel.app`, `uri_allow_list` set with production URLs, `external_google_enabled` → `true`
+- **`.env.local` populated:** All AI provider keys (Groq, Gemini, HuggingFace, Bedrock, OpenRouter, Cloudflare), Resend API key, admin password, site URL — previously tokens were stored in `.env.tokens.local` which Next.js never loads
+- **Header redesigned:** Complete `Navbar.tsx` rewrite — icons on all nav items, News/Community promoted to desktop nav, enhanced glass morphism, gradient accent line on scroll, user dropdown with Resume shortcut, mobile drawer, `⌘K` search shortcut
+- **Home nav item removed** — logo already returns to home
+- **Dummy homepage hero search fixed:** Replaced decorative input with `HeroSearch` client component — proper controlled form routes to `/opportunities?search=...`
+- **AI Analytics Panel fixed:** Empty admin password header → reads from `NEXT_PUBLIC_ADMIN_PASSWORD` env var
+- **Chat Recent Chats:** Hardcoded mock data → `localStorage` persistence with 20-entry limit
+- **Chat "+ New Chat" button wired:** Resets messages to initial assistant greeting
+- **Deep scrape built** (`src/lib/scrapers/deep-scraper.ts`): After listing scrape inserts new opportunities, pipeline visits each `apply_link` (up to 5 per cron run), extracts full description/eligibility/stipend/deadline/location/tags from detail page HTML, detects `apply_link_type`, stores `official_page_url`
+- **Vercel env vars set:** `NEXT_PUBLIC_SITE_URL`, `GROQ_API_KEY`, `GEMINI_API_KEY`, `HUGGINGFACE_API_KEY`, `OPENROUTER_API_KEY`, `CLOUDFLARE_AI_TOKEN` added to Development environment
+- **Vercel deploy:** Production aliased to `https://electrobridge.vercel.app` (200 OK)
+- **Build:** 203 static pages, 0 TS errors, 0 lint warnings
+- **Tests:** 31/31 passing across 4 suites
+
 ---
 
 ## 18. Legacy Codebase Reference
