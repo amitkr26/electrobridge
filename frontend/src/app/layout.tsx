@@ -14,10 +14,10 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://berojgardegreewala.vercel.app"),
+  metadataBase: new URL("https://electrobridge.vercel.app"),
   title: {
-    default: "BerojgarDegreeWala — Semiconductor, VLSI & Electronics Opportunities India",
-    template: "%s | BerojgarDegreeWala",
+    default: "electrobridge — Verified Semiconductor & VLSI Opportunity Engine",
+    template: "%s | electrobridge",
   },
   description:
     "Find JRF, PhD positions, government research jobs, fellowships, and private sector opportunities in semiconductor, VLSI, and electronics industry. DRDO, ISRO, CSIR, IIT opportunities aggregated in one place.",
@@ -25,23 +25,23 @@ export const metadata: Metadata = {
     "JRF", "Junior Research Fellow", "electronics jobs India", "semiconductor jobs",
     "DRDO recruitment", "ISRO JRF", "CSIR fellowship", "PhD electronics India",
     "VLSI jobs", "ASIC design jobs", "embedded systems jobs", "research fellowship India",
-    "NET electronics jobs", "GATE electronics jobs", "BerojgarDegreeWala", "semiconductor India",
+    "NET electronics jobs", "GATE electronics jobs", "electrobridge", "semiconductor India",
   ],
-  authors: [{ name: "BerojgarDegreeWala" }],
-  creator: "BerojgarDegreeWala",
+  authors: [{ name: "electrobridge" }],
+  creator: "electrobridge",
   openGraph: {
     type: "website",
     locale: "en_IN",
-    url: "https://berojgardegreewala.vercel.app",
-    siteName: "BerojgarDegreeWala",
-    title: "BerojgarDegreeWala — Semiconductor & VLSI Opportunities Aggregator",
+    url: "https://electrobridge.vercel.app",
+    siteName: "electrobridge",
+    title: "electrobridge — Verified Semiconductor & VLSI Opportunity Engine",
     description:
-      "One-stop platform for JRF, PhD, government and private sector opportunities in semiconductor, VLSI, and electronics industry.",
-    images: [{ url: "/api/og", width: 1200, height: 630, alt: "BerojgarDegreeWala" }],
+      "One-stop engine for JRF, PhD, government and private sector opportunities in semiconductor, VLSI, and electronics industry.",
+    images: [{ url: "/api/og", width: 1200, height: 630, alt: "electrobridge" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "BerojgarDegreeWala — Semiconductor & Electronics Opportunities",
+    title: "electrobridge — Verified Semiconductor & Electronics Opportunities",
     description:
       "Find JRF, PhD, DRDO, ISRO, CSIR opportunities in VLSI & semiconductor. Updated daily.",
     images: ["/api/og"],
