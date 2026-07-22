@@ -10,7 +10,7 @@ export default function Footer() {
             <Link href="/" className="flex items-center gap-2 mb-3">
               <CircuitBoard className="w-5 h-5 text-accent" />
               <span className="font-display text-lg font-bold text-text-primary">
-                Berojgar<span className="text-accent">DegreeWala</span>
+                electro<span className="text-accent">bridge</span>
               </span>
             </Link>
             <p className="text-text-secondary text-sm leading-relaxed mb-4">
@@ -21,13 +21,7 @@ export default function Footer() {
             <h4 className="font-display text-sm font-semibold text-text-primary mb-4">Platform</h4>
             <div className="flex flex-col gap-2.5">
               <Link href="/opportunities" className="text-text-secondary hover:text-accent transition-colors text-sm">Opportunities</Link>
-              <Link href="/academy" className="text-text-secondary hover:text-accent transition-colors text-sm font-semibold text-accent">VLSI Academy</Link>
               <Link href="/news" className="text-text-secondary hover:text-accent transition-colors text-sm">News Feed</Link>
-              <Link href="/chat" className="text-text-secondary hover:text-accent transition-colors text-sm">Ask AI</Link>
-              <Link href="/match" className="text-text-secondary hover:text-accent transition-colors text-sm">Find My Match</Link>
-              <Link href="/community" className="text-text-secondary hover:text-accent transition-colors text-sm">Community Forum</Link>
-              <Link href="/network" className="text-text-secondary hover:text-accent transition-colors text-sm">Network</Link>
-              <Link href="/feed" className="text-text-secondary hover:text-accent transition-colors text-sm">Social Feed</Link>
             </div>
           </div>
           <div>
@@ -56,7 +50,7 @@ export default function Footer() {
         </div>
         <div className="border-t border-border/50 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-text-muted text-xs">
-            &copy; {new Date().getFullYear()} BerojgarDegreeWala. Built for India&apos;s semiconductor revolution.
+            &copy; {new Date().getFullYear()} electrobridge. Built for India&apos;s semiconductor revolution.
           </p>
           <p className="text-text-muted text-xs">
             Data aggregated from DRDO, ISRO, CSIR, IITs & 100+ organizations

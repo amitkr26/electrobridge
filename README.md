@@ -1,63 +1,46 @@
-# ⚡ ElectroBridge — Semiconductor & VLSI Opportunity Aggregator
+# electrobridge
 
-> **The Dedicated Opportunity & News Aggregator for Semiconductor, Electronics, and Hardware Engineers.**
+**Verified Opportunity Engine for the Semiconductor & VLSI Industry**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Next.js](https://img.shields.io/badge/Framework-Next.js%2014-black)](https://nextjs.org/)
-[![Supabase](https://img.shields.io/badge/Database-Supabase-emerald)](https://supabase.com/)
-[![Status](https://img.shields.io/badge/Production%20Status-100%25%20Verified%20%26%20Live-brightgreen)](https://electrobridge.vercel.app/)
+electrobridge is a streamlined, AI-powered opportunity aggregator built exclusively for the semiconductor, VLSI, and electronics engineering community in India. It centralizes JRF positions, PhD admissions, government jobs (DRDO, ISRO, CSIR), and private sector roles into a single, high-performance platform.
 
----
+## Features
 
-## 🚀 Overview & Product Scope
+- **Live Ingestion**: Aggregates verified opportunities from 100+ organizations across India.
+- **Smart Categorization**: Opportunities are classified into specific categories (JRF, SRF, PhD, Govt, Fellowship, Private, International).
+- **Fast Search & Filtering**: Client-side filtering and rapid search to find the exact roles you need quickly.
+- **Professional Design**: Premium modern UI built with Tailwind CSS, featuring subtle micro-animations and a unified design system.
 
-**ElectroBridge** is a standalone, high-performance opportunity and news aggregator for the electronics and semiconductor ecosystem. It continuously ingests, cleans, and verifies job openings, JRF/SRF fellowships, PhD programs, and industry news across 100+ official corporate and research portals.
+## Tech Stack
 
-### 🌟 Core Features
+- **Frontend**: Next.js 14 (App Router), React, Tailwind CSS, Lucide Icons.
+- **Typography**: Inter (Body), Space Grotesk (Display).
+- **Deployment**: Vercel.
 
-1. 💼 **Verified Opportunity Engine (`/opportunities`)**
-   - Ingests postings across **DRDO, ISRO, CSIR, IITs, IISc, BARC, TSMC, Intel, Qualcomm, NVIDIA, AMD, Texas Instruments, Tata Electronics, Arm, ASML, Synopsys, Cadence**, etc.
-   - **Direct Official Links**: Every listing links directly to the official organization application portal.
-   - Category filtering (*JRF, SRF, PhD, Govt Jobs, Corporate Openings, Fellowships, Internships*).
+## Local Setup
 
-2. 📰 **Live Semiconductor News Engine (`/news`)**
-   - Automated RSS scraper engine parsing **IEEE Spectrum, Semiconductor Engineering, EE Times, Electronics Weekly, SemiWiki, and Electronics For You**.
-   - Executive summaries with direct **"Visit Official Article Source"** links (`target="_blank"`).
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd electrobridge/frontend
+   ```
 
-3. 🏢 **Organization Directory (`/organizations`)**
-   - Searchable directory of semiconductor foundries, IDMs, fabless design houses, research labs, and universities.
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
 
-4. ⚙️ **Automated Scrapers & Admin Panel (`/admin`)**
-   - Built-in ATS adapters (Greenhouse, Lever, SmartRecruiters) and HTML scrapers.
-   - Admin control panel to monitor scraper health, trigger ingestion cycles, and audit active postings.
+3. **Set up environment variables:**
+   Create a `.env.local` file in the `frontend` directory based on `.env.example` (if provided). You will need Supabase credentials to fetch real opportunities.
 
----
+4. **Run the development server:**
+   ```bash
+   npm run dev
+   ```
 
-## 🛠️ Repository Structure
+5. **Open in browser:**
+   Navigate to `http://localhost:3000`.
 
-```text
-ElectroBridge/
-├── frontend/                     # Next.js 14 Web Application (App Router)
-│   ├── src/app/                  # Routes: /, /opportunities, /news, /organizations, /resources, /admin
-│   ├── src/components/           # Navbar, Opportunity Cards, News Cards, Admin Panels
-│   └── src/lib/scrapers/         # ATS Adapters, HTML Scrapers, RSS Parsers, Cleaners
-├── scripts/
-│   └── auto-daily-scraper.js     # Automated Daily Scraper Service
-└── vercel.json                   # Automated Cron Configurations
-```
+## Architecture Scope
 
----
-
-## ⚡ Quick Start
-
-```bash
-# Clone the repository
-git clone https://github.com/amitkr26/electrobridge.git
-cd electrobridge/frontend
-
-# Install dependencies and start local dev server
-npm install
-npm run dev
-```
-
-Live Production Site: **[https://electrobridge.vercel.app/](https://electrobridge.vercel.app/)**
+electrobridge is intentionally scoped as a **pure opportunity aggregator**. It is a standalone, finished project designed to cleanly demonstrate modern Next.js frontend capabilities and integration with a backend data engine.

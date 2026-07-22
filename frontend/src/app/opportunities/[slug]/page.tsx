@@ -13,8 +13,6 @@ import VerificationBadge from "@/components/VerificationBadge";
 import LinkTypeIndicator from "@/components/LinkTypeIndicator";
 import OpportunityDisclaimer from "@/components/OpportunityDisclaimer";
 import AIOpportunitySummary from "@/components/AIOpportunitySummary";
-import OpenToWorkBanner from "@/components/OpenToWorkBanner";
-
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
@@ -415,9 +413,6 @@ export default async function OpportunityDetailPage({ params }: Props) {
                 <Share2 className="w-4 h-4" /> Share
               </button>
             </div>
-
-            {/* Open to Work banner */}
-            <OpenToWorkBanner />
 
             {/* Quick Facts Card */}
             <div className="bg-surface-elevated border border-border rounded-xl p-4">
