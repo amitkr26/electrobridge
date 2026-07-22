@@ -57,20 +57,22 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 glass-nav transition-all duration-300">
+    <header className="sticky top-0 z-40 w-full bg-slate-950/90 backdrop-blur-md border-b border-slate-800 transition-all">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
         
-        {/* BRAND LOGO */}
-        <Link href="/" className="flex items-center gap-2.5 group flex-shrink-0">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-600 flex items-center justify-center shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform duration-300">
-            <CircuitBoard className="w-5 h-5 text-white" />
+        {/* LOGO */}
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-500 to-teal-400 p-0.5 shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+            <div className="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+              <CircuitBoard className="w-5 h-5 text-emerald-400" />
+            </div>
           </div>
           <div className="flex flex-col">
-            <span className="font-bold text-lg tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
-              Electro<span className="text-blue-600">Bridge</span>
+            <span className="font-extrabold text-base tracking-tight text-white flex items-center gap-1">
+              electrobridge<span className="text-emerald-400">.</span>
             </span>
-            <span className="text-[10px] text-slate-500 -mt-1 font-medium tracking-wide">
-              Semiconductor & VLSI Opportunity Aggregator
+            <span className="text-[10px] text-emerald-400 font-semibold tracking-wider uppercase -mt-1">
+              Verified Opportunity Engine
             </span>
           </div>
         </Link>
@@ -84,9 +86,9 @@ export default function Navbar() {
             placeholder="Search JRF, PhD, DRDO, ISRO, Intel, RTL..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-12 py-1.5 bg-slate-100 border border-slate-200 rounded-full text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white focus:ring-1 focus:ring-blue-500 transition-all"
+            className="w-full pl-10 pr-12 py-1.5 bg-slate-900 border border-slate-800 rounded-full text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 focus:bg-slate-950 focus:ring-1 focus:ring-emerald-500 transition-all"
           />
-          <kbd className="absolute right-3 top-1/2 -translate-y-1/2 px-1.5 py-0.5 text-[10px] font-semibold text-slate-500 bg-white border border-slate-200 rounded shadow-xs">
+          <kbd className="absolute right-3 top-1/2 -translate-y-1/2 px-1.5 py-0.5 text-[10px] font-semibold text-slate-400 bg-slate-800 border border-slate-700 rounded shadow-xs">
             ⌘K
           </kbd>
         </form>
@@ -101,56 +103,28 @@ export default function Navbar() {
                 href={href}
                 className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
                   active
-                    ? "bg-blue-50 text-blue-600 border border-blue-200 font-semibold"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                    ? "bg-emerald-950/80 text-emerald-400 border border-emerald-500/40 font-semibold"
+                    : "text-slate-300 hover:text-white hover:bg-slate-800"
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${active ? "text-blue-600" : "text-slate-400"}`} />
+                <Icon className={`w-3.5 h-3.5 ${active ? "text-emerald-400" : "text-slate-400"}`} />
                 {label}
               </Link>
             );
           })}
         </nav>
 
-        {/* RIGHT ACTIONS */}
+        {/* RIGHT ACTIONS - LIVE AGGREGATOR STATUS */}
         <div className="flex items-center gap-3">
-          {user ? (
-            <div className="relative" ref={userRef}>
-              <button
-                onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                className="flex items-center gap-2 p-1 rounded-full hover:bg-slate-100 transition-colors"
-              >
-                <div className="w-8 h-8 rounded-full bg-blue-100 border border-blue-200 flex items-center justify-center text-blue-700 font-bold text-xs">
-                  {user.email?.[0].toUpperCase() || "U"}
-                </div>
-              </button>
-              {userDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-xl shadow-xl py-2 z-50">
-                  <div className="px-4 py-2 border-b border-slate-100">
-                    <p className="text-xs font-semibold text-slate-900 truncate">{user.email}</p>
-                  </div>
-                  <Link href="/profile" className="flex items-center gap-2 px-4 py-2 text-xs text-slate-700 hover:bg-slate-50 hover:text-slate-900">
-                    <User className="w-3.5 h-3.5" /> Profile
-                  </Link>
-                  <button onClick={() => signOutUser()} className="w-full flex items-center gap-2 px-4 py-2 text-xs text-red-600 hover:bg-slate-50">
-                    <LogOut className="w-3.5 h-3.5" /> Sign Out
-                  </button>
-                </div>
-              )}
-            </div>
-          ) : (
-            <Link
-              href="/auth/signin"
-              className="text-xs text-slate-700 hover:text-slate-900 font-medium px-3.5 py-1.5 rounded-full hover:bg-slate-100 transition-colors"
-            >
-              Sign In
-            </Link>
-          )}
+          <span className="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/90 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            Live Ingestion Active
+          </span>
 
           {/* MOBILE MENU TRIGGER */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="lg:hidden p-1.5 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+            className="lg:hidden p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800"
           >
             {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>

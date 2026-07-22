@@ -131,29 +131,23 @@ export default async function Home() {
           </p>
 
           {/* HERO CALL TO ACTIONS */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/opportunities"
-              className="px-8 py-3.5 rounded-full font-semibold text-sm btn-glow inline-flex items-center gap-2"
+              className="px-8 py-3.5 rounded-full font-semibold text-sm bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 hover:from-emerald-400 hover:to-teal-400 shadow-lg shadow-emerald-500/25 transition-all inline-flex items-center gap-2"
             >
-              Explore All Openings <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              href="/chat"
-              className="px-8 py-3.5 rounded-full font-semibold text-sm bg-white border border-slate-200 text-slate-800 hover:border-blue-500 hover:bg-slate-50 transition-all inline-flex items-center gap-2 shadow-xs"
-            >
-              <Sparkles className="w-4 h-4 text-blue-600" /> Ask AI Career Assistant
+              Explore Verified Opportunities <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
           {/* QUICK TARGET TAGS */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-2 text-xs text-slate-600">
-            <span className="font-semibold text-slate-500">Popular Searches:</span>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-2 text-xs text-slate-400">
+            <span className="font-semibold text-slate-500">Popular Aggregated Searches:</span>
             {["DRDO JRF", "ISRO Scientist", "IIT Bombay PhD", "VLSI Verification", "RTL Design", "Qualcomm", "Arm Ltd"].map((tag) => (
               <Link
                 key={tag}
                 href={`/opportunities?search=${encodeURIComponent(tag)}`}
-                className="px-3.5 py-1 bg-white border border-slate-200 rounded-full text-slate-700 hover:border-blue-500 hover:text-blue-600 transition-all shadow-2xs"
+                className="px-3.5 py-1 bg-slate-900 border border-slate-800 rounded-full text-slate-300 hover:border-emerald-500/60 hover:text-emerald-400 transition-all"
               >
                 {tag}
               </Link>
@@ -166,21 +160,21 @@ export default async function Home() {
       {/* STATS STRIP */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="glass-premium rounded-2xl p-6 text-center shadow-sm">
-            <p className="text-3xl sm:text-4xl font-extrabold text-blue-600 tracking-tight">{stats.total}+</p>
-            <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mt-1.5">Active Opportunities</p>
+          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 text-center shadow-lg">
+            <p className="text-3xl sm:text-4xl font-extrabold text-emerald-400 tracking-tight">{stats.total}+</p>
+            <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mt-1.5">Active Opportunities</p>
           </div>
-          <div className="glass-premium rounded-2xl p-6 text-center shadow-sm">
-            <p className="text-3xl sm:text-4xl font-extrabold text-emerald-600 tracking-tight">{stats.verified}+</p>
-            <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mt-1.5">Verified Official Links</p>
+          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 text-center shadow-lg">
+            <p className="text-3xl sm:text-4xl font-extrabold text-teal-400 tracking-tight">{stats.verified}+</p>
+            <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mt-1.5">Verified Official Links</p>
           </div>
-          <div className="glass-premium rounded-2xl p-6 text-center shadow-sm">
-            <p className="text-3xl sm:text-4xl font-extrabold text-purple-600 tracking-tight">{stats.jrf}+</p>
-            <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mt-1.5">JRF Fellowships</p>
+          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 text-center shadow-lg">
+            <p className="text-3xl sm:text-4xl font-extrabold text-cyan-400 tracking-tight">{stats.jrf}+</p>
+            <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mt-1.5">JRF Fellowships</p>
           </div>
-          <div className="glass-premium rounded-2xl p-6 text-center shadow-sm">
-            <p className="text-3xl sm:text-4xl font-extrabold text-amber-600 tracking-tight">{stats.phd}+</p>
-            <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mt-1.5">PhD Programs</p>
+          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-6 text-center shadow-lg">
+            <p className="text-3xl sm:text-4xl font-extrabold text-indigo-400 tracking-tight">{stats.phd}+</p>
+            <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mt-1.5">PhD Programs</p>
           </div>
         </div>
       </section>
@@ -189,8 +183,8 @@ export default async function Home() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
         <div className="mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Browse by Specialization</h2>
-            <p className="text-slate-600 text-sm mt-1">Targeted listings across core microelectronics and research sectors</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Browse by Specialization</h2>
+            <p className="text-slate-400 text-sm mt-1">Targeted listings across core microelectronics and research sectors</p>
           </div>
         </div>
 
@@ -199,13 +193,13 @@ export default async function Home() {
             <Link
               key={name}
               href={href}
-              className="glass-premium rounded-2xl p-6 hover:-translate-y-1 transition-all duration-300 group block"
+              className="bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:-translate-y-1 hover:border-emerald-500/50 transition-all duration-300 group block"
             >
-              <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center mb-4 group-hover:bg-blue-600 group-hover:text-white transition-all">
-                <Icon className="w-6 h-6 text-blue-600 group-hover:text-white transition-colors" />
+              <div className="w-12 h-12 rounded-xl bg-slate-950 border border-slate-800 flex items-center justify-center mb-4 group-hover:border-emerald-500/40 transition-all">
+                <Icon className="w-6 h-6 text-emerald-400 group-hover:scale-110 transition-transform" />
               </div>
-              <h3 className="font-semibold text-slate-900 text-base group-hover:text-blue-600 transition-colors">{name}</h3>
-              <p className="text-slate-500 text-xs mt-1.5 font-medium">{count}</p>
+              <h3 className="font-semibold text-white text-base group-hover:text-emerald-400 transition-colors">{name}</h3>
+              <p className="text-slate-400 text-xs mt-1.5 font-medium">{count}</p>
             </Link>
           ))}
         </div>
@@ -216,11 +210,14 @@ export default async function Home() {
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Verified Live Opportunities</h2>
-              <p className="text-slate-600 text-sm mt-1">Direct application links to official career portals</p>
+              <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Verified Live Opportunities</h2>
+              <p className="text-slate-400 text-sm mt-1">Direct application links to official career portals</p>
             </div>
-            <Link href="/opportunities" className="text-blue-600 text-sm font-semibold hover:underline flex items-center gap-1">
-              View All ({stats.total}) <ArrowRight className="w-4 h-4" />
+            <Link
+              href="/opportunities"
+              className="text-xs font-semibold text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
+            >
+              View All <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 
