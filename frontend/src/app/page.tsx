@@ -106,28 +106,28 @@ export default async function Home() {
   ];
 
   return (
-    <div className="relative min-h-screen bg-slate-50 text-slate-900 pb-20">
+    <div className="relative min-h-screen bg-slate-950 text-slate-100 pb-20">
       
       {/* HERO SECTION */}
-      <section className="relative pt-16 pb-20 overflow-hidden bg-gradient-to-b from-blue-50/80 via-white to-slate-50 border-b border-slate-200/60">
+      <section className="relative pt-16 pb-20 overflow-hidden bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 border-b border-slate-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           
           {/* LIVE AGGREGATION BADGE */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full badge-live text-xs font-semibold mb-6 shadow-xs">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-            <span>Live Aggregator: {stats.verified}+ Official Verified Opportunities Ingested</span>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 text-xs font-semibold mb-6 shadow-md">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+            <span>ElectroBridge Engine: {stats.verified}+ Verified Opportunities & Industry News Ingested</span>
           </div>
 
           {/* MAIN HERO HEADLINE */}
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 max-w-5xl mx-auto leading-[1.15]">
-            India’s Premier Hub for <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-600">
-              Semiconductor & VLSI Careers
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white max-w-5xl mx-auto leading-[1.15]">
+            Semiconductor & VLSI <br />
+            <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+              Opportunity Aggregator
             </span>
           </h1>
 
-          <p className="mt-6 text-base sm:text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed font-normal">
-            Aggregating verified JRF, PhD, DRDO, ISRO, CSIR, IIT Bombay, IIT Madras, IISc research positions, and premier enterprise opportunities from Intel, Qualcomm, AMD, TSMC, and Arm.
+          <p className="mt-6 text-base sm:text-lg text-slate-300 max-w-3xl mx-auto font-normal leading-relaxed">
+            Aggregating 100% verified JRF, SRF, PhD, DRDO, ISRO, CSIR, IIT, and semiconductor foundry career openings from TSMC, Intel, Qualcomm, AMD, and Arm.
           </p>
 
           {/* HERO CALL TO ACTIONS */}

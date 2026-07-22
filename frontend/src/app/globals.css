@@ -8,30 +8,30 @@
    ========================================================================== */
 
 :root {
-  --bg:               #F8FAFC;
-  --surface:          #FFFFFF;
-  --surface-raised:   #F1F5F9;
-  --surface-sunken:   #E2E8F0;
-  --text:             #0F172A;
-  --text-secondary:   #475569;
+  --bg:               #0F172A;
+  --surface:          #1E293B;
+  --surface-raised:   #334155;
+  --surface-sunken:   #020617;
+  --text:             #F8FAFC;
+  --text-secondary:   #94A3B8;
   --text-tertiary:    #64748B;
-  --border:           #E2E8F0;
-  --border-subtle:    #F1F5F9;
-  --border-hover:     #93C5FD;
+  --border:           #334155;
+  --border-subtle:    #1E293B;
+  --border-hover:     #10B981;
 
-  --primary:          #2563EB;
-  --primary-hover:    #1D4ED8;
-  --primary-light:    #EFF6FF;
+  --primary:          #10B981;
+  --primary-hover:    #059669;
+  --primary-light:    #064E3B;
 
-  --accent-blue:      #2563EB;
-  --accent-cyan:      #0284C7;
-  --accent-emerald:   #059669;
-  --accent-purple:    #7C3AED;
-  --accent-amber:     #D97706;
+  --accent-blue:      #38BDF8;
+  --accent-cyan:      #06B6D4;
+  --accent-emerald:   #10B981;
+  --accent-purple:    #A855F7;
+  --accent-amber:     #F59E0B;
 
-  --success:          #059669;
-  --warning:          #D97706;
-  --error:            #DC2626;
+  --success:          #10B981;
+  --warning:          #F59E0B;
+  --error:            #EF4444;
 
   --fs-xs:   0.75rem;
   --fs-sm:   0.875rem;
