@@ -23,8 +23,8 @@ export default function NotFound() {
         <Link href="/chat" className="flex items-center justify-center gap-2 p-3 rounded-xl bg-surface border border-border hover:border-accent/40 text-text-primary text-xs font-medium transition-all">
           <Sparkles className="w-4 h-4 text-accent" /> AI Assistant
         </Link>
-        <Link href="/academy" className="flex items-center justify-center gap-2 p-3 rounded-xl bg-surface border border-border hover:border-accent/40 text-text-primary text-xs font-medium transition-all">
-          <GraduationCap className="w-4 h-4 text-accent" /> VLSI Academy
+        <Link href="/news" className="flex items-center justify-center gap-2 p-3 rounded-xl bg-surface border border-border hover:border-accent/40 text-text-primary text-xs font-medium transition-all">
+          <Sparkles className="w-4 h-4 text-accent" /> Semiconductor News
         </Link>
         <Link href="/news" className="flex items-center justify-center gap-2 p-3 rounded-xl bg-surface border border-border hover:border-accent/40 text-text-primary text-xs font-medium transition-all">
           <Newspaper className="w-4 h-4 text-accent" /> Industry News
