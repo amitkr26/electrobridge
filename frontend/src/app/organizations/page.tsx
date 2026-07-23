@@ -4,7 +4,7 @@ import { ArrowRight, Building2, MapPin, Sparkles } from "lucide-react";
 import { supabaseAdmin } from "@/lib/supabase";
 
 export const metadata: Metadata = {
-  title: "Organizations — BerojgarDegreeWala",
+  title: "Organizations Directory — electrobridge",
   description:
     "Browse electronics and semiconductor research opportunities by organization — DRDO, ISRO, CSIR, IITs, Intel, Qualcomm, AMD, TSMC, and more.",
 };

@@ -3,13 +3,13 @@ import Link from "next/link";
 import { GraduationCap, Briefcase, Globe, FileText, BookMarked, ArrowRight, Zap, Award, Network, Sparkles } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Resources — JRF Guide, PhD Guide, DRDO Labs, CSIR Research | BerojgarDegreeWala",
+  title: "Resources — JRF Guide, PhD Guide, DRDO Labs, CSIR Research | electrobridge",
   description: "Comprehensive guide to JRF positions in India, PhD admissions, list of DRDO and CSIR labs for electronics research, NET vs GATE comparison, international fellowship programs, and more.",
-  alternates: { canonical: "https://berojgardegreewala.vercel.app/resources" },
+  alternates: { canonical: "https://electrobridge.vercel.app/resources" },
   openGraph: {
-    title: "BerojgarDegreeWala Resources — JRF Guide & Research Information",
+    title: "electrobridge Resources — JRF Guide & Research Information",
     description: "Step-by-step JRF application guide, PhD admission guide, NET vs GATE comparison, DRDO/CSIR lab directory, international fellowship programs for Indian researchers.",
-    url: "https://berojgardegreewala.vercel.app/resources",
+    url: "https://electrobridge.vercel.app/resources",
   },
 };
 

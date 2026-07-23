@@ -5,10 +5,10 @@ import { GARBAGE_TITLE_PATTERNS } from "@/lib/scrapers/utils";
 import OpportunitiesClient from "./OpportunitiesClient";
 
 export const metadata: Metadata = {
-  title: "All Opportunities | BerojgarDegreeWala",
+  title: "All Opportunities | electrobridge",
   description: "Browse verified semiconductor, VLSI, JRF, and PhD opportunities.",
   alternates: {
-    canonical: "https://berojgardegreewala.vercel.app/opportunities",
+    canonical: "https://electrobridge.vercel.app/opportunities",
   },
 };
 
