@@ -79,7 +79,7 @@ export async function scrapeISRO(): Promise<ScrapedOpportunity[]> {
     try {
       res = await fetch(ISRO_URL, {
         signal: AbortSignal.timeout(15000),
-        headers: { "User-Agent": "Mozilla/5.0 (compatible; BerojgarDegreeWala/1.0)" },
+        headers: { "User-Agent": "Mozilla/5.0 (compatible; electrobridge/1.0)" },
       });
     } finally {
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = origTls;

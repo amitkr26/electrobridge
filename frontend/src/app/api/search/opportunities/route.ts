@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { supabaseAdmin, isAdminConfigured } from "@/lib/supabase";
 import { apiError } from "@/lib/api-utils";
 
 export async function GET(request: NextRequest) {
-  const supabase = await createClient();
+  if (!isAdminConfigured || !supabaseAdmin) {
+    return NextResponse.json({ error: "Database not configured." }, { status: 503 });
+  }
+
+  const supabase = supabaseAdmin;
   const { searchParams } = new URL(request.url);
   const q = searchParams.get("q") || "";
   const category = searchParams.get("category") || "";

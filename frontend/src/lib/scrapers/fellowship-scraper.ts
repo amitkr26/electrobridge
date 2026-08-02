@@ -66,7 +66,7 @@ async function scrapeSingleFellowship(source: typeof FELLOWSHIP_SOURCES[0]): Pro
     const res = await fetch(source.url, {
       signal: AbortSignal.timeout(10000),
       headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; BerojgarDegreeWalaBot/1.0; +https://berojgardegreewala.vercel.app/bot)"
+        "User-Agent": "Mozilla/5.0 (compatible; electrobridgeBot/1.0; +https://electrobridge.vercel.app/bot)"
       }
     });
 

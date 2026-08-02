@@ -16,8 +16,6 @@ yarn-error.log*
 .env
 .env*.local
 .env.production
-siliconpath-credentials.txt
-SECRETS.md
 
 # OS metadata
 .DS_Store

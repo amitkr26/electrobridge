@@ -97,10 +97,10 @@ export async function GET(request: NextRequest) {
             id: `rss-${i}`,
             title: a.title,
             slug: a.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
-            source: a.source_name,
-            source_url: a.link,
-            published_at: a.pubDate || new Date().toISOString(),
-            summary: a.contentSnippet || a.title,
+            source: a.source,
+            source_url: a.source_url,
+            published_at: a.published_at || new Date().toISOString(),
+            summary: a.summary || a.title,
             tags: a.tags || ["Semiconductor", "Industry"],
           }));
         }

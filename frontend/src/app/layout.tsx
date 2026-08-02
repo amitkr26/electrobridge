@@ -4,8 +4,6 @@ import Script from "next/script";
 import { Toaster } from "sonner";
 import "./globals.css";
 import AppLayout from "@/components/AppLayout";
-import Providers from "@/components/Providers";
-import { AuthSync } from "@/components/AuthSync";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const spaceGrotesk = Space_Grotesk({
@@ -57,7 +55,7 @@ export const metadata: Metadata = {
       "noarchive": true
     },
   },
-  alternates: { canonical: "https://berojgardegreewala.vercel.app" },
+  alternates: { canonical: "https://electrobridge.vercel.app" },
   verification: {
     google: "QnEIBEpKxP_ZiQxtneegX-6WWKxO_FZ8Yzzxp4kOqxA",
   },
@@ -84,12 +82,9 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${spaceGrotesk.variable} font-body bg-navy text-text-primary min-h-screen`}
       >
-        <AuthSync />
-        <Providers>
-          <AppLayout>{children}</AppLayout>
-        </Providers>
+        <AppLayout>{children}</AppLayout>
         <Toaster position="bottom-right" toastOptions={{ style: { background: '#111827', border: '1px solid #374151', color: '#F9FAFB' } }} />
-        <Script defer data-domain="berojgardegreewala.vercel.app" src="https://plausible.io/js/script.js" strategy="afterInteractive" />
+        <Script defer data-domain="electrobridge.vercel.app" src="https://plausible.io/js/script.js" strategy="afterInteractive" />
       </body>
     </html>
   );

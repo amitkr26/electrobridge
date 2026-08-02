@@ -1,9 +1,8 @@
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /dashboard/
 
-# Explicitly allow major AI crawlers for GEO (Generative Engine Optimization)
+# Allow AI crawlers for GEO (Generative Engine Optimization)
 User-agent: GPTBot
 Allow: /
 
@@ -19,4 +18,4 @@ Allow: /
 User-agent: OAI-SearchBot
 Allow: /
 
-Sitemap: https://berojgardegreewala.vercel.app/sitemap.xml
+Sitemap: https://electrobridge.vercel.app/sitemap.xml

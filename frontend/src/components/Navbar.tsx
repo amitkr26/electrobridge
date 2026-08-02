@@ -4,37 +4,22 @@ import { useState, useRef, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import {
-  Briefcase, GraduationCap, Sparkles, Users, FileText,
-  Search, Menu, X, User, LogOut, CircuitBoard
+  Briefcase, Sparkles, Users,
+  Search, Menu, X, CircuitBoard
 } from "lucide-react";
-import { useUser } from "@/hooks/useUser";
 
 const PUBLIC_NAV_ITEMS = [
   { href: "/opportunities", label: "Opportunities", icon: Briefcase },
   { href: "/news", label: "News", icon: Sparkles },
   { href: "/organizations", label: "Organizations", icon: Users },
-  { href: "/resources", label: "Resources", icon: FileText },
 ];
 
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
-  const { user, signOut: signOutUser } = useUser();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const userRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    const onClick = (e: MouseEvent) => {
-      if (userRef.current && !userRef.current.contains(e.target as Node)) {
-        setUserDropdownOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
-  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

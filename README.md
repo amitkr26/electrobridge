@@ -2,45 +2,73 @@
 
 **Verified Opportunity Engine for the Semiconductor & VLSI Industry**
 
-electrobridge is a streamlined, AI-powered opportunity aggregator built exclusively for the semiconductor, VLSI, and electronics engineering community in India. It centralizes JRF positions, PhD admissions, government jobs (DRDO, ISRO, CSIR), and private sector roles into a single, high-performance platform.
+electrobridge is a pure opportunity aggregator for the semiconductor, VLSI, and electronics engineering community in India. It centralizes JRF positions, PhD admissions, government jobs (DRDO, ISRO, CSIR), fellowships, and private sector roles into a single searchable platform.
 
 ## Features
 
-- **Live Ingestion**: Aggregates verified opportunities from 100+ organizations across India.
-- **Smart Categorization**: Opportunities are classified into specific categories (JRF, SRF, PhD, Govt, Fellowship, Private, International).
-- **Fast Search & Filtering**: Client-side filtering and rapid search to find the exact roles you need quickly.
-- **Professional Design**: Premium modern UI built with Tailwind CSS, featuring subtle micro-animations and a unified design system.
+- **Live Ingestion** — Automated scrapers pull opportunities and news daily from official sources (DRDO, ISRO, CSIR, IITs, international programs) via Vercel Cron.
+- **Verified Listings** — Auto-scraped rows are filtered, tagged, and marked verified; broken/expired links are re-checked and archived.
+- **Fast Search & Filtering** — Search by keyword, category, eligibility, location, and deadline with card/grid view toggling.
+- **Structured Content** — Detailed opportunity pages with deadlines, stipends, eligibility, calendars (ICS export), share buttons, and similar-opportunity suggestions.
+- **Weekly Digest** — Optional email digest of new opportunities for subscribers.
 
 ## Tech Stack
 
-- **Frontend**: Next.js 14 (App Router), React, Tailwind CSS, Lucide Icons.
-- **Typography**: Inter (Body), Space Grotesk (Display).
-- **Deployment**: Vercel.
+- **Frontend**: Next.js 14 (App Router, React 18), TypeScript, Tailwind CSS, Lucide Icons.
+- **Data**: Supabase (opportunities, news, organizations), Neon (analytics).
+- **Scraping**: Custom scrapers using Cheerio and RSS parser.
+- **Deployment**: Vercel (with cron schedules).
+
+## Repository Layout
+
+```
+backend/api          Shared API utilities (response helpers, validation, rate limiting)
+frontend/            Next.js app (pages, API routes, scrapers, components)
+neon/                Neon analytics schema
+```
 
 ## Local Setup
 
-1. **Clone the repository:**
-   ```bash
-   git clone <repository-url>
-   cd electrobridge/frontend
-   ```
-
-2. **Install dependencies:**
+1. **Install dependencies** (from repository root):
    ```bash
    npm install
    ```
 
-3. **Set up environment variables:**
-   Create a `.env.local` file in the `frontend` directory based on `.env.example` (if provided). You will need Supabase credentials to fetch real opportunities.
+2. **Set environment variables** in `frontend/.env.local`:
+   ```
+   NEXT_PUBLIC_SUPABASE_URL=
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=
+   SUPABASE_SERVICE_ROLE_KEY=
+   RESEND_API_KEY=          # optional, for the weekly digest
+   CRON_SECRET=             # protects cron endpoints
+   ```
 
-4. **Run the development server:**
+3. **Run the development server:**
    ```bash
    npm run dev
    ```
-
-5. **Open in browser:**
    Navigate to `http://localhost:3000`.
 
-## Architecture Scope
+## Scripts
 
-electrobridge is intentionally scoped as a **pure opportunity aggregator**. It is a standalone, finished project designed to cleanly demonstrate modern Next.js frontend capabilities and integration with a backend data engine.
+| Command          | Description                          |
+| ---------------- | ------------------------------------ |
+| `npm run dev`    | Start the Next.js dev server         |
+| `npm run build`  | Production build                     |
+| `npm test`       | Run the test suite                   |
+| `npm run lint`   | Lint the workspace                   |
+| `make env-check` | Verify required environment keys     |
+
+## Deployment
+
+Vercel Cron Jobs handle scheduled ingestion:
+
+- `0 0 * * *` — `/api/cron/scrape-india`
+- `0 4 * * *` — `/api/cron/scrape-global`
+- `0 6 * * *` — `/api/cron/scrape-news`
+- `0 8 * * *` — `/api/cron/digest`
+- `0 2 * * 0` — `/api/cron/cleanup`
+
+## License
+
+MIT.

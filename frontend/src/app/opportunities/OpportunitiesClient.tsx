@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import type { Opportunity } from "@/types";
 import OpportunityRow from "@/components/OpportunityRow";
 import OpportunityCard from "@/components/OpportunityCard";
 import FilterBar from "@/components/FilterBar";
 import SearchBar from "@/components/SearchBar";
-import { Loader2, ShieldCheck, EyeOff, Sparkles, X, Filter, LayoutGrid, List } from "lucide-react";
+import { Loader2, Sparkles, X, Filter, LayoutGrid, List } from "lucide-react";
 
 export default function OpportunitiesClient({ initialData }: { initialData: Opportunity[] }) {
   const [opportunities, setOpportunities] = useState<Opportunity[]>(initialData);
@@ -18,13 +18,10 @@ export default function OpportunitiesClient({ initialData }: { initialData: Oppo
   const [search, setSearch] = useState("");
   const [showUnverified, setShowUnverified] = useState(false);
   const [viewMode, setViewMode] = useState<"card" | "row">("card");
-  const [aiChips, setAiChips] = useState<Record<string, string>>({});
-  const [aiSearching, setAiSearching] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(initialData.length);
-  const lastAISearch = useRef("");
 
   const fetchOpportunities = useCallback(async (pageNum = 1) => {
     setLoading(true);
@@ -63,35 +60,6 @@ export default function OpportunitiesClient({ initialData }: { initialData: Oppo
       setLoading(false);
     }
   }, [category, eligibility, location, deadline, search, showUnverified]);
-
-  const handleSearch = useCallback(async (query: string) => {
-    setSearch(query);
-
-    if (query.length > 5 && query !== lastAISearch.current) {
-      lastAISearch.current = query;
-      setAiSearching(true);
-      try {
-        const res = await fetch("/api/ai/search", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ query }),
-        });
-        if (res.ok) {
-          const data = await res.json();
-          const chips: Record<string, string> = {};
-          if (data.filters?.category) chips.category = data.filters.category;
-          if (data.filters?.location) chips.location = data.filters.location;
-          if (data.filters?.eligibility) chips.eligibility = data.filters.eligibility;
-          if (data.filters?.organization_hint) chips.organization = data.filters.organization_hint;
-          setAiChips(chips);
-        }
-      } catch {
-        // AI fallback
-      } finally {
-        setAiSearching(false);
-      }
-    }
-  }, []);
 
   useEffect(() => {
     fetchOpportunities(1);
@@ -171,13 +139,7 @@ export default function OpportunitiesClient({ initialData }: { initialData: Oppo
             {/* SEARCH & TOGGLES */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-6">
               <div className="flex-1">
-                <SearchBar onSearch={handleSearch} />
-                {aiSearching && (
-                  <div className="flex items-center gap-1.5 mt-1.5 text-xs text-blue-600 font-medium">
-                    <Sparkles className="w-3.5 h-3.5 animate-spin" />
-                    <span>AI parsing query parameters...</span>
-                  </div>
-                )}
+                <SearchBar onSearch={setSearch} />
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -196,21 +158,6 @@ export default function OpportunitiesClient({ initialData }: { initialData: Oppo
                 </button>
               </div>
             </div>
-
-            {/* AI FILTER CHIPS */}
-            {Object.keys(aiChips).length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-4">
-                {Object.entries(aiChips).map(([key, value]) => (
-                  <span key={key} className="inline-flex items-center gap-1 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium border border-blue-200">
-                    <Sparkles className="w-3.5 h-3.5" />
-                    {key}: {value}
-                    <button onClick={() => { const newChips = { ...aiChips }; delete newChips[key]; setAiChips(newChips); }} className="hover:text-blue-900 ml-1">
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                  </span>
-                ))}
-              </div>
-            )}
 
             {/* RESULTS STATS HEADER */}
             <div className="flex items-center justify-between mb-4">

@@ -1,6 +1,6 @@
 -- target: supabase_db1
 -- ═══════════════════════════════════════════════════════════════
--- BerojgarDegreeWala Session 14: scrape_sources table + verification update
+-- electrobridge Session 14: scrape_sources table + verification update
 -- Run on Supabase Primary (db1)
 -- ═══════════════════════════════════════════════════════════════
 

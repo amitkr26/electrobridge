@@ -1,10 +1,9 @@
 ﻿import { supabaseAdmin, isAdminConfigured } from "./supabase";
 import type { Opportunity, Subscriber } from "@/types";
-import { generateWeeklyDigest } from "@/lib/ai/newsletter";
 import { logger } from "@/lib/logger";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
-const FROM_EMAIL = process.env.FROM_EMAIL || "digest@berojgardegreewala.vercel.app";
+const FROM_EMAIL = process.env.FROM_EMAIL || "digest@electrobridge.vercel.app";
 
 interface DigestData {
   newThisWeek: Opportunity[];
@@ -54,8 +53,8 @@ async function getActiveSubscribers(): Promise<Subscriber[]> {
 function buildDigestHTML(data: DigestData): string {
   const formatOppRow = (opp: Opportunity, index: number) => {
     const detailUrl = opp.slug
-      ? `https://berojgardegreewala.vercel.app/opportunities/${opp.slug}`
-      : `https://berojgardegreewala.vercel.app/opportunities/${opp.id}`;
+      ? `https://electrobridge.vercel.app/opportunities/${opp.slug}`
+      : `https://electrobridge.vercel.app/opportunities/${opp.id}`;
 
     return `
     <tr>
@@ -91,7 +90,7 @@ function buildDigestHTML(data: DigestData): string {
       <td style="padding: 40px 24px 0;">
         <div style="text-align: center; margin-bottom: 32px;">
           <h1 style="color: #F1F5F9; font-size: 24px; font-weight: 700; margin: 0; letter-spacing: -0.02em;">
-            ⚡ BerojgarDegreeWala Weekly Digest
+⚡ electrobridge Weekly Digest
           </h1>
           <p style="color: #64748B; font-size: 14px; margin: 8px 0 0;">
             Your weekly roundup of electronics &amp; semiconductor opportunities
@@ -120,7 +119,7 @@ function buildDigestHTML(data: DigestData): string {
 
         <div style="text-align: center; padding: 24px 0;">
           <p style="color: #475569; font-size: 12px; margin: 0;">
-            <a href="https://berojgardegreewala.vercel.app" style="color: #06B6D4; text-decoration: none;">BerojgarDegreeWala</a>
+            <a href="https://electrobridge.vercel.app" style="color: #06B6D4; text-decoration: none;">electrobridge</a>
             &mdash; Electronics &amp; Semiconductor Opportunities
           </p>
         </div>
@@ -145,27 +144,8 @@ export async function sendDigest() {
     return { sent: 0, error: "No active subscribers" };
   }
 
-  let html = buildDigestHTML(data);
-  let subject = `⚡ BerojgarDegreeWala Weekly Digest — ${new Date().toLocaleDateString("en-IN", { month: "long", day: "numeric", year: "numeric" })}`;
-
-  try {
-    const aiDigest = await generateWeeklyDigest(data.newThisWeek, []);
-    if (aiDigest) {
-      const aiSection = `
-        <div style="background: #0F172A; border: 1px solid #1E293B; border-radius: 12px; padding: 24px; margin-bottom: 24px;">
-          <h2 style="color: #8B5CF6; font-size: 16px; font-weight: 600; margin: 0 0 16px;">
-            🤖 AI Editor&apos;s Note
-          </h2>
-          <p style="color: #94A3B8; font-size: 13px; line-height: 1.6; margin: 0; white-space: pre-wrap;">${aiDigest.replace(/\n/g, "<br>")}</p>
-        </div>`;
-      html = html.replace(
-        '<div style="text-align: center; padding: 24px 0;">',
-        `${aiSection}<div style="text-align: center; padding: 24px 0;">`
-      );
-    }
-  } catch {
-    // Fall back to non-AI digest if AI fails
-  }
+  const html = buildDigestHTML(data);
+  const subject = `⚡ electrobridge Weekly Digest — ${new Date().toLocaleDateString("en-IN", { month: "long", day: "numeric", year: "numeric" })}`;
 
   const { Resend } = await import("resend");
   const resend = new Resend(RESEND_API_KEY);

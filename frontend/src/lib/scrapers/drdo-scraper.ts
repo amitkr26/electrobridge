@@ -84,7 +84,7 @@ export async function scrapeDRDO(): Promise<ScrapedOpportunity[]> {
     try {
       res = await fetch(DRDO_VACANCIES_URL, {
         signal: AbortSignal.timeout(15000),
-        headers: { "User-Agent": "Mozilla/5.0 (BerojgarDegreeWala/1.0)" },
+        headers: { "User-Agent": "Mozilla/5.0 (electrobridge/1.0)" },
       });
     } finally {
       process.env.NODE_TLS_REJECT_UNAUTHORIZED = origTls;

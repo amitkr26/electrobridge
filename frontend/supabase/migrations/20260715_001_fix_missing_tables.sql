@@ -1,6 +1,6 @@
 -- target: supabase_db1
 -- ═══════════════════════════════════════════════════════════════
--- BerojgarDegreeWala — Fix Missing Tables & Schema Drift
+-- electrobridge — Fix Missing Tables & Schema Drift
 -- 
 -- Adds tables referenced in code but missing from migrations:
 --   scrape_runs, app_config, organizations

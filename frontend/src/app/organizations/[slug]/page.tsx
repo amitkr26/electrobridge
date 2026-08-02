@@ -60,9 +60,9 @@ export async function generateMetadata({ params }: Props) {
   const { name, opportunities } = await getOrganizationOpportunities(params.slug);
   if (!opportunities.length) return { title: "Organization Not Found" };
   return {
-    title: `${name} — ${opportunities.length} Active Opportunities | BerojgarDegreeWala`,
-    description: `Browse ${opportunities.length} active JRF, PhD, and research opportunities at ${name}. Find current openings and apply through BerojgarDegreeWala.`,
-    alternates: { canonical: `https://berojgardegreewala.vercel.app/organizations/${params.slug}` },
+    title: `${name} — ${opportunities.length} Active Opportunities | electrobridge`,
+    description: `Browse ${opportunities.length} active JRF, PhD, and research opportunities at ${name}. Find current openings and apply through electrobridge.`,
+    alternates: { canonical: `https://electrobridge.vercel.app/organizations/${params.slug}` },
   };
 }
 
@@ -75,8 +75,8 @@ export default async function OrganizationPage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "Organization",
     name,
-    description: `${name} — ${opportunities.length} active opportunities on BerojgarDegreeWala`,
-    url: `https://berojgardegreewala.vercel.app/organizations/${params.slug}`,
+    description: `${name} — ${opportunities.length} active opportunities on electrobridge`,
+    url: `https://electrobridge.vercel.app/organizations/${params.slug}`,
     numberOfEmployees: { "@type": "QuantitativeValue", value: opportunities.length },
   };
 
@@ -84,8 +84,8 @@ export default async function OrganizationPage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://berojgardegreewala.vercel.app" },
-      { "@type": "ListItem", position: 2, name: "Organizations", item: "https://berojgardegreewala.vercel.app/organizations" },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://electrobridge.vercel.app" },
+      { "@type": "ListItem", position: 2, name: "Organizations", item: "https://electrobridge.vercel.app/organizations" },
       { "@type": "ListItem", position: 3, name },
     ],
   };

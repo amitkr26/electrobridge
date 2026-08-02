@@ -139,12 +139,12 @@ export function generateOpenAPISpec(): OpenAPISpec {
   return {
     openapi: "3.1.0",
     info: {
-      title: "BerojgarDegreeWala API",
+      title: "electrobridge API",
       version: "1.0.0",
-      description: "BerojgarDegreeWala - VLSI/Embedded Career Platform API",
+      description: "electrobridge - VLSI/Embedded Opportunity Aggregator API",
     },
     servers: [
-      { url: "https://berojgardegreewala.vercel.app", description: "Production" },
+      { url: "https://electrobridge.vercel.app", description: "Production" },
       { url: "http://localhost:3000", description: "Development" },
     ],
     paths: {

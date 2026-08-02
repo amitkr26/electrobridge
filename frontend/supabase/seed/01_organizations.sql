@@ -1,4 +1,4 @@
--- BerojgarDegreeWala v2 :: Verified organizations seed (worldwide).
+-- electrobridge :: Verified organizations seed (worldwide).
 -- Run AFTER 20260710_000_reset_core.sql on Supabase Project 1.
 
 INSERT INTO organizations (name, slug, type, country, location, website, is_verified) VALUES

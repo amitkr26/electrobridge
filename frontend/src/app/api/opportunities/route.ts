@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin, isAdminConfigured } from "@/lib/supabase";
-import { createClient } from "@/lib/supabase/server";
-import { postToTelegram } from "@/lib/telegram-bot";
 import { mapDbOpportunityToClient } from "@/lib/utils";
-import { GARBAGE_TITLE_PATTERNS, slugify } from "@/lib/scrapers/utils";
-import { opportunitySchema, opportunityListQuerySchema } from "@berojgardegreewala/api";
-import { success, list, validationError, serverError, requireAdmin } from "@berojgardegreewala/api";
+import { GARBAGE_TITLE_PATTERNS } from "@/lib/scrapers/utils";
+import { opportunityListQuerySchema } from "@berojgardegreewala/api";
 
 // A row is displayable only if it has a real title that is not a nav/menu heading.
 function isDisplayableOpportunity(o: { title?: string | null } | null): boolean {
@@ -130,67 +127,6 @@ export async function GET(request: NextRequest) {
     console.error("Error fetching opportunities:", error);
     return NextResponse.json(
       { error: "Failed to fetch opportunities" },
-      { status: 500 }
-    );
-  }
-}
-
-export async function POST(request: NextRequest) {
-  if (!isAdminConfigured || !supabaseAdmin) {
-    return NextResponse.json(
-      { error: "Database not configured." },
-      { status: 503 }
-    );
-  }
-
-  try {
-    const admin = await requireAdmin(request);
-    if (!admin) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const raw = await request.json();
-    const body = opportunitySchema.parse(raw);
-
-let sourceType = body.source_type;
-    if (!sourceType) {
-      sourceType = "employer_posted";
-    }
-
-    let oppSlug = slugify(body.title);
-    if (!oppSlug) oppSlug = `opportunity-${Date.now()}`;
-    const { data: existingSlug } = await supabaseAdmin
-      .from("opportunities")
-      .select("id")
-      .eq("slug", oppSlug)
-      .maybeSingle();
-    if (existingSlug) oppSlug = `${oppSlug}-${Date.now()}`;
-
-    const { data, error } = await supabaseAdmin
-      .from("opportunities")
-      .insert([{
-        ...body,
-        slug: oppSlug,
-        source_type: sourceType,
-        verification_status: "pending",
-        is_active: true,
-      }])
-      .select();
-
-    if (error) throw error;
-
-    const newOpportunity = data?.[0];
-    if (newOpportunity && admin.role === "admin") {
-      postToTelegram(newOpportunity).catch((e) =>
-        console.error("Telegram post failed (non-blocking):", e)
-      );
-    }
-
-    return NextResponse.json({ opportunity: newOpportunity }, { status: 201 });
-  } catch (error) {
-    console.error("Error creating opportunity:", error);
-    return NextResponse.json(
-      { error: "Failed to create opportunity" },
       { status: 500 }
     );
   }

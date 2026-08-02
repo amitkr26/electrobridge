@@ -209,7 +209,7 @@ async function fetchRSSFeed(
     const parser = new Parser({
       timeout: 8000,
       headers: {
-        "User-Agent": "Mozilla/5.0 (compatible; BerojgarDegreeWala/1.0)",
+        "User-Agent": "Mozilla/5.0 (compatible; electrobridge/1.0)",
       },
     });
     const feed = await parser.parseURL(feedUrl);
@@ -300,7 +300,7 @@ export async function fetchOpportunitiesFromRSS(): Promise<ScrapedOpportunity[]>
       const parser = new Parser({
         timeout: 8000,
         headers: {
-          "User-Agent": "Mozilla/5.0 (compatible; BerojgarDegreeWala/1.0)",
+          "User-Agent": "Mozilla/5.0 (compatible; electrobridge/1.0)",
         },
       });
       const feed = await parser.parseURL(source.url);

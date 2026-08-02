@@ -1,4 +1,4 @@
--- BerojgarDegreeWala v3 :: Expanded worldwide organizations directory.
+-- electrobridge :: Expanded worldwide organizations directory.
 -- Run AFTER 01_organizations.sql on Supabase Project 1. Adds ~55 more.
 -- NOTE: this seeds the DIRECTORY only. Per the source-list rollout guidance,
 -- do NOT wire scrape_sources for these until each career-page URL is verified

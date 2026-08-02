@@ -8,7 +8,7 @@ import { supabaseAdmin } from "@/lib/supabase";
 
 export const metadata: Metadata = {
   title: "About — electrobridge | Verified Semiconductor Opportunity Engine",
-  description: "Learn about electrobridge — an AI-powered opportunity engine aggregating JRF, PhD, government, and private sector opportunities in electronics and semiconductor research across India.",
+  description: "Learn about electrobridge — an opportunity aggregator listing JRF, PhD, government, and private sector opportunities in electronics and semiconductor research across India.",
   alternates: { canonical: "https://electrobridge.vercel.app/about" },
   openGraph: {
     title: "About electrobridge",
@@ -84,8 +84,8 @@ const verificationSteps = [
   },
   {
     step: "2",
-    title: "AI Filtering & Tagging",
-    desc: "AI-powered filters classify each listing by category, tag relevant topics, and detect expired or broken links automatically.",
+    title: "Filtering & Tagging",
+    desc: "Automated filters classify each listing by category, tag relevant topics, and flag expired or broken links for review.",
   },
   {
     step: "3",
@@ -101,8 +101,8 @@ const verificationSteps = [
 
 const faqItems = [
   {
-    q: "Is BerojgarDegreeWala free?",
-    a: "Yes, BerojgarDegreeWala is completely free for all users. Browse, search, filter, and apply for opportunities without any subscription or payment.",
+    q: "Is electrobridge free?",
+    a: "Yes, electrobridge is completely free for all users. Browse, search, filter, and apply for opportunities without any subscription or payment.",
   },
   {
     q: "How often are opportunities updated?",
@@ -121,7 +121,7 @@ const faqItems = [
     a: "Each opportunity page has a report button. You can also use our Contact page to send suggestions or report issues directly to our team.",
   },
   {
-    q: "Which organizations does BerojgarDegreeWala cover?",
+    q: "Which organizations does electrobridge cover?",
     a: "We cover DRDO labs (LRDE, DEAL, RCI, CAIR), CSIR institutes (NPL, CEERI, CSIO), ISRO centers, IITs, NITs, BARC, and private companies like Intel, Qualcomm, AMD, Texas Instruments, and more.",
   },
 ];
@@ -138,12 +138,12 @@ export default async function AboutPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "BerojgarDegreeWala",
-    url: "https://berojgardegreewala.vercel.app",
+    name: "electrobridge",
+    url: "https://electrobridge.vercel.app",
     description: "Electronics and semiconductor opportunity aggregator for Indian researchers",
     potentialAction: {
       "@type": "SearchAction",
-      target: "https://berojgardegreewala.vercel.app/opportunities?search={search_term_string}",
+      target: "https://electrobridge.vercel.app/opportunities?search={search_term_string}",
       "query-input": "required name=search_term_string",
     },
   };
@@ -166,7 +166,7 @@ export default async function AboutPage() {
       {/* Hero */}
       <div className="text-center mb-12">
         <h1 className="font-display text-4xl sm:text-5xl font-bold text-text-primary mb-4">
-          About BerojgarDegreeWala
+          About electrobridge
         </h1>
         <p className="text-text-secondary text-lg max-w-2xl mx-auto">
           Your gateway to electronics and semiconductor research opportunities in India and globally.
@@ -193,7 +193,7 @@ export default async function AboutPage() {
           opportunities remains fragmented across dozens of websites, portals, and notice boards.
         </p>
         <p className="text-text-secondary text-sm leading-relaxed mb-4">
-          BerojgarDegreeWala was built to solve this. We aggregate JRF, PhD, government research jobs, and private sector
+          electrobridge was built to solve this. We aggregate JRF, PhD, government research jobs, and private sector
           opportunities from across India and internationally — all in one searchable, verified platform.
         </p>
         <p className="text-text-secondary text-sm leading-relaxed">

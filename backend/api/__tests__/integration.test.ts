@@ -148,7 +148,7 @@ describe("OpenAPI spec", () => {
   it("generates valid spec", () => {
     const spec = generateOpenAPISpec();
     expect(spec.openapi).toBe("3.1.0");
-    expect(spec.info.title).toBe("BerojgarDegreeWala API");
+    expect(spec.info.title).toBe("electrobridge API");
     expect(Object.keys(spec.paths).length).toBeGreaterThan(30);
     expect(spec.components.schemas.Opportunity).toBeDefined();
     expect(spec.components.schemas.Organization).toBeDefined();

@@ -63,7 +63,7 @@ async function scrapeCSIR_RSS(): Promise<ScrapedOpportunity[]> {
   try {
     const parser = new Parser({
       timeout: 8000,
-      headers: { "User-Agent": "Mozilla/5.0 (BerojgarDegreeWala/1.0)" },
+      headers: { "User-Agent": "Mozilla/5.0 (electrobridge/1.0)" },
     });
     const feed = await parser.parseURL("https://www.csir.res.in/en/rss.xml");
     for (const item of feed.items) {

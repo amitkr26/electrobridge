@@ -1,13 +1,13 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "BerojgarDegreeWala API",
+    "title": "electrobridge API",
     "version": "1.0.0",
-    "description": "BerojgarDegreeWala - VLSI/Embedded Career Platform API"
+    "description": "electrobridge - VLSI/Embedded Opportunity Aggregator API"
   },
   "servers": [
     {
-      "url": "https://berojgardegreewala.vercel.app",
+      "url": "https://electrobridge.vercel.app",
       "description": "Production"
     },
     {

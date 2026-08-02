@@ -26,12 +26,12 @@ export async function GET() {
         .limit(1000),
     ]);
 
-    const baseUrl = "https://berojgardegreewala.vercel.app";
+    const baseUrl = "https://electrobridge.vercel.app";
     const urls = [
       { url: baseUrl, lastmod: new Date().toISOString(), changefreq: "daily", priority: 1.0 },
       { url: `${baseUrl}/opportunities`, lastmod: new Date().toISOString(), changefreq: "daily", priority: 0.9 },
       { url: `${baseUrl}/news`, lastmod: new Date().toISOString(), changefreq: "daily", priority: 0.8 },
-      { url: `${baseUrl}/companies`, lastmod: new Date().toISOString(), changefreq: "weekly", priority: 0.7 },
+      { url: `${baseUrl}/organizations`, lastmod: new Date().toISOString(), changefreq: "weekly", priority: 0.7 },
     ];
 
     (opportunities || []).forEach((o: { slug: string; updated_at: string }) => {

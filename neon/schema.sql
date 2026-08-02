@@ -1,5 +1,5 @@
 -- ============================================================================
--- BerojgarDegreeWala v2 :: Neon (ANALYTICS) :: single consolidated database
+-- electrobridge :: Neon (ANALYTICS) :: single consolidated database
 -- Down from 2 Neon databases to 1. Run via psql or the Neon SQL Editor.
 -- ============================================================================
 

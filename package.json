@@ -1,10 +1,9 @@
 {
-  "name": "berojgardegreewala",
+  "name": "electrobridge",
   "version": "1.0.0",
   "private": true,
   "workspaces": [
     "backend/api",
-    "backend/ai-gateway",
     "frontend"
   ],
   "scripts": {

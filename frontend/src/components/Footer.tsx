@@ -18,7 +18,7 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-slate-400 text-sm leading-relaxed mb-4">
-              AI-powered verified opportunity engine for the semiconductor, VLSI, and electronics engineering community. Real-time ingestion.
+              Verified opportunity engine for the semiconductor, VLSI, and electronics engineering community. Real-time ingestion.
             </p>
           </div>
 
@@ -29,7 +29,7 @@ export default function Footer() {
               <Link href="/opportunities" className="text-slate-400 hover:text-emerald-400 transition-colors text-sm font-medium">Opportunities Engine</Link>
               <Link href="/news" className="text-slate-400 hover:text-emerald-400 transition-colors text-sm">News Feed</Link>
               <Link href="/organizations" className="text-slate-400 hover:text-emerald-400 transition-colors text-sm">Organizations Directory</Link>
-              <Link href="/resources" className="text-slate-400 hover:text-emerald-400 transition-colors text-sm">Research Resources</Link>
+              <Link href="/categories" className="text-slate-400 hover:text-emerald-400 transition-colors text-sm">Categories</Link>
             </div>
           </div>
 
@@ -49,13 +49,10 @@ export default function Footer() {
 
           {/* RESOURCES COLUMN */}
           <div>
-            <h4 className="text-sm font-semibold text-white tracking-wide uppercase mb-4">Company & Resources</h4>
+            <h4 className="text-sm font-semibold text-white tracking-wide uppercase mb-4">Company</h4>
             <div className="flex flex-col gap-2.5">
               <Link href="/about" className="text-slate-400 hover:text-emerald-400 transition-colors text-sm">About electrobridge</Link>
-              <Link href="/resources/jrf-guide" className="text-slate-400 hover:text-emerald-400 transition-colors text-sm">JRF Complete Guide</Link>
-              <Link href="/resources/phd-guide" className="text-slate-400 hover:text-emerald-400 transition-colors text-sm">PhD Admission Guide</Link>
-              <Link href="/resources/vlsi-careers" className="text-slate-400 hover:text-emerald-400 transition-colors text-sm">VLSI Career Guide</Link>
-              <Link href="/contact" className="text-slate-400 hover:text-emerald-400 transition-colors text-sm">Contact Support</Link>
+              <Link href="/contact" className="text-slate-400 hover:text-emerald-400 transition-colors text-sm">Contact</Link>
             </div>
           </div>
         </div>

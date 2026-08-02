@@ -5,7 +5,7 @@ describe("openapi", () => {
   it("generates base spec", () => {
     const spec = generateOpenAPISpec();
     expect(spec.openapi).toBe("3.1.0");
-    expect(spec.info.title).toBe("BerojgarDegreeWala API");
+    expect(spec.info.title).toBe("electrobridge API");
     expect(spec.components.securitySchemes.BearerAuth).toBeDefined();
   });
 

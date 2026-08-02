@@ -7,27 +7,11 @@ on:
     branches: [main]
 
 jobs:
-  ai-gateway:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - name: Install dependencies
-        run: npm ci
-      - name: Typecheck
-        run: npm run typecheck --workspace=packages/ai-gateway
-      - name: Test
-        run: npm test --workspace=packages/ai-gateway
-
   frontend:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: berojgardegreewala
+        working-directory: frontend
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
@@ -35,7 +19,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: berojgardegreewala/package-lock.json
+          cache-dependency-path: frontend/package-lock.json
       - name: Install dependencies
         run: npm ci
       - name: Lint
@@ -48,8 +32,4 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co' }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key' }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY || 'placeholder-service-role-key' }}
-          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000' }}
-          ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD || 'placeholder-admin' }}
           CRON_SECRET: ${{ secrets.CRON_SECRET || 'placeholder-cron' }}
-
-

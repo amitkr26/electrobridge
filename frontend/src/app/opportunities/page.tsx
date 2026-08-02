@@ -48,7 +48,7 @@ export default async function OpportunitiesPage() {
     "itemListElement": initialData.map((opp, index) => ({
       "@type": "ListItem",
       "position": index + 1,
-      "url": `https://berojgardegreewala.vercel.app/opportunities/${opp.slug}`,
+      "url": `https://electrobridge.vercel.app/opportunities/${opp.slug}`,
     })),
   };
 

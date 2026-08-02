@@ -1,6 +1,6 @@
 -- target: supabase_db1
 -- ═══════════════════════════════════════════════════════════════
--- BerojgarDegreeWala Batch 1 ATS Sources
+-- electrobridge Batch 1 ATS Sources
 -- ═══════════════════════════════════════════════════════════════
 
 INSERT INTO scrape_sources (name, source_type, adapter, url, category, is_active, priority) VALUES

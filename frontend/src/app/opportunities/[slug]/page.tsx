@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, MapPin, Currency, Calendar, ExternalLink, Clock, Briefcase, GraduationCap, CalendarDays, User, Bookmark, Share2, BookmarkCheck } from "lucide-react";
+import { ArrowLeft, MapPin, Currency, Calendar, ExternalLink, Clock, Briefcase, GraduationCap, CalendarDays, User } from "lucide-react";
 import { supabaseAdmin } from "@/lib/supabase";
 import { formatDate, isExpired, mapDbOpportunityToClient } from "@/lib/utils";
 import CategoryBadge from "@/components/CategoryBadge";
@@ -12,7 +12,6 @@ import CopyLinkButton from "@/components/CopyLinkButton";
 import VerificationBadge from "@/components/VerificationBadge";
 import LinkTypeIndicator from "@/components/LinkTypeIndicator";
 import OpportunityDisclaimer from "@/components/OpportunityDisclaimer";
-import AIOpportunitySummary from "@/components/AIOpportunitySummary";
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
@@ -33,7 +32,7 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props) {
-  if (!supabaseAdmin?.from) return { title: "Opportunity | BerojgarDegreeWala" };
+  if (!supabaseAdmin?.from) return { title: "Opportunity | electrobridge" };
 
   const { data: rawOpportunity } = await supabaseAdmin
     .from("opportunities")
@@ -51,19 +50,19 @@ export async function generateMetadata({ params }: Props) {
   return {
     title: `${opportunity.title} — ${opportunity.organization}`,
     description: `${opportunity.category} position at ${opportunity.organization}${opportunity.location ? ` in ${opportunity.location}` : ""}.${opportunity.eligibility ? ` Eligibility: ${opportunity.eligibility}.` : ""}${opportunity.stipend ? ` Stipend: ${opportunity.stipend}.` : ""} Apply by ${deadlineStr}.`,
-    keywords: [...(opportunity.tags || []), opportunity.organization, opportunity.category, opportunity.location, "BerojgarDegreeWala"].filter(Boolean),
+    keywords: [...(opportunity.tags || []), opportunity.organization, opportunity.category, opportunity.location, "electrobridge"].filter(Boolean),
     openGraph: {
       title: `${opportunity.title} | ${opportunity.organization}`,
       description: `${opportunity.category} • ${opportunity.location || "India"} • Deadline: ${deadlineStr} • ${opportunity.eligibility || ""}`,
-      url: `https://berojgardegreewala.vercel.app/opportunities/${params.slug}`,
-      images: [{ url: `https://berojgardegreewala.vercel.app/api/og/opportunity/${params.slug}` }],
+      url: `https://electrobridge.vercel.app/opportunities/${params.slug}`,
+      images: [{ url: `https://electrobridge.vercel.app/api/og/opportunity/${params.slug}` }],
     },
     twitter: {
       card: "summary_large_image",
       title: `${opportunity.title} | ${opportunity.organization}`,
-      images: [`https://berojgardegreewala.vercel.app/api/og/opportunity/${params.slug}`],
+      images: [`https://electrobridge.vercel.app/api/og/opportunity/${params.slug}`],
     },
-    alternates: { canonical: `https://berojgardegreewala.vercel.app/opportunities/${params.slug}` },
+    alternates: { canonical: `https://electrobridge.vercel.app/opportunities/${params.slug}` },
   };
 }
 
@@ -118,16 +117,16 @@ export default async function OpportunityDetailPage({ params }: Props) {
         }
       : undefined,
     datePosted: opportunity.posted_at,
-    url: `https://berojgardegreewala.vercel.app/opportunities/${opportunity.slug}`,
+    url: `https://electrobridge.vercel.app/opportunities/${opportunity.slug}`,
   };
 
   const breadcrumbJsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Home", item: "https://berojgardegreewala.vercel.app" },
-      { "@type": "ListItem", position: 2, name: "Opportunities", item: "https://berojgardegreewala.vercel.app/opportunities" },
-      { "@type": "ListItem", position: 3, name: opportunity.title, item: `https://berojgardegreewala.vercel.app/opportunities/${opportunity.slug}` },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://electrobridge.vercel.app" },
+      { "@type": "ListItem", position: 2, name: "Opportunities", item: "https://electrobridge.vercel.app/opportunities" },
+      { "@type": "ListItem", position: 3, name: opportunity.title, item: `https://electrobridge.vercel.app/opportunities/${opportunity.slug}` },
     ],
   };
 
@@ -404,16 +403,6 @@ export default async function OpportunityDetailPage({ params }: Props) {
               Visit Official Organization Website
             </a>
 
-            {/* Save + Share */}
-            <div className="flex gap-2">
-              <button className="flex-1 inline-flex items-center justify-center gap-2 border border-border text-text-primary font-medium rounded-lg px-4 py-2.5 text-sm hover:border-accent/50 transition-colors">
-                <Bookmark className="w-4 h-4" /> Save
-              </button>
-              <button className="flex-1 inline-flex items-center justify-center gap-2 border border-border text-text-primary font-medium rounded-lg px-4 py-2.5 text-sm hover:border-accent/50 transition-colors">
-                <Share2 className="w-4 h-4" /> Share
-              </button>
-            </div>
-
             {/* Quick Facts Card */}
             <div className="bg-surface-elevated border border-border rounded-xl p-4">
               <h3 className="font-display text-xs font-bold text-text-muted uppercase tracking-wider mb-3">Quick Facts</h3>
@@ -466,9 +455,9 @@ export default async function OpportunityDetailPage({ params }: Props) {
               title={opportunity.title}
               organization={opportunity.organization}
               deadline={opportunity.deadline}
-              opportunityUrl={`https://berojgardegreewala.vercel.app/opportunities/${opportunity.slug}`}
+              opportunityUrl={`https://electrobridge.vercel.app/opportunities/${opportunity.slug}`}
             />
-            <CopyLinkButton url={`https://berojgardegreewala.vercel.app/opportunities/${opportunity.slug}`} />
+            <CopyLinkButton url={`https://electrobridge.vercel.app/opportunities/${opportunity.slug}`} />
           </div>
         </div>
       </div>
@@ -494,14 +483,6 @@ export default async function OpportunityDetailPage({ params }: Props) {
             Official Website
           </a>
         )}
-        <div className="flex gap-2">
-          <span className="flex-1 inline-flex items-center justify-center gap-2 border border-border text-text-primary font-medium rounded-lg px-4 py-2.5 text-sm">
-            <Bookmark className="w-4 h-4" /> Save
-          </span>
-          <span className="flex-1 inline-flex items-center justify-center gap-2 border border-border text-text-primary font-medium rounded-lg px-4 py-2.5 text-sm">
-            <Share2 className="w-4 h-4" /> Share
-          </span>
-        </div>
         <div className="bg-surface-elevated border border-border rounded-xl p-4">
           <h3 className="font-display text-xs font-bold text-text-muted uppercase tracking-wider mb-3">Quick Facts</h3>
           <div className="grid grid-cols-2 gap-3 text-xs">
@@ -534,14 +515,9 @@ export default async function OpportunityDetailPage({ params }: Props) {
           title={opportunity.title}
           organization={opportunity.organization}
           deadline={opportunity.deadline}
-          opportunityUrl={`https://berojgardegreewala.vercel.app/opportunities/${opportunity.slug}`}
+          opportunityUrl={`https://electrobridge.vercel.app/opportunities/${opportunity.slug}`}
         />
-        <CopyLinkButton url={`https://berojgardegreewala.vercel.app/opportunities/${opportunity.slug}`} />
-      </div>
-
-      {/* AI Summary */}
-      <div className="mt-8">
-        <AIOpportunitySummary slug={params.slug} />
+        <CopyLinkButton url={`https://electrobridge.vercel.app/opportunities/${opportunity.slug}`} />
       </div>
 
       {/* Disclaimer */}

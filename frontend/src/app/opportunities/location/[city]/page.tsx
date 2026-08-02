@@ -20,9 +20,9 @@ function formatCity(citySlug: string): string {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cityName = formatCity(params.city);
   return {
-    title: `VLSI & Semiconductor Jobs in ${cityName} | BerojgarDegreeWala`,
+    title: `VLSI & Semiconductor Jobs in ${cityName} | electrobridge`,
     description: `Browse verified VLSI, embedded systems, and semiconductor jobs and internships in ${cityName}. Find active opportunities from top organizations.`,
-    alternates: { canonical: `https://berojgardegreewala.vercel.app/opportunities/location/${params.city.toLowerCase()}` },
+    alternates: { canonical: `https://electrobridge.vercel.app/opportunities/location/${params.city.toLowerCase()}` },
   };
 }
 
@@ -55,7 +55,7 @@ export default async function LocationPage({ params }: Props) {
     "itemListElement": opportunities.map((opp, index) => ({
       "@type": "ListItem",
       "position": index + 1,
-      "url": `https://berojgardegreewala.vercel.app/opportunities/${opp.slug}`
+      "url": `https://electrobridge.vercel.app/opportunities/${opp.slug}`
     }))
   };
 
