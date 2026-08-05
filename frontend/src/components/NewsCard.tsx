@@ -77,9 +77,9 @@ export default function NewsCard({ article }: NewsCardProps) {
                 onClick={() => setShowModal(true)}
                 className="text-left w-full focus:outline-none"
               >
-                <h3 className="text-slate-900 text-sm font-bold line-clamp-2 leading-snug group-hover:text-blue-600 transition-colors">
+                <h2 className="text-slate-900 text-sm font-bold line-clamp-2 leading-snug group-hover:text-blue-600 transition-colors">
                   {article.title}
-                </h3>
+                </h2>
               </button>
 
               <div className="flex items-center gap-2.5 mt-2 flex-wrap text-xs">

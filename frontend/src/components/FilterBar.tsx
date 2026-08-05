@@ -44,7 +44,7 @@ export default function FilterBar({
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-text-primary">Filters</h3>
+        <h2 className="text-sm font-semibold text-text-primary">Filters</h2>
         {hasFilters && (
           <button
             onClick={handleClearAll}
@@ -56,7 +56,7 @@ export default function FilterBar({
       </div>
 
       <div>
-        <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Job Type</h4>
+        <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Job Type</h3>
         <div className="space-y-1.5">
           {JOB_TYPES.map((type) => (
             <label
@@ -76,7 +76,7 @@ export default function FilterBar({
       </div>
 
       <div>
-        <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Degree</h4>
+        <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Degree</h3>
         <div className="space-y-1.5">
           {DEGREES.map((degree) => (
             <label
@@ -96,7 +96,7 @@ export default function FilterBar({
       </div>
 
       <div>
-        <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Location</h4>
+        <h3 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Location</h3>
         <div className="space-y-1.5">
           <label className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-surface-elevated/50 cursor-pointer transition-colors">
             <input
@@ -120,8 +120,11 @@ export default function FilterBar({
       </div>
 
       <div>
-        <h4 className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">Deadline</h4>
+        <label htmlFor="deadline-filter" className="block text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">
+          Deadline
+        </label>
         <select
+          id="deadline-filter"
           value={selectedDeadline}
           onChange={(e) => onDeadlineChange(e.target.value)}
           className="w-full bg-surface-elevated border border-border text-text-primary text-sm rounded-lg px-3 py-2 focus:ring-accent focus:border-accent outline-none"

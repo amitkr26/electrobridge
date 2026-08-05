@@ -167,7 +167,7 @@ export default function CategoryPage({ params }: { params: { category: string } 
           <Briefcase className="w-12 h-12 text-text-muted mx-auto mb-3" />
           <p className="text-text-primary text-lg font-semibold mb-1">No active positions under this tag right now.</p>
           <p className="text-text-secondary text-sm max-w-md mx-auto mb-4">New verified opportunities are added daily. Browse all open roles across 88 semiconductor organizations.</p>
-          <Link href="/opportunities" className="inline-flex items-center gap-2 bg-accent text-[#0F172A] font-semibold rounded-lg px-5 py-2.5 text-sm hover:bg-accent-hover transition-colors">
+          <Link href="/opportunities" className="inline-flex items-center gap-2 bg-accent text-white font-semibold rounded-lg px-5 py-2.5 text-sm hover:bg-accent-hover transition-colors">
             Browse All Opportunities
           </Link>
         </div>

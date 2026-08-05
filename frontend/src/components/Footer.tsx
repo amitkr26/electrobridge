@@ -24,7 +24,7 @@ export default function Footer() {
 
           {/* ENGINE COLUMN */}
           <div>
-            <h4 className="text-sm font-semibold text-white tracking-wide uppercase mb-4">Platform Engine</h4>
+            <h2 className="text-sm font-semibold text-white tracking-wide uppercase mb-4">Platform Engine</h2>
             <div className="flex flex-col gap-2.5">
               <Link href="/opportunities" className="text-slate-400 hover:text-emerald-400 transition-colors text-sm font-medium">Opportunities Engine</Link>
               <Link href="/news" className="text-slate-400 hover:text-emerald-400 transition-colors text-sm">News Feed</Link>
@@ -35,7 +35,7 @@ export default function Footer() {
 
           {/* OPPORTUNITY CATEGORIES */}
           <div>
-            <h4 className="text-sm font-semibold text-white tracking-wide uppercase mb-4">Opportunities</h4>
+            <h2 className="text-sm font-semibold text-white tracking-wide uppercase mb-4">Opportunities</h2>
             <div className="flex flex-col gap-2.5">
               <Link href="/category/jrf" className="text-slate-400 hover:text-emerald-400 transition-colors text-sm">JRF Positions</Link>
               <Link href="/category/srf" className="text-slate-400 hover:text-emerald-400 transition-colors text-sm">SRF Positions</Link>
@@ -49,7 +49,7 @@ export default function Footer() {
 
           {/* RESOURCES COLUMN */}
           <div>
-            <h4 className="text-sm font-semibold text-white tracking-wide uppercase mb-4">Company</h4>
+            <h2 className="text-sm font-semibold text-white tracking-wide uppercase mb-4">Company</h2>
             <div className="flex flex-col gap-2.5">
               <Link href="/about" className="text-slate-400 hover:text-emerald-400 transition-colors text-sm">About electrobridge</Link>
               <Link href="/contact" className="text-slate-400 hover:text-emerald-400 transition-colors text-sm">Contact</Link>
@@ -58,7 +58,7 @@ export default function Footer() {
         </div>
 
         {/* BOTTOM BAR */}
-        <div className="border-t border-slate-800/80 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+        <div className="border-t border-slate-800/80 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <p>&copy; {new Date().getFullYear()} electrobridge. Built for India&apos;s semiconductor revolution.</p>
           <p>Data aggregated from DRDO, ISRO, CSIR, IITs & 100+ organizations</p>
         </div>

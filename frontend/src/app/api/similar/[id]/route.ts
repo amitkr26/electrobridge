@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin, isAdminConfigured } from "@/lib/supabase";
+import { mapDbOpportunityToClient } from "@/lib/utils";
 import { serverError } from "@berojgardegreewala/api";
 
 export async function GET(
@@ -36,7 +37,9 @@ export async function GET(
       .order("created_at", { ascending: false })
       .limit(3);
 
-    return NextResponse.json({ opportunities: similar || [] });
+    return NextResponse.json({
+      opportunities: (similar || []).map(mapDbOpportunityToClient),
+    });
   } catch (error) {
     console.error("Error fetching similar opportunities:", error);
     return serverError("Failed to fetch similar opportunities");

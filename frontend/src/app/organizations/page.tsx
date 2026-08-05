@@ -107,9 +107,9 @@ export default async function OrganizationsPage() {
                   </span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-slate-900 font-bold text-base group-hover:text-blue-600 transition-colors truncate">
+                  <h2 className="text-slate-900 font-bold text-base group-hover:text-blue-600 transition-colors truncate">
                     {org.name}
-                  </h3>
+                  </h2>
                   {org.type && (
                     <span className="inline-block px-2.5 py-0.5 rounded-md bg-slate-100 text-slate-600 text-[11px] font-semibold mt-1">
                       {org.type}

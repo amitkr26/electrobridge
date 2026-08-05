@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin, isAdminConfigured } from "@/lib/supabase";
-import { mapDbOpportunityToClient } from "@/lib/utils";
+import { mapNewsArticleToClient } from "@/lib/utils";
 import { serverError } from "@berojgardegreewala/api";
 
 export async function GET(
@@ -30,7 +30,7 @@ export async function GET(
       );
     }
 
-    return NextResponse.json({ article: data });
+    return NextResponse.json({ article: mapNewsArticleToClient(data) });
   } catch (error) {
     console.error("Error fetching news article:", error);
     return serverError("Failed to fetch article");

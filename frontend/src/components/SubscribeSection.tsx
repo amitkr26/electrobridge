@@ -68,7 +68,7 @@ export default function SubscribeSection() {
       </form>
       <button
         onClick={() => setIsModalOpen(true)}
-        className="text-text-secondary text-xs mt-3 hover:text-accent transition-colors underline underline-offset-2 decoration-border hover:decoration-accent"
+        className="text-slate-300 text-xs mt-3 hover:text-white transition-colors underline underline-offset-2 decoration-slate-600 hover:decoration-white"
       >
         Set preferences (keywords &amp; categories)
       </button>

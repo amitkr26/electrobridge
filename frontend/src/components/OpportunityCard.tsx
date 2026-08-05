@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { MapPin, IndianRupee, ExternalLink } from "lucide-react";
 import type { Opportunity } from "@/types";
 import CategoryBadge from "./CategoryBadge";
@@ -41,27 +41,18 @@ function getInitials(name?: string): string {
 }
 
 export default function OpportunityCard({ opportunity }: OpportunityCardProps) {
-  const router = useRouter();
   const linkUnavailable = opportunity.verification_status === "link_unavailable" || opportunity.verification_status === "expired";
 
-  const handleCardClick = () => {
-    router.push(`/opportunities/${opportunity.slug}`);
-  };
-
-  return (
-    <div
-      onClick={handleCardClick}
-      className={`block group cursor-pointer ${linkUnavailable ? "opacity-70" : ""}`}
-    >
-      <div className="glass-premium rounded-xl p-6 hover:-translate-y-1 transition-all duration-300 h-full">
-        <div className="flex items-start gap-4">
-          <div className={cn("w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0", getOrgColor(opportunity.organization))}>
-            <span className="text-text-primary text-sm font-bold">
-              {getInitials(opportunity.organization)}
-            </span>
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-start justify-between gap-2">
+  const cardBody = (
+    <div className="glass-premium rounded-xl p-6 hover:-translate-y-1 transition-all duration-300 h-full">
+      <div className="flex items-start gap-4">
+        <div className={cn("w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0", getOrgColor(opportunity.organization))}>
+          <span className="text-text-primary text-sm font-bold">
+            {getInitials(opportunity.organization)}
+          </span>
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2">
               <div className="flex-1 min-w-0">
                 <h3 className="text-text-primary font-semibold text-sm leading-snug hover:text-accent line-clamp-2">
                   {opportunity.title}
@@ -122,7 +113,7 @@ export default function OpportunityCard({ opportunity }: OpportunityCardProps) {
                 <ExternalLink className="w-3 h-3" />
               </span>
             </div>
-            <div className="mt-3 pt-3 border-t border-border/50" onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}>
+            <div className="mt-3 pt-3 border-t border-border/50">
               <ShareButtons
                 title={opportunity.title}
                 organization={opportunity.organization}
@@ -133,6 +124,15 @@ export default function OpportunityCard({ opportunity }: OpportunityCardProps) {
           </div>
         </div>
       </div>
-    </div>
+  );
+
+  if (linkUnavailable) {
+    return <div className="block group opacity-70 cursor-default">{cardBody}</div>;
+  }
+
+  return (
+    <Link href={`/opportunities/${opportunity.slug}`} className="block group cursor-pointer">
+      {cardBody}
+    </Link>
   );
 }

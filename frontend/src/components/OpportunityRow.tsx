@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { MapPin, IndianRupee } from "lucide-react";
 import type { Opportunity } from "@/types";
 import CategoryBadge from "./CategoryBadge";
@@ -21,15 +21,9 @@ function getInitials(name?: string): string {
 }
 
 export default function OpportunityRow({ opportunity }: OpportunityRowProps) {
-  const router = useRouter();
-
-  const handleRowClick = () => {
-    router.push(`/opportunities/${opportunity.slug}`);
-  };
-
   return (
-    <div
-      onClick={handleRowClick}
+    <Link
+      href={`/opportunities/${opportunity.slug}`}
       className="block group cursor-pointer"
     >
       <div className="flex items-center gap-3 px-4 py-3 rounded-lg border border-border bg-surface/30 hover:bg-surface/70 hover:border-accent/30 transition-all duration-200">
@@ -78,6 +72,6 @@ export default function OpportunityRow({ opportunity }: OpportunityRowProps) {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

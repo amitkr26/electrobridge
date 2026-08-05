@@ -227,8 +227,25 @@ export function mapDbOpportunityToClient(dbRow: any): any {
   const cleanedDesc = cleanHtmlDescription(dbRow.description);
   const cleanedElig = cleanHtmlDescription(dbRow.eligibility);
 
+  // ponytail: whitelist, not "..." — the DB row carries internal fields
+  // (organization_id, scrape_source_id, view_count, admin_notes) that must
+  // never reach the client. Add fields here when a new consumer needs them.
   return {
-    ...dbRow,
+    id: dbRow.id,
+    title: dbRow.title,
+    slug: dbRow.slug,
+    location: dbRow.location,
+    deadline: dbRow.deadline,
+    tags: dbRow.tags,
+    source_url: dbRow.source_url,
+    official_page_url: dbRow.official_page_url,
+    apply_link_type: dbRow.apply_link_type,
+    duration: dbRow.duration,
+    experience_required: dbRow.experience_required,
+    min_qualification: dbRow.min_qualification,
+    requirements: dbRow.requirements,
+    responsibilities: dbRow.responsibilities,
+    skills_required: dbRow.skills_required,
     organization: org,
     category: cat,
     description: cleanedDesc,

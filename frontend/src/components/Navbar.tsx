@@ -19,7 +19,22 @@ export default function Navbar() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [ingestion, setIngestion] = useState<"checking" | "live" | "paused">("checking");
   const searchRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/health")
+      .then((r) => r.json())
+      .then((d) => {
+        if (cancelled) return;
+        const lastScrape = d.last_scrape ? new Date(d.last_scrape).getTime() : 0;
+        const fresh = Date.now() - lastScrape < 48 * 3600 * 1000;
+        setIngestion(d.status === "ok" && fresh ? "live" : "paused");
+      })
+      .catch(() => { if (!cancelled) setIngestion("paused"); });
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -101,10 +116,22 @@ export default function Navbar() {
 
         {/* RIGHT ACTIONS - LIVE AGGREGATOR STATUS */}
         <div className="flex items-center gap-3">
-          <span className="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/90 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            Live Ingestion Active
-          </span>
+          {ingestion === "live" ? (
+            <span className="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/90 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              Live Ingestion Active
+            </span>
+          ) : ingestion === "paused" ? (
+            <span className="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-950/90 border border-amber-500/30 text-amber-400 text-xs font-semibold">
+              <span className="w-2 h-2 rounded-full bg-amber-400" />
+              Ingestion Paused
+            </span>
+          ) : (
+            <span className="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-400 text-xs font-semibold">
+              <span className="w-2 h-2 rounded-full bg-slate-500" />
+              Checking…
+            </span>
+          )}
 
           {/* MOBILE MENU TRIGGER */}
           <button

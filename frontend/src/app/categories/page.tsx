@@ -33,8 +33,8 @@ export default async function CategoriesPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="font-display text-3xl font-bold text-white mb-2">Browse by Category</h1>
-      <p className="text-[#94A3B8] text-sm mb-10">Find opportunities across all electronics research categories.</p>
+      <h1 className="font-display text-3xl font-bold text-text-primary mb-2">Browse by Category</h1>
+      <p className="text-text-secondary text-sm mb-10">Find opportunities across all electronics research categories.</p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {CATEGORIES_CONFIG.map((cat) => {

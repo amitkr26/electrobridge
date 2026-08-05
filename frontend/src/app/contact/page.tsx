@@ -10,8 +10,8 @@ export const metadata = {
 export default function ContactPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <h1 className="font-display text-3xl font-bold text-white mb-2">Contact</h1>
-      <p className="text-[#94A3B8] text-sm mb-10">
+      <h1 className="font-display text-3xl font-bold text-text-primary mb-2">Contact</h1>
+      <p className="text-text-secondary text-sm mb-10">
         Have feedback, found a missing opportunity, or spotted a broken link? We read everything.
       </p>
 
