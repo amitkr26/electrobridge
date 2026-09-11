@@ -2,14 +2,12 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
   Download, Save, UploadCloud, Sparkles, LayoutTemplate,
   Layers, Plus, Trash2, Eye, User, GraduationCap, Briefcase,
   Code, FolderGit2, Award, BookOpen, Loader2, ZoomIn, ZoomOut, Check, ArrowLeft
 } from "lucide-react";
 import { toast } from "sonner";
-import { useUser } from "@/hooks/useUser";
 import { ResumeData, ResumeStyleConfig, TemplateId, EduItem, ExpItem, ProjItem, CertItem, PubItem } from "./types";
 import { ParsedResumeProfile } from "@/lib/resume-text-parser";
 import { ResumePreview } from "./components/ResumePreview";
@@ -95,20 +93,11 @@ const DEFAULT_STYLE_CONFIG: ResumeStyleConfig = {
 type ActiveEditorTab = "personal" | "experience" | "education" | "skills" | "projects" | "extras" | "styling" | "ai";
 
 export default function ResumeBuilderPage() {
-  const { user, loading: userLoading } = useUser();
-  const router = useRouter();
   const [resumeData, setResumeData] = useState<ResumeData>(DEFAULT_RESUME_DATA);
   const [styleConfig, setStyleConfig] = useState<ResumeStyleConfig>(DEFAULT_STYLE_CONFIG);
   const [activeTab, setActiveTab] = useState<ActiveEditorTab>("personal");
   const [zoomScale, setZoomScale] = useState(1.0);
   const [mobileMode, setMobileMode] = useState<"editor" | "preview">("editor");
-
-  // Auth guard: redirect to login if not authenticated
-  useEffect(() => {
-    if (!userLoading && !user) {
-      router.push("/login?redirect=/resume");
-    }
-  }, [user, userLoading, router]);
 
   // Multi-resume state
   const [savedResumes, setSavedResumes] = useState<SavedResumeMeta[]>([
@@ -182,39 +171,6 @@ export default function ResumeBuilderPage() {
       }
     } catch {}
   }, []);
-
-  // 1b. Sync cloud resume versions for authenticated users
-  useEffect(() => {
-    if (!user) return;
-    fetch("/api/resume")
-      .then((res) => (res.ok ? res.json() : null))
-      .then((data) => {
-        if (!data) return;
-        if (Array.isArray(data.versions) && data.versions.length > 0) {
-          const cloudList: SavedResumeMeta[] = data.versions.map((v: any) => ({
-            id: v.id,
-            name: v.version_name || "Primary Resume",
-            templateId: v.structured_data?.style?.templateId || "modern",
-            updatedAt: v.updated_at ? new Date(v.updated_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "Today",
-          }));
-          const cloudMap: Record<string, any> = {};
-          data.versions.forEach((v: any) => {
-            cloudMap[v.id] = {
-              data: v.structured_data?.data || v.structured_data || DEFAULT_RESUME_DATA,
-              style: v.structured_data?.style || styleConfig,
-            };
-          });
-          setSavedResumes(cloudList);
-          const first = cloudList[0];
-          setActiveResumeId(first.id);
-          if (cloudMap[first.id]?.data) setResumeData(cloudMap[first.id].data);
-          if (cloudMap[first.id]?.style) setStyleConfig(cloudMap[first.id].style);
-        } else if (data.resume && Object.keys(data.resume).length > 0) {
-          setResumeData((prev) => ({ ...prev, ...data.resume }));
-        }
-      })
-      .catch(() => {});
-  }, [user]);
 
   // 2. Persist active draft and versions map to localStorage on change
   useEffect(() => {
@@ -315,17 +271,6 @@ export default function ResumeBuilderPage() {
     type: "summary" | "experience" | "skills" | "projects",
     context: any
   ) => {
-    if (!user) {
-      toast.error("Sign in required for AI resume optimization", {
-        description: "Create a free account to generate AI-tailored bullets for semiconductor roles.",
-        action: {
-          label: "Sign In",
-          onClick: () => router.push("/login?redirect=/resume"),
-        },
-      });
-      return;
-    }
-
     setAiLoading(true);
     try {
       const res = await fetch("/api/resume/ai-suggest", {
@@ -333,17 +278,9 @@ export default function ResumeBuilderPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ section: type, context }),
       });
-      if (res.status === 401) {
-        toast.error("Session expired. Please sign in again.", {
-          action: {
-            label: "Sign In",
-            onClick: () => router.push("/login?redirect=/resume"),
-          },
-        });
-        return;
-      }
       const data = await res.json();
       if (!res.ok || data.error) throw new Error(data.error || "AI generation failed");
+
 
       let originalText = "";
       if (type === "summary") originalText = resumeData.summary;
@@ -366,17 +303,6 @@ export default function ResumeBuilderPage() {
   };
 
   const handleSaveToBackend = async () => {
-    if (!user) {
-      toast.info("Saved locally in your browser", {
-        description: "Sign in to sync your resumes to the cloud across devices.",
-        action: {
-          label: "Sign In",
-          onClick: () => router.push("/login?redirect=/resume"),
-        },
-      });
-      return;
-    }
-
     setSaving(true);
     try {
       const currentMeta = savedResumes.find((r) => r.id === activeResumeId);

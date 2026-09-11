@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import { callAI } from "@/lib/ai/providers";
 
 export const maxDuration = 30;
@@ -7,10 +6,6 @@ export const maxDuration = 30;
 // POST /api/resume/ai-suggest
 // Body: { section: "summary"|"skills"|"experience", context: {...profile fields} }
 export async function POST(request: NextRequest) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
   const body = await request.json();
   const { section, context } = body as {
     section: "summary" | "skills" | "experience" | "projects";

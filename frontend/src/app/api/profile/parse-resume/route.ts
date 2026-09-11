@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
 import { callAI } from "@/lib/ai/providers";
 import { apiError } from "@/lib/api-utils";
 import { logger } from "@/lib/logger";
@@ -30,13 +29,6 @@ function isLegacyBinaryDoc(buffer: Buffer): boolean {
 }
 
 export async function POST(request: NextRequest) {
-  // Auth check: only authenticated users can parse resumes
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
-    return NextResponse.json({ error: "Authentication required" }, { status: 401 });
-  }
-
   // Maximum upload size: 10MB
   const MAX_FILE_SIZE = 10 * 1024 * 1024;
 

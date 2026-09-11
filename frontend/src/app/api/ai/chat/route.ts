@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { callAI } from "@/lib/ai/providers";
 import { supabaseAdmin, isAdminConfigured } from "@/lib/supabase-admin";
 import { serverError } from "@berojgardegreewala/api";
-import { createClient } from "@/lib/supabase/server";
 import { sanitizeAIContent } from "@/lib/ai/reasoning-sanitizer";
 import {
   buildGroundedSystemPrompt,
@@ -51,32 +50,20 @@ Do not make up deadlines or stipends — say "check the official website" only w
 IMPORTANT: Output ONLY your final answer. Do NOT include <think>, <analysis>, <reasoning>, or any internal chain-of-thought tags. The user must never see your reasoning process.`;
 
 export async function POST(request: NextRequest) {
-  // Check authenticated user
-  let isAuthenticated = false;
-  try {
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    isAuthenticated = !!user;
-  } catch {
-    isAuthenticated = false;
-  }
+  // Rate limit by IP for all visitors
+  const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip") ||
+    "anonymous-client";
 
-  // If unauthenticated guest, enforce IP rate limit
-  if (!isAuthenticated) {
-    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-      request.headers.get("x-real-ip") ||
-      "anonymous-client";
-
-    const allowed = checkGuestRateLimit(ip);
-    if (!allowed) {
-      return NextResponse.json(
-        {
-          error: "Guest rate limit reached (15 queries/hour). Please sign in to enjoy unrestricted career intelligence and cloud conversation sync.",
-          isRateLimited: true,
-        },
-        { status: 429 }
-      );
-    }
+  const allowed = checkGuestRateLimit(ip);
+  if (!allowed) {
+    return NextResponse.json(
+      {
+        error: "Rate limit reached (15 queries/hour). Please try again later.",
+        isRateLimited: true,
+      },
+      { status: 429 }
+    );
   }
 
   try {
@@ -109,7 +96,6 @@ export async function POST(request: NextRequest) {
         provider: null,
         model: null,
         grounded: false,
-        isAuthenticated,
       });
     }
 
@@ -174,7 +160,6 @@ export async function POST(request: NextRequest) {
       provider: response.provider,
       model: response.model,
       grounded: opportunities.length > 0 || news.length > 0,
-      isAuthenticated,
     });
   } catch (error) {
     console.error("Error in AI chat:", error);
