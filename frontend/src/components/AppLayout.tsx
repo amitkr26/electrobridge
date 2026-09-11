@@ -80,7 +80,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
       <footer className="border-t border-border bg-bg-secondary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
             <div className="md:col-span-1">
               <Link href="/" className="text-lg font-bold text-gradient-primary tracking-tight">
                 ElectroBridge
@@ -135,6 +135,32 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                     </Link>
                   </li>
                 ))}
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-text-primary text-sm mb-4">Our Ecosystem</h4>
+              <ul className="space-y-2.5">
+                <li>
+                  <a
+                    href="https://berojgardegreewala.vercel.app"
+                    target="_blank"
+                    rel="noopener"
+                    className="text-text-muted text-sm hover:text-blue-600 transition-colors"
+                  >
+                    BerojgarDegreeWala &mdash; Opportunities &amp; Career Hub
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://siliconpath.vercel.app"
+                    target="_blank"
+                    rel="noopener"
+                    className="text-text-muted text-sm hover:text-blue-600 transition-colors"
+                  >
+                    SiliconPath &mdash; Free VLSI Learning Platform
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
