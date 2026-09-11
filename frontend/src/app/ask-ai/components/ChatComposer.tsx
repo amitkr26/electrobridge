@@ -128,7 +128,7 @@ export function ChatComposer({
         </div>
 
         <p className="text-[10.5px] text-slate-400 text-center font-medium">
-          BerojgarDegreeWala AI Assistant grounds technical advice in live opportunities data. Always verify exam dates with official circulars.
+          ElectroBridge AI Assistant grounds technical advice in live opportunities data. Always verify exam dates with official circulars.
         </p>
       </div>
     </div>

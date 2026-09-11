@@ -36,7 +36,7 @@ export function ChatHeader({ onOpenMobileSidebar, onNewChat }: ChatHeaderProps) 
           <div>
             <div className="flex items-center gap-2">
               <h1 className="font-bold text-sm text-slate-900 leading-tight">
-                BerojgarDegreeWala AI
+                ElectroBridge AI
               </h1>
               <span className="hidden sm:inline-flex text-[10px] bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider border border-blue-200/60">
                 Grounded

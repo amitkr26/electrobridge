@@ -33,7 +33,7 @@ function createDefaultSession(): ChatSession {
       {
         id: `m-init-${Date.now()}`,
         role: "assistant",
-        content: "Namaste! I am the **BerojgarDegreeWala AI Career Assistant**, specialized in Indian semiconductor careers, VLSI design, JRF research positions, and ISRO/DRDO exams. How can I assist your career journey today?",
+        content: "Namaste! I am the **ElectroBridge AI Career Assistant**, specialized in Indian semiconductor careers, VLSI design, JRF research positions, and ISRO/DRDO exams. How can I assist your career journey today?",
         timestamp: now,
       },
     ],

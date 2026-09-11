@@ -16,7 +16,7 @@ export function EmptyState({ onSelectSuggestion }: EmptyStateProps) {
         </div>
         <div className="space-y-1">
           <h2 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight">
-            BerojgarDegreeWala AI Assistant
+            ElectroBridge AI Assistant
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 max-w-md font-medium">
             Career intelligence &amp; research guidance for India&apos;s semiconductor, VLSI, and electronics ecosystem.

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { callAI } from "@/lib/ai/providers";
 import { supabaseAdmin, isAdminConfigured } from "@/lib/supabase-admin";
-import { serverError } from "@berojgardegreewala/api";
+import { serverError } from "@electrobridge/api";
 import { sanitizeAIContent } from "@/lib/ai/reasoning-sanitizer";
 import {
   buildGroundedSystemPrompt,
@@ -36,7 +36,7 @@ function checkGuestRateLimit(ip: string): boolean {
   return true;
 }
 
-const BASE_SYSTEM_PROMPT = `You are BerojgarDegreeWala Assistant, a helpful AI for electronics, VLSI, and semiconductor researchers and engineers in India.
+const BASE_SYSTEM_PROMPT = `You are ElectroBridge Assistant, a helpful AI for electronics, VLSI, and semiconductor researchers and engineers in India.
 You help users:
 - Find relevant JRF, PhD, and semiconductor job opportunities
 - Understand eligibility criteria (NET, GATE, age limits)
@@ -126,7 +126,7 @@ export async function POST(request: NextRequest) {
 
     if (
       opportunities.length > 0 &&
-      text.includes("I couldn't find a matching opportunity in BerojgarDegreeWala's current database")
+      text.includes("I couldn't find a matching opportunity in ElectroBridge's current database")
     ) {
       text = buildRecordListing(opportunities);
     }

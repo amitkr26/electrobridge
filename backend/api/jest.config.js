@@ -6,7 +6,7 @@ const config = {
   },
   testMatch: ["**/__tests__/**/*.test.(ts|tsx)"],
   moduleNameMapper: {
-    "^@berojgardegreewala/(.*)$": "<rootDir>/../$1/src",
+    "^@electrobridge/(.*)$": "<rootDir>/../$1/src",
   },
 };
 

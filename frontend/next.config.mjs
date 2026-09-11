@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  transpilePackages: ["@berojgardegreewala/api"],
+  transpilePackages: ["@electrobridge/api"],
   swcMinify: true,
   compress: true,
   reactStrictMode: true,

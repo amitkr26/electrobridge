@@ -13,7 +13,7 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@berojgardegreewala/api": "file:../backend/api",
+    "@electrobridge/api": "file:../backend/api",
     "@supabase/supabase-js": "^2.108.2",
     "@tailwindcss/typography": "^0.5.20",
     "cheerio": "^1.2.0",

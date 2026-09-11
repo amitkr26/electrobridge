@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { applyRateLimit } from '@berojgardegreewala/api';
+import { applyRateLimit } from '@electrobridge/api';
 
 const ALLOWED_ORIGINS = [
   'http://localhost:3000',

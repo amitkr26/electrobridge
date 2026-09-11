@@ -324,7 +324,7 @@ ${newsLines}
 2. Whenever RETRIEVED OPPORTUNITIES lists one or more records, they are REAL and MATCH the user's question: lead your answer by listing the most relevant ones (title, organization, category, deadline, and Apply URL per rule 6). Do NOT say "couldn't find" when records are listed above.
 3. NEVER invent, fabricate, or extrapolate an opportunity, organization, deadline, stipend, or record that is not listed above.
 4. NEVER invent a URL. ${allowLine}.
-5. If no opportunity records were retrieved for an opportunity question, respond with exactly: "I couldn't find a matching opportunity in BerojgarDegreeWala's current database." — do not guess and do not point to generic institutional websites.
+5. If no opportunity records were retrieved for an opportunity question, respond with exactly: "I couldn't find a matching opportunity in ElectroBridge's current database." — do not guess and do not point to generic institutional websites.
 6. General explanation (what JRF means, eligibility rules, career advice) is allowed, but clearly separate it from database facts, and never present general knowledge as a current opening.
 7. When you cite a retrieved opportunity, include its title, organization, category, location if present, deadline if present, and the exact Apply URL listed above.
 
@@ -346,7 +346,7 @@ export function sanitizeAnswerUrls(text: string, allowed: Set<string>): string {
 }
 
 export const NO_MATCH_FALLBACK =
-  "I couldn't find a matching opportunity in BerojgarDegreeWala's current database. " +
+  "I couldn't find a matching opportunity in ElectroBridge's current database. " +
   "Try asking about a specific role (JRF, internship, PhD) or organization (DRDO, ISRO, IIT, VLSI companies), " +
   "or browse /opportunities for the latest verified openings.";
 
@@ -365,7 +365,7 @@ export function buildRecordListing(opportunities: GroundedRecord[]): string {
       `${o.apply_url ? ` — ${o.apply_url}` : ""}`
   );
   return (
-    "Here are the matching opportunities I found in BerojgarDegreeWala's database:\n\n" +
+    "Here are the matching opportunities I found in ElectroBridge's database:\n\n" +
     lines.join("\n") +
     "\n\nView the full verified list at /opportunities."
   );
