@@ -1,11 +1,9 @@
 import { NextResponse } from "next/server";
-import { logger } from "./logger";
 
-export function apiError(error: unknown, context: string, status = 500) {
-  const msg = error instanceof Error ? error.message : String(error);
-  logger.error(`api_error:${context}`, { error: msg });
+export function apiError(err: any, context?: string): NextResponse {
+  console.error(`[API Error${context ? ` — ${context}` : ""}]:`, err);
   return NextResponse.json(
-    { error: process.env.NODE_ENV === "development" ? msg : "An unexpected error occurred" },
-    { status },
+    { error: err?.message || "Internal server error" },
+    { status: err?.status || 500 }
   );
 }

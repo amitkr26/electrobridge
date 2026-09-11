@@ -14,35 +14,31 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   metadataBase: new URL("https://electrobridge.vercel.app"),
   title: {
-    default: "electrobridge — Verified Semiconductor & VLSI Opportunity Engine",
-    template: "%s | electrobridge",
+    default: "ElectroBridge — AI Career Assistant for Semiconductor Engineers",
+    template: "%s | ElectroBridge",
   },
   description:
-    "Find JRF, PhD positions, government research jobs, fellowships, and private sector opportunities in semiconductor, VLSI, and electronics industry. DRDO, ISRO, CSIR, IIT opportunities aggregated in one place.",
+    "AI-powered career assistant for semiconductor and VLSI engineers. Chat with an AI expert and build a tailored resume for VLSI, embedded systems, and electronics roles.",
   keywords: [
-    "JRF", "Junior Research Fellow", "electronics jobs India", "semiconductor jobs",
-    "DRDO recruitment", "ISRO JRF", "CSIR fellowship", "PhD electronics India",
-    "VLSI jobs", "ASIC design jobs", "embedded systems jobs", "research fellowship India",
-    "NET electronics jobs", "GATE electronics jobs", "electrobridge", "semiconductor India",
+    "semiconductor engineer", "VLSI", "AI career assistant", "resume builder",
+    "electronics jobs", "embedded systems", "ASIC design", "electrobridge",
   ],
-  authors: [{ name: "electrobridge" }],
-  creator: "electrobridge",
+  authors: [{ name: "ElectroBridge" }],
+  creator: "ElectroBridge",
   openGraph: {
     type: "website",
     locale: "en_IN",
     url: "https://electrobridge.vercel.app",
-    siteName: "electrobridge",
-    title: "electrobridge — Verified Semiconductor & VLSI Opportunity Engine",
+    siteName: "ElectroBridge",
+    title: "ElectroBridge — AI Career Assistant for Semiconductor Engineers",
     description:
-      "One-stop engine for JRF, PhD, government and private sector opportunities in semiconductor, VLSI, and electronics industry.",
-    images: [{ url: "/api/og", width: 1200, height: 630, alt: "electrobridge" }],
+      "AI-powered career assistant for semiconductor and VLSI engineers. Chat with an AI expert and build a tailored resume.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "electrobridge — Verified Semiconductor & Electronics Opportunities",
+    title: "ElectroBridge — AI Career Assistant for Semiconductor Engineers",
     description:
-      "Find JRF, PhD, DRDO, ISRO, CSIR opportunities in VLSI & semiconductor. Updated daily.",
-    images: ["/api/og"],
+      "AI-powered career assistant for semiconductor and VLSI engineers.",
   },
   robots: {
     index: true,
@@ -52,24 +48,20 @@ export const metadata: Metadata = {
       follow: true,
       "max-snippet": -1,
       "max-image-preview": "large",
-      "noarchive": true
+      "noarchive": true,
     },
   },
   alternates: { canonical: "https://electrobridge.vercel.app" },
-  verification: {
-    google: "QnEIBEpKxP_ZiQxtneegX-6WWKxO_FZ8Yzzxp4kOqxA",
-  },
   icons: {
     icon: "/icon.svg",
     apple: "/icon.svg",
   },
-  manifest: "/manifest.json",
 };
 
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#f8fafc",
+  themeColor: "#0f172a",
 };
 
 export default function RootLayout({
