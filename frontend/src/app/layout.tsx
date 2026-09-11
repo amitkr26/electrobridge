@@ -14,14 +14,22 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   metadataBase: new URL("https://electrobridge.vercel.app"),
   title: {
-    default: "ElectroBridge — AI Career Assistant for Semiconductor Engineers",
+    default: "ElectroBridge — AI Resume Builder for Semiconductor Engineers",
     template: "%s | ElectroBridge",
   },
   description:
-    "AI-powered career assistant for semiconductor and VLSI engineers. Chat with an AI expert and build a tailored resume for VLSI, embedded systems, and electronics roles.",
+    "Build ATS-optimized resumes with 10 professional templates. AI-powered enhancement, skill gap analysis, and career chat. 100% free.",
   keywords: [
-    "semiconductor engineer", "VLSI", "AI career assistant", "resume builder",
-    "electronics jobs", "embedded systems", "ASIC design", "electrobridge",
+    "resume builder",
+    "VLSI resume",
+    "semiconductor jobs",
+    "ATS resume",
+    "AI career assistant",
+    "chip design resume",
+    "electronics engineer resume",
+    "ASIC design",
+    "embedded systems",
+    "electrobridge",
   ],
   authors: [{ name: "ElectroBridge" }],
   creator: "ElectroBridge",
@@ -30,15 +38,15 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: "https://electrobridge.vercel.app",
     siteName: "ElectroBridge",
-    title: "ElectroBridge — AI Career Assistant for Semiconductor Engineers",
+    title: "ElectroBridge — AI Resume Builder for Semiconductor Engineers",
     description:
-      "AI-powered career assistant for semiconductor and VLSI engineers. Chat with an AI expert and build a tailored resume.",
+      "Build ATS-optimized resumes with 10 professional templates. AI-powered enhancement, skill gap analysis, and career chat. 100% free.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "ElectroBridge — AI Career Assistant for Semiconductor Engineers",
+    title: "ElectroBridge — AI Resume Builder for Semiconductor Engineers",
     description:
-      "AI-powered career assistant for semiconductor and VLSI engineers.",
+      "Build ATS-optimized resumes with 10 professional templates. AI-powered enhancement, skill gap analysis, and career chat. 100% free.",
   },
   robots: {
     index: true,
@@ -61,7 +69,7 @@ export const metadata: Metadata = {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0f172a",
+  themeColor: "#F8FAFC",
 };
 
 export default function RootLayout({
@@ -72,10 +80,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} font-body bg-navy text-text-primary min-h-screen`}
+        className={`${inter.variable} ${spaceGrotesk.variable} font-body bg-background text-foreground min-h-screen`}
       >
         <AppLayout>{children}</AppLayout>
-        <Toaster position="bottom-right" toastOptions={{ style: { background: '#111827', border: '1px solid #374151', color: '#F9FAFB' } }} />
+        <Toaster position="bottom-right" toastOptions={{ style: { background: '#fff', border: '1px solid #E2E8F0', color: '#0F172A' } }} />
         <Script defer data-domain="electrobridge.vercel.app" src="https://plausible.io/js/script.js" strategy="afterInteractive" />
       </body>
     </html>
