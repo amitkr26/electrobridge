@@ -47,12 +47,20 @@ export default function CoverLetterBuilderPage() {
   const [data, setData] = useState<CoverLetterData>(DEFAULT_DATA);
   const [aiLoading, setAiLoading] = useState(false);
   const [mobileMode, setMobileMode] = useState<"editor" | "preview">("editor");
+  const [accentColor, setAccentColor] = useState("#2563eb");
+  const [exporting, setExporting] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     try {
       const stored = localStorage.getItem("eb_cover_letter_v1");
       if (stored) setData(JSON.parse(stored));
+      // Read accent color from resume style config to keep designs unified
+      const resumeDraft = localStorage.getItem("eb_resume_draft_v1");
+      if (resumeDraft) {
+        const { style } = JSON.parse(resumeDraft);
+        if (style?.accentColor) setAccentColor(style.accentColor);
+      }
     } catch {}
   }, []);
 
@@ -117,7 +125,30 @@ Make it specific to semiconductor/VLSI engineering. Use active voice. Be concise
     }
   };
 
-  const handlePrint = () => window.print();
+  const handleExportPDF = async () => {
+    if (!previewRef.current) return;
+    setExporting(true);
+    try {
+      const { default: html2pdf } = await import("html2pdf.js");
+      const filename = `${(data.fullName || "cover_letter").replace(/\s+/g, "_")}.pdf`;
+      await html2pdf()
+        .set({
+          margin: 0,
+          filename,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" } as any,
+          pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+        } as any)
+        .from(previewRef.current)
+        .save();
+      toast.success(`Downloaded ${filename}`);
+    } catch (err: any) {
+      toast.error(err.message || "Failed to export PDF");
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const today = new Date().toLocaleDateString("en-US", {
     year: "numeric", month: "long", day: "numeric",
@@ -172,11 +203,12 @@ Make it specific to semiconductor/VLSI engineering. Use active voice. Be concise
           </button>
 
           <button
-            onClick={handlePrint}
+            onClick={handleExportPDF}
+            disabled={exporting}
             className="flex items-center gap-1.5 text-xs font-bold text-slate-300 bg-slate-800 border border-slate-700 hover:bg-slate-700 px-3.5 py-2 rounded-xl transition shadow-sm"
           >
-            <Download className="w-3.5 h-3.5" />
-            <span>Download PDF</span>
+            {exporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+            <span>{exporting ? "Exporting..." : "Download PDF"}</span>
           </button>
         </div>
       </header>
@@ -360,17 +392,18 @@ Make it specific to semiconductor/VLSI engineering. Use active voice. Be concise
             <div
               ref={previewRef}
               className={`w-full max-w-[600px] bg-white text-slate-900 shadow-2xl rounded-2xl overflow-hidden print:shadow-none print:rounded-none ${
-                data.template === "modern" ? "border-t-4 border-blue-600" :
+                data.template === "modern" ? "border-t-4" :
                 data.template === "academic" ? "border-t-4 border-slate-800" :
                 "border border-slate-200"
               }`}
+              style={data.template === "modern" ? { borderTopColor: accentColor } : undefined}
               id="cover-letter-preview"
             >
               <div className="p-8 sm:p-10 space-y-6">
                 {/* Header */}
                 <div className={`${data.template === "modern" ? "text-left" : data.template === "academic" ? "text-center" : "text-left"}`}>
                   {data.template === "modern" && (
-                    <div className="w-12 h-1 bg-blue-600 rounded-full mb-4"></div>
+                    <div className="w-12 h-1 rounded-full mb-4" style={{ backgroundColor: accentColor }}></div>
                   )}
                   <h1 className={`text-2xl font-bold text-slate-900 ${data.template === "academic" ? "tracking-wide" : ""}`}>
                     {data.fullName || "Your Name"}
