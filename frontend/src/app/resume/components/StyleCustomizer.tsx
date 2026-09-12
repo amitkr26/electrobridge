@@ -1,6 +1,6 @@
 import React from "react";
-import { ResumeStyleConfig } from "../types";
-import { Palette, Type, Layout, Eye } from "lucide-react";
+import { ResumeStyleConfig, SectionKey } from "../types";
+import { Palette, Type, Layout, Eye, ArrowUp, ArrowDown, Tag, Calendar, FileText } from "lucide-react";
 
 interface StyleCustomizerProps {
   style: ResumeStyleConfig;
@@ -17,6 +17,23 @@ const COLOR_PRESETS = [
   { label: "Purple", hex: "#7C3AED" },
   { label: "Slate", hex: "#334155" },
 ];
+
+const DEFAULT_LABELS: Record<SectionKey, string> = {
+  summary: "Professional Summary",
+  experience: "Experience",
+  education: "Education",
+  skills: "Skills",
+  projects: "Projects",
+  certifications: "Certifications",
+  publications: "Publications",
+};
+
+const moveSection = (arr: SectionKey[], from: number, to: number) => {
+  const copy = [...arr];
+  const [item] = copy.splice(from, 1);
+  copy.splice(to, 0, item);
+  return copy;
+};
 
 export function StyleCustomizer({ style, onChange }: StyleCustomizerProps) {
   const setAccentColor = (color: string) => {
@@ -39,6 +56,20 @@ export function StyleCustomizer({ style, onChange }: StyleCustomizerProps) {
         [sectionKey]: !style.visibleSections[sectionKey],
       },
     });
+  };
+
+  const moveSectionUp = (idx: number) => {
+    if (idx === 0) return;
+    onChange({ ...style, sectionOrder: moveSection(style.sectionOrder, idx, idx - 1) });
+  };
+
+  const moveSectionDown = (idx: number) => {
+    if (idx >= style.sectionOrder.length - 1) return;
+    onChange({ ...style, sectionOrder: moveSection(style.sectionOrder, idx, idx + 1) });
+  };
+
+  const setSectionLabel = (key: SectionKey, label: string) => {
+    onChange({ ...style, sectionLabels: { ...style.sectionLabels, [key]: label } });
   };
 
   return (
@@ -131,10 +162,95 @@ export function StyleCustomizer({ style, onChange }: StyleCustomizerProps) {
         </div>
       </div>
 
-      {/* 4. Section Visibility Toggles */}
+      {/* 4. Page Size */}
+      <div className="space-y-2">
+        <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+          <FileText className="w-3.5 h-3.5 text-slate-400" /> Page Size
+        </label>
+        <div className="grid grid-cols-2 gap-1.5 text-xs">
+          {(["A4", "Letter"] as const).map((s) => (
+            <button
+              key={s}
+              onClick={() => onChange({ ...style, pageSize: s })}
+              className={`py-1.5 px-2 rounded-xl text-xs font-semibold border transition ${
+                style.pageSize === s
+                  ? "bg-blue-50 border-blue-500 text-blue-700"
+                  : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
+              }`}
+            >
+              {s === "A4" ? "A4 (210×297mm)" : "Letter (8.5×11in)"}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 5. Date Format */}
+      <div className="space-y-2">
+        <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+          <Calendar className="w-3.5 h-3.5 text-slate-400" /> Date Format
+        </label>
+        <div className="grid grid-cols-2 gap-1.5 text-xs">
+          {[
+            { id: "MMM YYYY" as const, label: "Jan 2024" },
+            { id: "MM/YYYY" as const, label: "01/2024" },
+            { id: "YYYY" as const, label: "2024" },
+          ].map((d) => (
+            <button
+              key={d.id}
+              onClick={() => onChange({ ...style, dateFormat: d.id })}
+              className={`py-1.5 px-2 rounded-xl text-xs font-semibold border transition ${
+                style.dateFormat === d.id
+                  ? "bg-blue-50 border-blue-500 text-blue-700"
+                  : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
+              }`}
+            >
+              {d.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 6. Section Order + Labels */}
       <div className="space-y-2 pt-2 border-t border-slate-100">
         <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-          <Eye className="w-3.5 h-3.5 text-slate-400" /> Toggle Sections
+          <Tag className="w-3.5 h-3.5 text-slate-400" /> Section Order &amp; Labels
+        </label>
+        <p className="text-[10px] text-slate-400">Drag to reorder. Click label to rename.</p>
+        <div className="space-y-1">
+          {style.sectionOrder.map((key, idx) => (
+            <div key={key} className="flex items-center gap-1.5 text-xs bg-slate-50 rounded-lg px-2 py-1.5 border border-slate-200">
+              <div className="flex flex-col">
+                <button onClick={() => moveSectionUp(idx)} disabled={idx === 0} className="text-slate-400 hover:text-blue-600 disabled:opacity-20" aria-label="Move up">
+                  <ArrowUp className="w-3 h-3" />
+                </button>
+                <button onClick={() => moveSectionDown(idx)} disabled={idx === style.sectionOrder.length - 1} className="text-slate-400 hover:text-blue-600 disabled:opacity-20" aria-label="Move down">
+                  <ArrowDown className="w-3 h-3" />
+                </button>
+              </div>
+              <label className="flex items-center gap-1.5 cursor-pointer flex-1">
+                <input
+                  type="checkbox"
+                  checked={style.visibleSections[key]}
+                  onChange={() => toggleSection(key)}
+                  className="w-3 h-3 text-blue-600 rounded border-slate-300"
+                />
+                <input
+                  type="text"
+                  value={style.sectionLabels[key] || DEFAULT_LABELS[key]}
+                  onChange={(e) => setSectionLabel(key, e.target.value)}
+                  className="flex-1 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:outline-none text-xs font-medium text-slate-700 px-1"
+                  aria-label={`Label for ${key}`}
+                />
+              </label>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 7. Section Visibility Toggles (simplified) */}
+      <div className="space-y-2 pt-2 border-t border-slate-100">
+        <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+          <Eye className="w-3.5 h-3.5 text-slate-400" /> Quick Toggle
         </label>
         <div className="grid grid-cols-2 gap-2 text-xs">
           {Object.entries(style.visibleSections).map(([key, visible]) => (

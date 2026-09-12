@@ -13,6 +13,7 @@ import {
   Eye,
   Sparkles,
   Shield,
+  Target,
   Zap,
   BarChart3,
 } from "lucide-react";
@@ -32,6 +33,7 @@ interface ATSResult {
   keywordsMissing: string[];
   formattingIssues: string[];
   suggestions: string[];
+  jdMatchPercent: number | null;
 }
 
 const INITIAL_RESULT: ATSResult = {
@@ -41,6 +43,7 @@ const INITIAL_RESULT: ATSResult = {
   keywordsMissing: [],
   formattingIssues: [],
   suggestions: [],
+  jdMatchPercent: null,
 };
 
 function scoreColor(score: number, max: number): string {
@@ -68,6 +71,7 @@ export default function ResumeReviewPage() {
   const [uploading, setUploading] = useState(false);
   const [result, setResult] = useState<ATSResult | null>(null);
   const [dragOver, setDragOver] = useState(false);
+  const [jobDescription, setJobDescription] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const analyzeResume = useCallback(async (selectedFile: File) => {
@@ -167,15 +171,27 @@ export default function ResumeReviewPage() {
 
       const overallScore = sections.reduce((sum, s) => sum + s.score, 0);
 
-      // Keywords
-      const vlsiKeywords = [
+      // Keywords — industry defaults + extracted from JD
+      const defaultKeywords = [
         "RTL", "Verilog", "SystemVerilog", "UVM", "ASIC", "FPGA", "VLSI",
-        "STA", "Synthesis", "PD", "DFT", "DV", "Formal Verification",
+        "STA", "Synthesis", "DFT", "Formal Verification",
         "Cadence", "Synopsys", "Mentor", "Tcl", "Python", "Linux",
       ];
+
+      // Extract meaningful keywords from JD (3+ letter words, deduplicated)
+      const jdKeywords = jobDescription
+        .replace(/[^\w\s+#]/g, " ")
+        .split(/\s+/)
+        .filter((w) => w.length >= 3 && !/^(the|and|for|with|this|that|from|have|are|was|will|our|your|you|can|may|must|all|any|but|not|who|what|where|when|how|why|using|used|use|job|role|team|company|years|experience|required|preferred|minimum|ability)$/i.test(w))
+        .map((w) => w.replace(/^[#+]+/, ""))
+        .filter((w) => w.length >= 3);
+
+      const allKeywords = [...new Set([...defaultKeywords, ...jdKeywords])];
       const allText = JSON.stringify(profile).toLowerCase();
-      const keywordsFound = vlsiKeywords.filter((k) => allText.includes(k.toLowerCase()));
-      const keywordsMissing = vlsiKeywords.filter((k) => !allText.includes(k.toLowerCase()));
+      const keywordsFound = allKeywords.filter((k) => allText.includes(k.toLowerCase()));
+      const keywordsMissing = allKeywords.filter((k) => !allText.includes(k.toLowerCase()));
+      const jdKeywordCount = jdKeywords.length;
+      const jdMatchPercent = jdKeywordCount > 0 ? Math.round((keywordsFound.filter((k) => jdKeywords.includes(k)).length / jdKeywordCount) * 100) : null;
 
       // Formatting issues
       const formattingIssues: string[] = [];
@@ -190,6 +206,9 @@ export default function ResumeReviewPage() {
       if (skillCount < 8) suggestions.push("Add more technical skills relevant to semiconductor roles");
       if (summaryLen < 100) suggestions.push("Expand your professional summary to 2-4 sentences");
       if (keywordsMissing.length > 5) suggestions.push("Include more industry-specific keywords (RTL, Verilog, UVM, etc.)");
+      if (jdKeywordCount > 0 && jdMatchPercent !== null && jdMatchPercent < 50) {
+        suggestions.push(`Only ${jdMatchPercent}% of JD keywords found — tailor your resume to this specific role`);
+      }
       if (!profile.linkedin) suggestions.push("Add your LinkedIn profile URL");
       suggestions.push("Use action verbs to start experience bullet points");
       suggestions.push("Quantify achievements with metrics (%, MHz, nodes, coverage)");
@@ -201,6 +220,7 @@ export default function ResumeReviewPage() {
         keywordsMissing: keywordsMissing.slice(0, 10),
         formattingIssues,
         suggestions,
+        jdMatchPercent,
       });
     } catch (err: any) {
       setResult({
@@ -210,6 +230,7 @@ export default function ResumeReviewPage() {
         keywordsMissing: [],
         formattingIssues: [err.message || "Failed to analyze resume"],
         suggestions: ["Please try uploading a different file or check the format"],
+        jdMatchPercent: null,
       });
     } finally {
       setUploading(false);
@@ -268,6 +289,7 @@ export default function ResumeReviewPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Upload Zone */}
         {!result && (
+          <>
           <div
             onDragOver={(e) => {
               e.preventDefault();
@@ -309,6 +331,21 @@ export default function ResumeReviewPage() {
               </>
             )}
           </div>
+
+          {/* Job Description Paste */}
+          <div className="mt-6">
+            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
+              Paste Job Description (Optional — improves keyword matching)
+            </label>
+            <textarea
+              rows={4}
+              value={jobDescription}
+              onChange={(e) => setJobDescription(e.target.value)}
+              placeholder="Paste the job description here to get a personalized keyword match score..."
+              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-sm text-slate-300 placeholder:text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+            />
+          </div>
+          </>
         )}
 
         {/* Results */}
@@ -401,6 +438,34 @@ export default function ResumeReviewPage() {
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {/* JD Keyword Match */}
+            {result.jdMatchPercent !== null && (
+              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 mb-4">
+                <h3 className="text-blue-400 font-bold text-xs mb-2 flex items-center gap-1.5">
+                  <Target className="w-3.5 h-3.5" />
+                  Job Description Match
+                </h3>
+                <div className="flex items-center gap-3">
+                  <div className="text-3xl font-black text-white">{result.jdMatchPercent}%</div>
+                  <div className="flex-1">
+                    <div className="w-full bg-slate-800 rounded-full h-2.5">
+                      <div
+                        className={`h-2.5 rounded-full transition-all duration-500 ${
+                          result.jdMatchPercent >= 70 ? "bg-emerald-500" : result.jdMatchPercent >= 40 ? "bg-amber-500" : "bg-red-500"
+                        }`}
+                        style={{ width: `${result.jdMatchPercent}%` }}
+                      />
+                    </div>
+                    <p className="text-slate-500 text-[11px] mt-1">
+                      {result.jdMatchPercent >= 70 ? "Strong match — your resume covers most JD keywords" :
+                       result.jdMatchPercent >= 40 ? "Moderate match — consider adding missing keywords" :
+                       "Weak match — tailor your resume to this specific role"}
+                    </p>
+                  </div>
                 </div>
               </div>
             )}

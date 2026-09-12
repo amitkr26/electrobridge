@@ -79,6 +79,10 @@ const DEFAULT_STYLE_CONFIG: ResumeStyleConfig = {
   fontFamily: "font-sans",
   marginSize: "normal",
   sectionSpacing: "normal",
+  sectionOrder: ["summary", "experience", "education", "skills", "projects", "certifications", "publications"],
+  sectionLabels: {},
+  dateFormat: "MMM YYYY",
+  pageSize: "A4",
   visibleSections: {
     summary: true,
     experience: true,
@@ -350,6 +354,34 @@ export default function ResumeBuilderPage() {
     }
   };
 
+  const [exporting, setExporting] = useState(false);
+
+  const handleExportPDF = async () => {
+    const el = previewContainerRef.current;
+    if (!el) return;
+    setExporting(true);
+    try {
+      const { default: html2pdf } = await import("html2pdf.js");
+      const filename = `${(resumeData.fullName || "resume").replace(/\s+/g, "_")}_resume.pdf`;
+      await html2pdf()
+        .set({
+          margin: 0,
+          filename,
+          image: { type: "jpeg", quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, letterRendering: true },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" } as any,
+          pagebreak: { mode: ["avoid-all", "css", "legacy"] },
+        } as any)
+        .from(el)
+        .save();
+      toast.success(`Downloaded ${filename}`);
+    } catch {
+      toast.error("PDF export failed. Try Print / PDF instead.");
+    } finally {
+      setExporting(false);
+    }
+  };
+
   const handlePrint = () => {
     window.print();
   };
@@ -444,11 +476,19 @@ export default function ResumeBuilderPage() {
           </button>
 
           <button
-            onClick={handlePrint}
-            className="flex items-center gap-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl transition shadow-sm"
+            onClick={handleExportPDF}
+            disabled={exporting}
+            className="flex items-center gap-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl transition shadow-sm disabled:opacity-50"
           >
-            <Download className="w-3.5 h-3.5" />
-            <span>Print / PDF</span>
+            {exporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+            <span>{exporting ? "Exporting..." : "Download PDF"}</span>
+          </button>
+          <button
+            onClick={handlePrint}
+            className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200/70 px-3 py-2 rounded-xl transition"
+            title="Print via browser dialog"
+          >
+            <span>Print</span>
           </button>
         </div>
       </header>

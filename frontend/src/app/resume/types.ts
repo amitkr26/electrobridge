@@ -58,6 +58,8 @@ export interface ResumeData {
   publications: PubItem[];
 }
 
+export type SectionKey = "summary" | "experience" | "education" | "skills" | "projects" | "certifications" | "publications";
+
 export interface ResumeStyleConfig {
   templateId: string;
   accentColor: string;
@@ -65,6 +67,10 @@ export interface ResumeStyleConfig {
   marginSize: "compact" | "normal" | "relaxed";
   sectionSpacing: "compact" | "normal" | "relaxed";
   showPhoto?: boolean;
+  sectionOrder: SectionKey[];
+  sectionLabels: Partial<Record<SectionKey, string>>;
+  dateFormat: "MMM YYYY" | "MM/YYYY" | "YYYY" | "custom";
+  pageSize: "A4" | "Letter";
   visibleSections: {
     summary: boolean;
     experience: boolean;
