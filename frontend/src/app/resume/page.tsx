@@ -141,8 +141,8 @@ export default function ResumeBuilderPage() {
   // 1. Load draft and versions from localStorage on mount
   useEffect(() => {
     try {
-      const storedMap = localStorage.getItem("bdw_resume_versions_map_v1");
-      const storedList = localStorage.getItem("bdw_resume_list_v1");
+      const storedMap = localStorage.getItem("eb_resume_versions_map_v1");
+      const storedList = localStorage.getItem("eb_resume_list_v1");
 
       if (storedList) {
         const parsedList = JSON.parse(storedList);
@@ -163,7 +163,7 @@ export default function ResumeBuilderPage() {
       }
 
       // Fallback to legacy single draft
-      const storedDraft = localStorage.getItem("bdw_resume_draft_v1");
+      const storedDraft = localStorage.getItem("eb_resume_draft_v1");
       if (storedDraft) {
         const parsed = JSON.parse(storedDraft);
         if (parsed.data) setResumeData(parsed.data);
@@ -176,13 +176,13 @@ export default function ResumeBuilderPage() {
   useEffect(() => {
     try {
       const currentVersion = { data: resumeData, style: styleConfig };
-      localStorage.setItem("bdw_resume_draft_v1", JSON.stringify(currentVersion));
+      localStorage.setItem("eb_resume_draft_v1", JSON.stringify(currentVersion));
 
-      const storedMap = localStorage.getItem("bdw_resume_versions_map_v1");
+      const storedMap = localStorage.getItem("eb_resume_versions_map_v1");
       const versionsMap = storedMap ? JSON.parse(storedMap) : {};
       versionsMap[activeResumeId] = currentVersion;
-      localStorage.setItem("bdw_resume_versions_map_v1", JSON.stringify(versionsMap));
-      localStorage.setItem("bdw_resume_list_v1", JSON.stringify(savedResumes));
+      localStorage.setItem("eb_resume_versions_map_v1", JSON.stringify(versionsMap));
+      localStorage.setItem("eb_resume_list_v1", JSON.stringify(savedResumes));
     } catch {}
   }, [resumeData, styleConfig, activeResumeId, savedResumes]);
 
@@ -1258,7 +1258,7 @@ export default function ResumeBuilderPage() {
         onSelectResume={(id) => {
           if (id === activeResumeId) return;
           try {
-            const storedMap = localStorage.getItem("bdw_resume_versions_map_v1");
+            const storedMap = localStorage.getItem("eb_resume_versions_map_v1");
             if (storedMap) {
               const parsedMap = JSON.parse(storedMap);
               if (parsedMap[id]) {
@@ -1280,10 +1280,10 @@ export default function ResumeBuilderPage() {
           };
           const newVersion = { data: DEFAULT_RESUME_DATA, style: styleConfig };
           try {
-            const storedMap = localStorage.getItem("bdw_resume_versions_map_v1");
+            const storedMap = localStorage.getItem("eb_resume_versions_map_v1");
             const parsedMap = storedMap ? JSON.parse(storedMap) : {};
             parsedMap[newId] = newVersion;
-            localStorage.setItem("bdw_resume_versions_map_v1", JSON.stringify(parsedMap));
+            localStorage.setItem("eb_resume_versions_map_v1", JSON.stringify(parsedMap));
           } catch {}
           setSavedResumes([...savedResumes, newResume]);
           setActiveResumeId(newId);
@@ -1301,11 +1301,11 @@ export default function ResumeBuilderPage() {
             updatedAt: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
           };
           try {
-            const storedMap = localStorage.getItem("bdw_resume_versions_map_v1");
+            const storedMap = localStorage.getItem("eb_resume_versions_map_v1");
             const parsedMap = storedMap ? JSON.parse(storedMap) : {};
             const sourceVersion = parsedMap[id] || { data: resumeData, style: styleConfig };
             parsedMap[cloneId] = JSON.parse(JSON.stringify(sourceVersion));
-            localStorage.setItem("bdw_resume_versions_map_v1", JSON.stringify(parsedMap));
+            localStorage.setItem("eb_resume_versions_map_v1", JSON.stringify(parsedMap));
           } catch {}
           setSavedResumes([...savedResumes, clonedMeta]);
           toast.success("Duplicated resume version!");
@@ -1320,18 +1320,18 @@ export default function ResumeBuilderPage() {
           const remaining = savedResumes.filter((r) => r.id !== id);
           setSavedResumes(remaining);
           try {
-            const storedMap = localStorage.getItem("bdw_resume_versions_map_v1");
+            const storedMap = localStorage.getItem("eb_resume_versions_map_v1");
             if (storedMap) {
               const parsedMap = JSON.parse(storedMap);
               delete parsedMap[id];
-              localStorage.setItem("bdw_resume_versions_map_v1", JSON.stringify(parsedMap));
+              localStorage.setItem("eb_resume_versions_map_v1", JSON.stringify(parsedMap));
             }
           } catch {}
           if (activeResumeId === id) {
             const fallbackId = remaining[0].id;
             setActiveResumeId(fallbackId);
             try {
-              const storedMap = localStorage.getItem("bdw_resume_versions_map_v1");
+              const storedMap = localStorage.getItem("eb_resume_versions_map_v1");
               if (storedMap) {
                 const parsedMap = JSON.parse(storedMap);
                 if (parsedMap[fallbackId]) {

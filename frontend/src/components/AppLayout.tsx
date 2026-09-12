@@ -145,10 +145,10 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                   <a
                     href="https://berojgardegreewala.vercel.app"
                     target="_blank"
-                    rel="noopener"
+                    rel="noopener noreferrer"
                     className="text-text-muted text-sm hover:text-blue-600 transition-colors"
                   >
-                    BerojgarDegreeWala &mdash; Opportunities &amp; Career Hub
+                    BerojgarDegreeWala &mdash; Opportunities
                   </a>
                 </li>
                 <li>

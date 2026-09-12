@@ -58,7 +58,7 @@ export function AlertsManager() {
 
   useEffect(() => {
     try {
-      const stored = localStorage.getItem("bdw_opportunity_alerts_v1");
+      const stored = localStorage.getItem("eb_opportunity_alerts_v1");
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) setAlerts(parsed);
@@ -69,7 +69,7 @@ export function AlertsManager() {
   const saveAlerts = (newAlerts: OpportunityAlert[]) => {
     setAlerts(newAlerts);
     try {
-      localStorage.setItem("bdw_opportunity_alerts_v1", JSON.stringify(newAlerts));
+        localStorage.setItem("eb_opportunity_alerts_v1", JSON.stringify(newAlerts));
     } catch {}
   };
 

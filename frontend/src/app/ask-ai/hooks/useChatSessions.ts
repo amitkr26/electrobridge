@@ -19,7 +19,7 @@ export interface ChatSession {
   updatedAt: string;
 }
 
-const STORAGE_KEY = "bdw_chat_sessions_v1";
+const STORAGE_KEY = "eb_chat_sessions_v1";
 const MAX_SESSIONS = 30;
 
 function createDefaultSession(): ChatSession {

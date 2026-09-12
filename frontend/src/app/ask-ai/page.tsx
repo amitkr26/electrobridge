@@ -55,7 +55,7 @@ export default function OpportunityIntelligencePage() {
   // Load Saved IDs from localStorage
   useEffect(() => {
     try {
-      const stored = localStorage.getItem("bdw_saved_opportunities_v1");
+      const stored = localStorage.getItem("eb_saved_opportunities_v1");
       if (stored) {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) setSavedOpportunityIds(parsed);
@@ -90,7 +90,7 @@ export default function OpportunityIntelligencePage() {
     setSavedOpportunityIds((prev) => {
       const updated = prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id];
       try {
-        localStorage.setItem("bdw_saved_opportunities_v1", JSON.stringify(updated));
+        localStorage.setItem("eb_saved_opportunities_v1", JSON.stringify(updated));
       } catch {}
       toast.success(prev.includes(id) ? "Opportunity removed from saved." : "Opportunity saved to bookmarks!");
       return updated;

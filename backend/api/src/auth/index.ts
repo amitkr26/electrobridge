@@ -1,17 +1,23 @@
 import { createClient } from "@supabase/supabase-js";
 import { unauthorized, forbidden } from "../response";
 import type { AuthUser } from "../types";
+import { timingSafeEqual } from "crypto";
 export type { AuthUser };
+
+function safeCompare(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  return timingSafeEqual(Buffer.from(a), Buffer.from(b));
+}
+
 function verifyAdminToken(token: string, adminPassword: string): boolean {
   const HMAC_KEY = process.env.ADMIN_HMAC_SECRET || adminPassword;
   const parts = token.split(".");
   if (parts.length !== 3) return false;
   const [sessionId, expiry, sig] = parts;
   if (Date.now() > parseInt(expiry, 10)) return false;
-  // ponytail: dynamic require to avoid bundling Node.js crypto in Vercel Edge/middleware
   const crypto = require("crypto");
   const expected = crypto.createHmac("sha256", HMAC_KEY).update(`${sessionId}.${expiry}`).digest("hex");
-  return sig === expected;
+  return safeCompare(sig, expected);
 }
 
 interface RequestLike {
@@ -47,7 +53,7 @@ export async function requireAdmin(request: RequestLike): Promise<AuthUser> {
   if (!adminPassword && !cronSecret) throw forbidden("Server keys are missing");
 
   const directPassword = request.headers.get("x-admin-password");
-  if (adminPassword && directPassword && directPassword === adminPassword) {
+  if (adminPassword && directPassword && safeCompare(directPassword, adminPassword)) {
     return { id: "admin", email: "admin", role: "admin" };
   }
 
@@ -55,13 +61,13 @@ export async function requireAdmin(request: RequestLike): Promise<AuthUser> {
   const match = authHeader.match(/^Bearer\s+(.+)$/);
   if (match) {
     const token = match[1];
-    if (adminPassword && token === adminPassword) {
+    if (adminPassword && safeCompare(token, adminPassword)) {
       return { id: "admin", email: "admin", role: "admin" };
     }
     if (adminPassword && verifyAdminToken(token, adminPassword)) {
       return { id: "admin", email: "admin", role: "admin" };
     }
-    if (cronSecret && token === cronSecret) {
+    if (cronSecret && safeCompare(token, cronSecret)) {
       return { id: "cron", email: "cron", role: "cron" };
     }
   }

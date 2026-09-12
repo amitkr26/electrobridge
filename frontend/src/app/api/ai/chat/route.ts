@@ -76,7 +76,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const userMessage = messages[messages.length - 1].content || "";
+    // Ponytail: cap messages array and individual message length to prevent token abuse
+    if (messages.length > 50) {
+      return NextResponse.json({ error: "Too many messages (max 50)." }, { status: 400 });
+    }
+
+    const lastMsg = messages[messages.length - 1];
+    const userMessage = (typeof lastMsg?.content === "string" ? lastMsg.content : "").slice(0, 2000);
+
+    if (!userMessage) {
+      return NextResponse.json({ error: "Message content is required." }, { status: 400 });
+    }
 
     // 1. Retrieve matching records from the ACTUAL database (opportunities +
     //    news) so the model never answers from memory alone.
