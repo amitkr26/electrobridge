@@ -1,11 +1,12 @@
 import { createClient } from "@supabase/supabase-js";
 import { unauthorized, forbidden } from "../response";
 import type { AuthUser } from "../types";
-import { timingSafeEqual } from "crypto";
 export type { AuthUser };
 
+// ponytail: dynamic require avoids bundling Node.js crypto in Edge Runtime
 function safeCompare(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
+  const { timingSafeEqual } = require("crypto");
   return timingSafeEqual(Buffer.from(a), Buffer.from(b));
 }
 
@@ -81,7 +82,7 @@ export async function requireCron(request: RequestLike): Promise<void> {
 
   const authHeader = request.headers.get("authorization") || "";
   const match = authHeader.match(/^Bearer\s+(.+)$/);
-  if (!match || match[1] !== cronSecret) throw forbidden("Invalid cron secret");
+  if (!match || !safeCompare(match[1], cronSecret)) throw forbidden("Invalid cron secret");
 }
 
 export async function requireCronOrAdmin(request: RequestLike): Promise<AuthUser> {
