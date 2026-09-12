@@ -1,7 +1,5 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
 import {
   Route, BookOpen, FileText, DollarSign, Building2, TrendingUp,
   ArrowRight, Mail, ChevronRight, Star, Zap, Target, Users

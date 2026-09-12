@@ -1,11 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Link from "next/link";
 import {
   Download, Save, UploadCloud, Sparkles, LayoutTemplate,
   Layers, Plus, Trash2, Eye, User, GraduationCap, Briefcase,
-  Code, FolderGit2, Award, BookOpen, Loader2, ZoomIn, ZoomOut, Check, ArrowLeft
+  Code, FolderGit2, Award, Loader2, ZoomIn, ZoomOut
 } from "lucide-react";
 import { toast } from "sonner";
 import { ResumeData, ResumeStyleConfig, TemplateId, EduItem, ExpItem, ProjItem, CertItem, PubItem } from "./types";

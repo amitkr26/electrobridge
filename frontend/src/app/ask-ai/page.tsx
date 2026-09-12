@@ -9,8 +9,6 @@ import {
   Compass,
   Bookmark,
   Bell,
-  Search,
-  Layers,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useChatSessions, ChatMessageItem } from "./hooks/useChatSessions";

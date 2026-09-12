@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import {
-  FileText, Download, Sparkles, Loader2, LayoutTemplate, Eye, User,
-  Building2, Briefcase, Mail, Phone, Pen, ArrowLeft, Check
+  Download, Sparkles, Loader2, LayoutTemplate, User,
+  Building2, Mail, Phone, Pen
 } from "lucide-react";
 import { toast } from "sonner";
 
