@@ -4,280 +4,302 @@ import {
   MessageSquare,
   Sparkles,
   BarChart3,
-  Upload,
-  Palette,
-  Wand2,
-  Download,
+  Briefcase,
+  Search,
   ArrowRight,
   CheckCircle2,
-  Star,
-  Quote,
+  Layers,
+  Zap,
+  Target,
+  Shield,
+  Pen,
+  TrendingUp,
 } from "lucide-react";
 
-const features = [
+/* ── Product pillars ─────────────────────────────────────────────────────── */
+
+const pillars = [
   {
     icon: FileText,
-    title: "10 Professional Templates",
-    description:
-      "ATS-optimized templates designed for semiconductor, VLSI, and chip design roles.",
-    color: "bg-blue-50 text-blue-600 border-blue-100",
+    title: "Resume Builder",
+    description: "10 ATS-optimized templates. Drag-and-drop section ordering. Live preview. Professional PDF export.",
+    color: "bg-blue-50 text-blue-600",
   },
   {
     icon: Sparkles,
-    title: "AI-Powered Enhancement",
-    description:
-      "ATS score analysis, skill gap identification, and intelligent content suggestions.",
-    color: "bg-emerald-50 text-emerald-600 border-emerald-100",
+    title: "AI Career Assistant",
+    description: "Get AI-powered resume improvements, skill gap analysis, and career guidance — context-aware, not generic.",
+    color: "bg-emerald-50 text-emerald-600",
   },
   {
-    icon: MessageSquare,
-    title: "Career Assistant",
-    description:
-      "AI chat for job opportunities, interview prep, and career guidance in semiconductor.",
-    color: "bg-violet-50 text-violet-600 border-violet-100",
+    icon: Briefcase,
+    title: "Job Discovery",
+    description: "Browse curated opportunities. Save roles. Track applications. Match your resume to job descriptions.",
+    color: "bg-violet-50 text-violet-600",
+  },
+  {
+    icon: BarChart3,
+    title: "ATS Score Checker",
+    description: "Upload your resume or paste a job description. Get a detailed compatibility report with actionable fixes.",
+    color: "bg-amber-50 text-amber-600",
+  },
+  {
+    icon: Pen,
+    title: "Cover Letter Builder",
+    description: "AI-generated, job-specific cover letters that match your resume design. Tailored to each application.",
+    color: "bg-rose-50 text-rose-600",
+  },
+  {
+    icon: TrendingUp,
+    title: "Career Resources",
+    description: "Interview prep, salary guides, career roadmaps, and skill development paths — all free.",
+    color: "bg-cyan-50 text-cyan-600",
   },
 ];
+
+/* ── How it works ────────────────────────────────────────────────────────── */
 
 const steps = [
-  { icon: Upload, label: "Upload or Build", description: "Import an existing resume or start from scratch." },
-  { icon: Palette, label: "Customize", description: "Choose a template and tailor your content." },
-  { icon: Wand2, label: "AI Enhance", description: "Let AI optimize your resume for ATS and recruiters." },
-  { icon: Download, label: "Download", description: "Export as PDF or DOCX, ready to send." },
+  { icon: Search, label: "Discover", description: "Find opportunities that match your skills and goals." },
+  { icon: FileText, label: "Build", description: "Create or import your resume with our professional editor." },
+  { icon: Target, label: "Optimize", description: "AI tailors your resume for each specific job description." },
+  { icon: Shield, label: "Apply", description: "Check ATS compatibility, then apply with confidence." },
 ];
 
-const templates = [
-  { name: "Executive", category: "Senior / Management", color: "from-blue-600 to-blue-800" },
-  { name: "Technical", category: "VLSI / RTL Design", color: "from-emerald-600 to-teal-700" },
-  { name: "Modern", category: "All Roles", color: "from-violet-600 to-purple-700" },
-  { name: "Minimal", category: "Clean & Focused", color: "from-slate-600 to-slate-800" },
+/* ── Comparison ──────────────────────────────────────────────────────────── */
+
+const comparisons = [
+  { feature: "Resume Builder", electrobridge: true, flowcv: true },
+  { feature: "ATS Score Analysis", electrobridge: true, flowcv: true },
+  { feature: "PDF Export", electrobridge: true, flowcv: true },
+  { feature: "AI Career Assistant", electrobridge: true, flowcv: false },
+  { feature: "Job Matching & Discovery", electrobridge: true, flowcv: false },
+  { feature: "Application Tracker", electrobridge: true, flowcv: false },
+  { feature: "Cover Letter Builder", electrobridge: true, flowcv: true },
+  { feature: "Resume-to-Job Optimization", electrobridge: true, flowcv: false },
+  { feature: "100% Free", electrobridge: true, flowcv: true },
 ];
 
-const testimonials = [
-  {
-    quote: "Got shortlisted at Qualcomm in 2 weeks. The ATS-optimized template made all the difference.",
-    author: "VLSI Design Engineer",
-  },
-  {
-    quote: "AI suggestions were spot-on for RTL roles — it knew exactly what keywords to add for Synopsys applications.",
-    author: "RTL Verification Engineer",
-  },
-  {
-    quote: "Best free resume builder for VLSI engineers. No other tool understands semiconductor roles this well.",
-    author: "ASIC Design Lead",
-  },
-  {
-    quote: "The skill gap analysis showed me I needed CDC expertise — landed a role at a top fabless firm after upskilling.",
-    author: "Physical Design Engineer",
-  },
-];
+/* ── Page ────────────────────────────────────────────────────────────────── */
 
 export default function Home() {
   return (
-    <div className="bg-background text-foreground">
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern opacity-40" />
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 sm:pt-28 sm:pb-32 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-sm font-medium mb-8">
-            <CheckCircle2 className="w-4 h-4" />
-            100% Free — No Login Required
+    <div className="bg-white text-slate-900">
+      {/* ── Hero ──────────────────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden border-b border-slate-100">
+        <div className="absolute inset-0 bg-grid-pattern opacity-30" />
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 sm:pt-24 sm:pb-28 text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold mb-6">
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            Free Forever &bull; No Account Required
           </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-4xl mx-auto">
-            Build Your Dream{" "}
-            <span className="text-gradient-primary">Semiconductor Career</span>
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.1] max-w-4xl mx-auto">
+            Build your resume.{" "}
+            <span className="text-gradient-primary">Find better jobs.</span>{" "}
+            Get hired.
           </h1>
-          <p className="mt-6 text-lg sm:text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed">
-            AI-powered resume builder and career assistant designed for VLSI, chip design, and
-            semiconductor engineers. 10 templates, ATS optimization, and career chat — all free.
+          <p className="mt-5 text-base sm:text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
+            An all-in-one career platform with a professional resume builder, AI-powered career assistance,
+            job matching, ATS optimization, and career resources — completely free.
           </p>
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
               href="/resume"
-              className="btn-glow px-8 py-3.5 rounded-xl text-base font-semibold inline-flex items-center gap-2"
+              className="btn-glow px-7 py-3 rounded-xl text-sm font-semibold inline-flex items-center gap-2"
             >
               Build Your Resume
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/ask-ai"
-              className="px-8 py-3.5 rounded-xl text-base font-semibold border border-border hover:border-border-hover bg-surface transition-all duration-200 inline-flex items-center gap-2"
+              className="px-7 py-3 rounded-xl text-sm font-semibold border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 transition-all inline-flex items-center gap-2"
             >
               <MessageSquare className="w-4 h-4" />
-              Chat with AI
+              Ask AI
+            </Link>
+            <Link
+              href="/templates"
+              className="px-7 py-3 rounded-xl text-sm font-semibold text-slate-600 hover:text-slate-900 transition-all inline-flex items-center gap-2"
+            >
+              <Layers className="w-4 h-4" />
+              Browse Templates
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            Everything You Need to Land Your Next Role
+      {/* ── Product pillars ───────────────────────────────────────────────── */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
+            Your complete career toolkit
           </h2>
-          <p className="mt-4 text-text-secondary text-lg max-w-2xl mx-auto">
-            Purpose-built for semiconductor professionals. Not another generic resume builder.
+          <p className="mt-3 text-slate-500 text-base max-w-xl mx-auto">
+            Everything you need to discover opportunities, build a professional resume, and get hired.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {features.map(({ icon: Icon, title, description, color }) => (
-            <div key={title} className="glass-premium rounded-2xl p-8">
-              <div className={`w-12 h-12 rounded-xl border flex items-center justify-center mb-5 ${color}`}>
-                <Icon className="w-6 h-6" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {pillars.map(({ icon: Icon, title, description, color }) => (
+            <div key={title} className="glass-premium rounded-xl p-6">
+              <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-4 ${color}`}>
+                <Icon className="w-5 h-5" />
               </div>
-              <h3 className="text-xl font-bold mb-2">{title}</h3>
-              <p className="text-text-secondary leading-relaxed">{description}</p>
+              <h3 className="font-bold text-base mb-1.5">{title}</h3>
+              <p className="text-slate-500 text-sm leading-relaxed">{description}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="bg-bg-secondary">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-              From Upload to Offer in 4 Steps
+      {/* ── How it works ──────────────────────────────────────────────────── */}
+      <section className="border-t border-slate-100 bg-slate-50">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
+              From discovery to hire
             </h2>
-            <p className="mt-4 text-text-secondary text-lg">
-              Simple, fast, and optimized for semiconductor hiring pipelines.
+            <p className="mt-3 text-slate-500 text-base">
+              A complete career workflow, not just a resume builder.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {steps.map(({ icon: Icon, label, description }, i) => (
-              <div key={label} className="text-center">
-                <div className="w-14 h-14 rounded-2xl bg-blue-600 text-white flex items-center justify-center mx-auto mb-4 text-lg font-bold">
-                  {i + 1}
+              <div key={label} className="relative">
+                {i < steps.length - 1 && (
+                  <div className="hidden lg:block absolute top-7 left-full w-full h-px bg-slate-200" />
+                )}
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm font-bold shrink-0">
+                    {i + 1}
+                  </div>
+                  <h3 className="font-bold text-sm">{label}</h3>
                 </div>
-                <h3 className="text-lg font-bold mb-1">{label}</h3>
-                <p className="text-text-secondary text-sm">{description}</p>
+                <p className="text-slate-500 text-sm leading-relaxed pl-[52px]">{description}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Template Showcase */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            10 Professional Templates
-          </h2>
-          <p className="mt-4 text-text-secondary text-lg">
-            ATS-tested and designed to pass automated screening systems.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {templates.map(({ name, category, color }) => (
-            <div key={name} className="glass-premium rounded-2xl overflow-hidden group">
-              <div className={`h-40 bg-gradient-to-br ${color} flex items-center justify-center`}>
-                <FileText className="w-12 h-12 text-white/80" />
-              </div>
-              <div className="p-5">
-                <h3 className="font-bold text-lg">{name}</h3>
-                <p className="text-text-muted text-sm mt-1">{category}</p>
-              </div>
+      {/* ── Why ElectroBridge ─────────────────────────────────────────────── */}
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-4">
+              More than a resume builder
+            </h2>
+            <p className="text-slate-500 text-base leading-relaxed mb-6">
+              ElectroBridge combines resume building with job-search intelligence. Paste a job description,
+              and AI will tailor your resume for that specific role. Track every application.
+              Know your ATS score before you apply.
+            </p>
+            <div className="space-y-3">
+              {[
+                "Context-aware AI that knows your resume and target role",
+                "Resume-to-job matching with skill gap analysis",
+                "Application tracking across your entire job search",
+                "Professional templates that pass automated screening",
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 shrink-0" />
+                  <span className="text-sm text-slate-600">{item}</span>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <div className="text-center mt-10">
-          <Link
-            href="/templates"
-            className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700 transition-colors"
-          >
-            View All 10 Templates
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </section>
-
-      {/* ATS Score Section */}
-      <section className="bg-bg-secondary">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="glass-premium rounded-2xl p-10 sm:p-14 flex flex-col md:flex-row items-center gap-10">
-            <div className="flex-1">
-              <div className="w-14 h-14 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center mb-5">
-                <BarChart3 className="w-7 h-7 text-emerald-600" />
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-                Will Your Resume Pass the ATS?
-              </h2>
-              <p className="text-text-secondary text-lg leading-relaxed mb-8">
-                Get a detailed ATS compatibility score with actionable fixes. Know exactly where your
-                resume stands before you hit send.
-              </p>
-              <Link
-                href="/resume-review"
-                className="btn-glow px-7 py-3 rounded-xl text-base font-semibold inline-flex items-center gap-2"
-              >
-                Check Your ATS Score
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+          </div>
+          <div className="glass-premium rounded-xl p-6 border border-slate-200">
+            <div className="text-center mb-5">
+              <div className="text-4xl font-extrabold text-blue-600 mb-1">100%</div>
+              <div className="text-slate-500 text-sm font-medium">Free. No catches.</div>
             </div>
-            <div className="w-full md:w-72 bg-bg-secondary rounded-xl p-6 border border-border">
-              <div className="text-center">
-                <div className="text-5xl font-extrabold text-emerald-600 mb-2">87%</div>
-                <div className="text-text-secondary text-sm font-medium">ATS Compatibility</div>
-              </div>
-              <div className="mt-5 space-y-3">
-                {["Keywords", "Formatting", "Sections"].map((item) => (
-                  <div key={item} className="flex items-center justify-between text-sm">
-                    <span className="text-text-secondary">{item}</span>
-                    <span className="font-semibold text-emerald-600">
-                      {item === "Keywords" ? "92%" : item === "Formatting" ? "85%" : "84%"}
-                    </span>
-                  </div>
-                ))}
-              </div>
+            <div className="grid grid-cols-2 gap-3 text-center">
+              {[
+                { value: "10", label: "Templates" },
+                { value: "AI", label: "Career Coach" },
+                { value: "ATS", label: "Score Check" },
+                { value: "0", label: "Hidden Fees" },
+              ].map(({ value, label }) => (
+                <div key={label} className="bg-slate-50 rounded-lg p-3 border border-slate-100">
+                  <div className="text-lg font-bold text-slate-900">{value}</div>
+                  <div className="text-xs text-slate-500">{label}</div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-            Trusted by Semiconductor Engineers
-          </h2>
-          <p className="mt-4 text-text-secondary text-lg">
-            Real results from real VLSI professionals.
-          </p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {testimonials.map(({ quote, author }) => (
-            <div key={author} className="glass-premium rounded-2xl p-6 flex flex-col">
-              <Quote className="w-8 h-8 text-blue-200 mb-3" />
-              <p className="text-text-primary leading-relaxed flex-1 text-sm">{quote}</p>
-              <div className="mt-4 pt-4 border-t border-border">
-                <div className="flex items-center gap-1 mb-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                  ))}
-                </div>
-                <p className="text-text-muted text-xs font-medium">{author}</p>
-              </div>
-            </div>
-          ))}
+      {/* ── Comparison table ──────────────────────────────────────────────── */}
+      <section className="border-t border-slate-100 bg-slate-50">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
+              Why ElectroBridge?
+            </h2>
+            <p className="mt-3 text-slate-500 text-sm">
+              Compared to other free resume builders
+            </p>
+          </div>
+          <div className="glass-premium rounded-xl overflow-hidden border border-slate-200">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-slate-200">
+                  <th className="text-left py-3 px-4 font-semibold text-slate-700">Feature</th>
+                  <th className="text-center py-3 px-4 font-semibold text-blue-600">ElectroBridge</th>
+                  <th className="text-center py-3 px-4 font-semibold text-slate-400">Others</th>
+                </tr>
+              </thead>
+              <tbody>
+                {comparisons.map(({ feature, electrobridge, flowcv }, i) => (
+                  <tr key={feature} className={i < comparisons.length - 1 ? "border-b border-slate-100" : ""}>
+                    <td className="py-2.5 px-4 text-slate-600">{feature}</td>
+                    <td className="py-2.5 px-4 text-center">
+                      {electrobridge ? (
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto" />
+                      ) : (
+                        <span className="text-slate-300">&mdash;</span>
+                      )}
+                    </td>
+                    <td className="py-2.5 px-4 text-center">
+                      {flowcv ? (
+                        <CheckCircle2 className="w-4 h-4 text-slate-300 mx-auto" />
+                      ) : (
+                        <span className="text-slate-300">&mdash;</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="bg-bg-secondary">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight mb-4">
-            Start Building Your Resume — It&apos;s Free
+      {/* ── Final CTA ─────────────────────────────────────────────────────── */}
+      <section className="border-t border-slate-100">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 text-center">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
+            Start building your career today
           </h2>
-          <p className="text-text-secondary text-lg max-w-xl mx-auto mb-10">
-            No sign-up. No hidden fees. Just a professional resume built for semiconductor roles.
+          <p className="text-slate-500 text-base max-w-lg mx-auto mb-8">
+            No sign-up. No credit card. Just a professional resume and the tools to get hired.
           </p>
-          <Link
-            href="/resume"
-            className="btn-glow px-10 py-4 rounded-xl text-lg font-semibold inline-flex items-center gap-2"
-          >
-            Get Started Now
-            <ArrowRight className="w-5 h-5" />
-          </Link>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link
+              href="/resume"
+              className="btn-glow px-8 py-3 rounded-xl text-sm font-semibold inline-flex items-center gap-2"
+            >
+              Build Your Resume
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/ask-ai"
+              className="px-8 py-3 rounded-xl text-sm font-semibold border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 transition-all inline-flex items-center gap-2"
+            >
+              <Zap className="w-4 h-4" />
+              Try AI Assistant
+            </Link>
+          </div>
         </div>
       </section>
     </div>
