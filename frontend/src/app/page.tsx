@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Script from "next/script";
 import {
   FileText,
   MessageSquare,
@@ -85,6 +86,40 @@ const comparisons = [
 export default function Home() {
   return (
     <div className="bg-white text-slate-900">
+      <Script
+        id="structured-data"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "ElectroBridge",
+            "url": "https://electrobridge.vercel.app",
+            "description": "Free AI-powered career platform for engineers. Build ATS-optimized resumes, check ATS scores, get AI career assistance, search engineering jobs, and track applications.",
+            "applicationCategory": "Career Development",
+            "operatingSystem": "Web",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "author": {
+              "@type": "Organization",
+              "name": "ElectroBridge",
+              "url": "https://electrobridge.vercel.app"
+            },
+            "sameAs": [
+              "https://www.linkedin.com/in/rankrseo/",
+              "https://www.instagram.com/rankrseo",
+              "https://www.youtube.com/@rankrseo",
+              "https://x.com/rankrseo",
+              "https://www.facebook.com/RankrSEOs",
+              "https://www.reddit.com/user/rankrseo/",
+              "https://in.pinterest.com/rankrseo/"
+            ]
+          })
+        }}
+      />
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-slate-100">
         <div className="absolute inset-0 bg-grid-pattern opacity-30" />

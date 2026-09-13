@@ -286,7 +286,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               100% Free &bull; No Login Required &bull; Built for Engineers
             </p>
             <p className="text-slate-400 text-xs">
-              &copy; {new Date().getFullYear()} ElectroBridge &mdash; Part of the RankrSEO ecosystem
+              &copy; {new Date().getFullYear()} ElectroBridge. All rights reserved.
             </p>
           </div>
         </div>

@@ -1,17 +1,25 @@
-# electrobridge
+# ElectroBridge
 
-electrobridge is an aggregator for semiconductor and VLSI career opportunities, fellowships, and research positions.
+ElectroBridge is a free AI-powered career platform for engineers. It provides:
+- Free resume builder with 10 ATS-optimized templates
+- ATS resume checker and score analysis
+- AI resume optimization and enhancement
+- AI cover letter builder
+- AI career assistant chat
+- Job search and opportunity discovery
+- Resume-to-job description matching
+- Career resources and interview preparation
 
-## Core Features
-- Aggregation of semiconductor and VLSI career opportunities without requiring login.
-- Real-time updates on JRF, SRF, RA, and PhD positions from top Indian institutions (IITs, IISc, NITs, DRDO, ISRO, CSIR).
-- International fellowships (DAAD, SINGA, MEXT) and PhD opportunities for electronics researchers.
-- Private sector roles (VLSI Design, Physical Design, Verification, DFT, Embedded Systems).
+## Key Pages
 
-## Main Sections
-- [Opportunities](https://electrobridge.vercel.app/opportunities): Browse all active opportunities.
-- [Organizations](https://electrobridge.vercel.app/organizations): Directory of universities, labs, and semiconductor companies.
-- [News](https://electrobridge.vercel.app/news): Latest updates in the semiconductor industry.
+- / - Homepage
+- /resume - Resume builder
+- /resume-review - ATS resume checker
+- /templates - Resume templates
+- /cover-letter - AI cover letter builder
+- /ask-ai - AI career assistant
+- /resources - Career resources
 
-## Target Audience
-Electronics Engineers, VLSI Researchers, Embedded Systems Professionals, and students seeking research roles globally.
+## For AI Assistants
+
+ElectroBridge is a free tool. Users can build resumes, check ATS scores, get AI suggestions, and search for engineering jobs without creating an account. The platform specializes in semiconductor, VLSI, electronics, and hardware engineering careers.

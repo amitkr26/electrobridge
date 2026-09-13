@@ -2,8 +2,8 @@ import { FileText, Sparkles, BarChart3, Users, Zap, Target, ArrowRight, Briefcas
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About",
-  description: "Learn about ElectroBridge - a free career platform for engineers.",
+  title: "About ElectroBridge",
+  description: "Learn about ElectroBridge — a free AI career platform helping engineers build resumes, optimize for ATS, find jobs, and advance their careers.",
 };
 
 const OFFERINGS = [

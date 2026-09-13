@@ -14,11 +14,11 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   metadataBase: new URL("https://electrobridge.vercel.app"),
   title: {
-    default: "ElectroBridge — AI Resume Builder for Semiconductor Engineers",
+    default: "ElectroBridge — Free AI Career Platform for Engineers",
     template: "%s | ElectroBridge",
   },
   description:
-    "Build ATS-optimized resumes with 10 professional templates. AI-powered enhancement, skill gap analysis, and career chat. 100% free.",
+    "Build an ATS-friendly resume, optimize it with AI, find engineering jobs, match your resume to job descriptions, create cover letters and track applications — free with ElectroBridge.",
   keywords: [
     "resume builder",
     "VLSI resume",
@@ -38,15 +38,15 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: "https://electrobridge.vercel.app",
     siteName: "ElectroBridge",
-    title: "ElectroBridge — AI Resume Builder for Semiconductor Engineers",
+    title: "ElectroBridge — Free AI Career Platform for Engineers",
     description:
-      "Build ATS-optimized resumes with 10 professional templates. AI-powered enhancement, skill gap analysis, and career chat. 100% free.",
+      "Build an ATS-friendly resume, optimize it with AI, find engineering jobs, match your resume to job descriptions, create cover letters and track applications — free with ElectroBridge.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "ElectroBridge — AI Resume Builder for Semiconductor Engineers",
+    title: "ElectroBridge — Free AI Career Platform for Engineers",
     description:
-      "Build ATS-optimized resumes with 10 professional templates. AI-powered enhancement, skill gap analysis, and career chat. 100% free.",
+      "Build an ATS-friendly resume, optimize it with AI, find engineering jobs, match your resume to job descriptions, create cover letters and track applications — free with ElectroBridge.",
   },
   robots: {
     index: true,
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
       follow: true,
       "max-snippet": -1,
       "max-image-preview": "large",
-      "noarchive": true,
+
     },
   },
   alternates: { canonical: "https://electrobridge.vercel.app" },
