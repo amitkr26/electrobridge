@@ -257,7 +257,7 @@ Make it specific to semiconductor/VLSI engineering. Use active voice. Be concise
                     type="text"
                     value={data.fullName}
                     onChange={(e) => setData({ ...data, fullName: e.target.value })}
-                    placeholder="Amit Kumar"
+                    placeholder="Alex Morgan"
                     className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
                   />
                 </div>
@@ -354,7 +354,7 @@ Make it specific to semiconductor/VLSI engineering. Use active voice. Be concise
                   rows={3}
                   value={data.body2}
                   onChange={(e) => setData({ ...data, body2: e.target.value })}
-                  placeholder="During my internship at C-DAC, I successfully designed and verified AMBA AXI4 interconnect modules..."
+                  placeholder="During my internship at Example Company, I designed and verified high-speed digital modules..."
                   className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500 leading-relaxed resize-none font-medium"
                 />
               </div>

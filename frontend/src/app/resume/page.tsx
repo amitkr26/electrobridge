@@ -3,8 +3,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   Download, Save, UploadCloud, Sparkles, LayoutTemplate,
-  Layers, Plus, Trash2, Eye, User, GraduationCap, Briefcase,
-  Code, FolderGit2, Award, Loader2, ZoomIn, ZoomOut
+  Layers, User, GraduationCap, Briefcase,
+  Code, FolderGit2, Award, Loader2, ZoomIn, ZoomOut, FileText
 } from "lucide-react";
 import { toast } from "sonner";
 import { ResumeData, ResumeStyleConfig, TemplateId, EduItem, ExpItem, ProjItem, CertItem, PubItem } from "./types";
@@ -16,60 +16,77 @@ import { ImportReviewModal } from "./components/ImportReviewModal";
 import { AIResumeAdvisor, TargetRole } from "./components/AIResumeAdvisor";
 import { AIImproveDiffModal } from "./components/AIImproveDiffModal";
 import { MyResumesDrawer, SavedResumeMeta } from "./components/MyResumesDrawer";
+import SectionNav from "./components/sections/SectionNav";
+import PersonalSection from "./components/sections/PersonalSection";
+import SummarySection from "./components/sections/SummarySection";
+import ExperienceSection from "./components/sections/ExperienceSection";
+import EducationSection from "./components/sections/EducationSection";
+import SkillsSection from "./components/sections/SkillsSection";
+import ProjectsSection from "./components/sections/ProjectsSection";
+import ExtrasSection from "./components/sections/ExtrasSection";
 
 const DEFAULT_RESUME_DATA: ResumeData = {
-  fullName: "Amit Kumar",
-  headline: "ASIC & RTL Design Engineer | VLSI Specialist",
-  email: "amit.kumar@example.com",
-  phone: "+91 98765 43210",
-  location: "Bengaluru, India",
-  linkedin: "linkedin.com/in/amit-vlsi",
-  github: "github.com/amit-chips",
+  fullName: "Alex Morgan",
+  headline: "Electronics & VLSI Engineer",
+  email: "alex.morgan@example.com",
+  phone: "+1 555 0123",
+  location: "Austin, TX",
+  linkedin: "linkedin.com/in/alexmorgan",
+  github: "github.com/alexmorgan",
   website: "",
-  summary: "Results-driven Electronics & VLSI Engineer with hands-on expertise in RTL design (SystemVerilog/Verilog), logic synthesis, and digital verification. Strong foundation in microarchitecture, FSM design, and timing closure.",
+  summary: "Electronics engineer with experience in RTL design, digital verification, and embedded systems. Proficient in SystemVerilog, FPGA development, and hardware-software co-design.",
   education: [
     {
       id: "edu-1",
-      school: "Indian Institute of Information Technology (IIIT)",
-      degree: "B.Tech in Electronics & Communication Engineering",
-      year: "2020 - 2024",
-      cgpa: "8.7/10",
+      school: "Example University",
+      degree: "M.S. Electrical & Computer Engineering",
+      year: "2021 - 2023",
+      cgpa: "",
+    },
+    {
+      id: "edu-2",
+      school: "Example State University",
+      degree: "B.S. Electronics Engineering",
+      year: "2017 - 2021",
+      cgpa: "",
     },
   ],
   experience: [
     {
       id: "exp-1",
-      role: "RTL Design Intern",
-      org: "C-DAC (Center for Development of Advanced Computing)",
-      period: "Jan 2024 - Jun 2024",
-      detail: "Designed and verified AMBA AXI4 interconnect modules using SystemVerilog.\nConducted logic synthesis and STA using Synopsys Design Compiler, achieving 250MHz timing closure.",
+      role: "Hardware Design Engineer",
+      org: "Example Semiconductor Inc.",
+      period: "Jul 2023 - Present",
+      detail: "Design and verify RTL modules for high-speed data path using SystemVerilog. Collaborate with physical design team on timing closure and synthesis optimization.",
+    },
+    {
+      id: "exp-2",
+      role: "VLSI Design Intern",
+      org: "Example Tech Labs",
+      period: "Jan 2023 - Jun 2023",
+      detail: "Developed UVM testbenches for PCIe endpoint verification. Achieved 97% functional coverage across all test scenarios.",
     },
   ],
   projects: [
     {
       id: "proj-1",
-      name: "RISC-V 32I 5-Stage Pipelined Processor",
-      technologies: "SystemVerilog, Vivado, ModelSim",
-      detail: "Implemented 32-bit RISC-V RV32I core with hazard detection, branch prediction, and forwarding unit. Verified on Xilinx Artix-7 FPGA board.",
+      name: "5-Stage Pipelined Processor",
+      technologies: "SystemVerilog, Vivado",
+      detail: "Implemented a pipelined RISC processor with hazard detection, forwarding, and branch prediction. Synthesized on FPGA at 200MHz.",
     },
     {
       id: "proj-2",
-      name: "UVM-Based Verification Environment for UART Controller",
-      technologies: "SystemVerilog, UVM 1.2, QuestaSim",
-      detail: "Architected complete UVM testbench with scoreboard, agents, and functional coverage model, achieving 98.5% code coverage.",
+      name: "I2C Master Controller",
+      technologies: "Verilog, ModelSim",
+      detail: "Designed a parameterized I2C master with multi-byte read/write support and clock stretching. Verified with directed and random tests.",
     },
   ],
   skills: [
-    "SystemVerilog", "Verilog", "UVM", "RTL Design", "Digital Design",
-    "Logic Synthesis", "Static Timing Analysis (STA)", "Synopsys Design Compiler",
-    "Cadence Virtuoso", "Xilinx Vivado", "ModelSim", "FPGA", "RISC-V", "Tcl", "Python"
+    "SystemVerilog", "Verilog", "UVM", "RTL Design", "FPGA",
+    "Vivado", "ModelSim", "Python", "C", "Linux"
   ],
-  certifications: [
-    { id: "cert-1", name: "Advanced VLSI & RTL Verification - C-DAC Certified", year: "2024" }
-  ],
-  publications: [
-    { id: "pub-1", title: "Low-Power Pipelined RISC-V Microarchitecture Design", venue: "IEEE VLSID Proceedings", year: "2024" }
-  ],
+  certifications: [],
+  publications: [],
 };
 
 const DEFAULT_STYLE_CONFIG: ResumeStyleConfig = {
@@ -93,7 +110,7 @@ const DEFAULT_STYLE_CONFIG: ResumeStyleConfig = {
   },
 };
 
-type ActiveEditorTab = "personal" | "experience" | "education" | "skills" | "projects" | "extras" | "styling" | "ai";
+type ActiveEditorTab = "personal" | "summary" | "experience" | "education" | "skills" | "projects" | "extras" | "styling" | "ai";
 
 export default function ResumeBuilderPage() {
   const [resumeData, setResumeData] = useState<ResumeData>(DEFAULT_RESUME_DATA);
@@ -106,7 +123,7 @@ export default function ResumeBuilderPage() {
   const [savedResumes, setSavedResumes] = useState<SavedResumeMeta[]>([
     {
       id: "resume-1",
-      name: "Primary Resume (VLSI)",
+      name: "Primary Resume",
       templateId: "modern-professional",
       updatedAt: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     },
@@ -136,7 +153,6 @@ export default function ResumeBuilderPage() {
   const [saving, setSaving] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
   const [targetRole, setTargetRole] = useState<TargetRole>("rtl-design");
-  const [skillInput, setSkillInput] = useState("");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const previewContainerRef = useRef<HTMLDivElement>(null);
@@ -389,47 +405,53 @@ export default function ResumeBuilderPage() {
     TEMPLATE_OPTIONS.find((t) => t.id === styleConfig.templateId)?.name || "Modern Professional";
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-slate-100 flex flex-col font-sans print:bg-white print:min-h-0 print:p-0">
-      {/* ═══ TOP ACTION TOOLBAR ═══ */}
-      <header className="h-14 border-b border-slate-200/90 bg-white/95 backdrop-blur-sm px-4 sm:px-6 flex items-center justify-between shrink-0 z-20 print:hidden">
-        <div className="flex items-center gap-2 sm:gap-3">
+    <div className="h-[calc(100vh-4rem)] bg-slate-50 flex flex-col font-sans overflow-hidden print:bg-white print:h-auto print:min-h-0 print:p-0">
+      {/* TOP TOOLBAR */}
+      <header className="h-12 border-b border-slate-200 bg-white px-4 flex items-center justify-between shrink-0 z-20 print:hidden">
+        <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-sm font-black text-xs">
-              CV
-            </div>
-            <div>
-              <h1 className="font-bold text-sm text-slate-900 leading-tight">
-                Resume Studio
-              </h1>
-              <p className="text-[11px] text-slate-500 font-medium hidden sm:block">
-                Precision Resume Studio & Career Document Engine
-              </p>
-            </div>
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-sm font-black text-[10px]">EB</div>
+            <span className="font-bold text-sm text-slate-900 hidden sm:block">Resume Builder</span>
           </div>
-
-          <div className="hidden md:flex items-center gap-2 ml-4 pl-4 border-l border-slate-200">
+          <div className="flex items-center gap-0.5 bg-slate-100 p-0.5 rounded-lg ml-2">
             <button
-              onClick={() => setMyResumesOpen(true)}
-              className="text-xs font-bold text-slate-700 hover:text-blue-600 bg-slate-100 hover:bg-slate-200/70 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5"
+              onClick={() => setActiveTab("personal")}
+              className={`px-3 py-1 rounded-md text-xs font-bold transition ${
+                activeTab !== "styling" && activeTab !== "ai"
+                  ? "bg-white text-blue-600 shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
             >
-              <Layers className="w-3.5 h-3.5" /> My Resumes ({savedResumes.length})
+              Content
             </button>
             <button
-              onClick={() => setTemplateModalOpen(true)}
-              className="text-xs font-bold text-slate-700 hover:text-blue-600 bg-slate-100 hover:bg-slate-200/70 px-3 py-1.5 rounded-xl transition flex items-center gap-1.5"
+              onClick={() => setActiveTab("styling")}
+              className={`px-3 py-1 rounded-md text-xs font-bold transition ${
+                activeTab === "styling"
+                  ? "bg-white text-blue-600 shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
             >
-              <LayoutTemplate className="w-3.5 h-3.5" /> Template: {currentTemplateName}
+              Customize
+            </button>
+            <button
+              onClick={() => setActiveTab("ai")}
+              className={`px-3 py-1 rounded-md text-xs font-bold transition flex items-center gap-1 ${
+                activeTab === "ai"
+                  ? "bg-white text-blue-600 shadow-sm"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+              <span>AI Tools</span>
             </button>
           </div>
         </div>
-
-        {/* Action Buttons */}
         <div className="flex items-center gap-2">
-          {/* Mobile Editor/Preview Toggle */}
-          <div className="lg:hidden flex bg-slate-100 p-1 rounded-xl border border-slate-200">
+          <div className="lg:hidden flex bg-slate-100 p-0.5 rounded-lg">
             <button
               onClick={() => setMobileMode("editor")}
-              className={`text-xs px-2.5 py-1 rounded-lg font-bold transition ${
+              className={`text-xs px-2 py-1 rounded-md font-bold transition ${
                 mobileMode === "editor" ? "bg-white text-blue-600 shadow-sm" : "text-slate-600"
               }`}
             >
@@ -437,22 +459,27 @@ export default function ResumeBuilderPage() {
             </button>
             <button
               onClick={() => setMobileMode("preview")}
-              className={`text-xs px-2.5 py-1 rounded-lg font-bold transition ${
+              className={`text-xs px-2 py-1 rounded-md font-bold transition ${
                 mobileMode === "preview" ? "bg-white text-blue-600 shadow-sm" : "text-slate-600"
               }`}
             >
               Preview
             </button>
           </div>
-
+          <button
+            onClick={() => setMyResumesOpen(true)}
+            className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-blue-600 bg-slate-100 hover:bg-slate-200/70 px-3 py-1.5 rounded-lg transition"
+          >
+            <Layers className="w-3.5 h-3.5" /> My Resumes ({savedResumes.length})
+          </button>
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
-            className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200/70 px-3 py-2 rounded-xl transition"
-            title="Import existing resume (.pdf, .docx, .txt)"
+            className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200/70 px-3 py-1.5 rounded-lg transition"
+            title="Import existing resume"
           >
             {uploading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <UploadCloud className="w-3.5 h-3.5 text-blue-600" />}
-            <span>{uploading ? "Parsing..." : "Upload / Auto-Fill"}</span>
+            <span>{uploading ? "Parsing..." : "Import"}</span>
           </button>
           <input
             ref={fileInputRef}
@@ -464,823 +491,67 @@ export default function ResumeBuilderPage() {
               if (file) handleFileUpload(file);
             }}
           />
-
           <button
             onClick={handleSaveToBackend}
             disabled={saving}
-            className="flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 px-3.5 py-2 rounded-xl transition shadow-sm"
+            className="flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-white border border-slate-300 hover:bg-slate-50 px-3 py-1.5 rounded-lg transition shadow-sm"
           >
             {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5 text-slate-600" />}
-            <span className="hidden sm:inline">{saving ? "Saving..." : "Save Draft"}</span>
+            <span className="hidden sm:inline">{saving ? "Saving..." : "Save"}</span>
           </button>
-
           <button
             onClick={handleExportPDF}
             disabled={exporting}
-            className="flex items-center gap-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-xl transition shadow-sm disabled:opacity-50"
+            className="flex items-center gap-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-3.5 py-1.5 rounded-lg transition shadow-sm disabled:opacity-50"
           >
             {exporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
             <span>{exporting ? "Exporting..." : "Download PDF"}</span>
           </button>
-          <button
-            onClick={handlePrint}
-            className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200/70 px-3 py-2 rounded-xl transition"
-            title="Print via browser dialog"
-          >
-            <span>Print</span>
-          </button>
         </div>
       </header>
 
-      {/* ═══ 2-PANEL WORKSPACE ═══ */}
+      {/* 3-PANEL WORKSPACE */}
       <div className="flex-1 flex overflow-hidden min-h-0 print:block print:overflow-visible">
-        {/* LEFT PANE: Editor Console (50%) */}
-        <div
-          className={`w-full lg:w-1/2 flex flex-col border-r border-slate-200 bg-white overflow-hidden print:hidden ${
-            mobileMode === "preview" ? "hidden lg:flex" : "flex"
-          }`}
-        >
-          {/* Top-Level Workspace Mode Switcher */}
-          <div className="flex items-center justify-between px-4 py-2.5 bg-slate-100/90 border-b border-slate-200 text-xs shrink-0">
-            <div className="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200 shadow-2xs">
-              <button
-                onClick={() => {
-                  setActiveTab("personal");
-                }}
-                className={`px-3 py-1.5 rounded-lg font-bold transition ${
-                  activeTab !== "styling" && activeTab !== "ai"
-                    ? "bg-blue-600 text-white shadow-2xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                1. Content
-              </button>
-              <button
-                onClick={() => setActiveTab("styling")}
-                className={`px-3 py-1.5 rounded-lg font-bold transition ${
-                  activeTab === "styling"
-                    ? "bg-blue-600 text-white shadow-2xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                2. Customize
-              </button>
-              <button
-                onClick={() => setActiveTab("ai")}
-                className={`px-3 py-1.5 rounded-lg font-bold transition flex items-center gap-1 ${
-                  activeTab === "ai"
-                    ? "bg-blue-600 text-white shadow-2xs"
-                    : "text-slate-600 hover:text-slate-900"
-                }`}
-              >
-                <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                <span>3. AI Tools</span>
-              </button>
+
+        {/* LEFT SIDEBAR: Section Nav (only in Content mode) */}
+        {(activeTab !== "styling" && activeTab !== "ai") && (
+          <SectionNav activeSection={activeTab} onSectionChange={(s) => setActiveTab(s as ActiveEditorTab)} resumeData={resumeData} />
+        )}
+
+        {/* CENTER: Editor Panel */}
+        <div className={`flex-1 flex flex-col overflow-hidden bg-white border-r border-slate-200 print:hidden ${mobileMode === "preview" ? "hidden lg:flex" : "flex"}`}>
+          <div className="flex-1 overflow-y-auto">
+            <div className="max-w-2xl mx-auto p-5 sm:p-6">
+              {activeTab === "personal" && <PersonalSection data={resumeData} onChange={setResumeData} onOpenTemplateSelector={() => setTemplateModalOpen(true)} currentTemplateName={currentTemplateName} />}
+              {activeTab === "summary" && <SummarySection data={resumeData} onChange={setResumeData} onRequestAI={() => handleRequestAIImprovement("summary", { name: resumeData.fullName, headline: resumeData.headline, skills: resumeData.skills, location: resumeData.location })} isAILoading={aiLoading} />}
+              {activeTab === "experience" && <ExperienceSection data={resumeData} onChange={setResumeData} onRequestAI={(itemId) => { const exp = resumeData.experience.find((e) => e.id === itemId); if (exp) handleRequestAIImprovement("experience", { id: exp.id, role: exp.role, org: exp.org, detail: exp.detail }); }} isAILoading={aiLoading} />}
+              {activeTab === "education" && <EducationSection data={resumeData} onChange={setResumeData} />}
+              {activeTab === "skills" && <SkillsSection data={resumeData} onChange={setResumeData} />}
+              {activeTab === "projects" && <ProjectsSection data={resumeData} onChange={setResumeData} onRequestAI={(itemId) => { const proj = resumeData.projects.find((p) => p.id === itemId); if (proj) handleRequestAIImprovement("projects", { id: proj.id, name: proj.name, technologies: proj.technologies, detail: proj.detail }); }} isAILoading={aiLoading} />}
+              {activeTab === "extras" && <ExtrasSection data={resumeData} onChange={setResumeData} />}
+              {activeTab === "styling" && <StyleCustomizer style={styleConfig} onChange={setStyleConfig} />}
+              {activeTab === "ai" && <AIResumeAdvisor data={resumeData} targetRole={targetRole} onTargetRoleChange={setTargetRole} onRequestImprovement={handleRequestAIImprovement} isAiLoading={aiLoading} />}
             </div>
-
-            <div className="flex items-center gap-1.5">
-              <button
-                onClick={() => setTemplateModalOpen(true)}
-                className="text-xs font-bold text-blue-600 hover:bg-blue-50 px-2.5 py-1.5 rounded-lg transition flex items-center gap-1"
-              >
-                <LayoutTemplate className="w-3.5 h-3.5" />
-                <span>Templates</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Section Navigation Tabs (When in Content Mode) */}
-          {activeTab !== "styling" && activeTab !== "ai" && (
-            <div className="flex items-center gap-1 overflow-x-auto p-2 border-b border-slate-100 bg-slate-50/70 text-xs shrink-0">
-              {[
-                { id: "personal", label: "Personal", icon: User },
-                { id: "experience", label: "Experience", icon: Briefcase },
-                { id: "education", label: "Education", icon: GraduationCap },
-                { id: "skills", label: "Skills", icon: Code },
-                { id: "projects", label: "Projects", icon: FolderGit2 },
-                { id: "extras", label: "Publications & Extras", icon: Award },
-              ].map((tab) => {
-                const Icon = tab.icon;
-                const isActive = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id as ActiveEditorTab)}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition whitespace-nowrap ${
-                      isActive
-                        ? "bg-slate-900 text-white shadow-2xs"
-                        : "text-slate-600 hover:bg-slate-200/60 hover:text-slate-900"
-                    }`}
-                  >
-                    <Icon className="w-3.5 h-3.5" />
-                    <span>{tab.label}</span>
-                  </button>
-                );
-              })}
-            </div>
-          )}
-
-          {/* Form Content Scrollable Area */}
-          <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6">
-            {/* TAB: Personal */}
-            {activeTab === "personal" && (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-sm text-slate-900">Personal Information</h3>
-                  <button
-                    onClick={() => setTemplateModalOpen(true)}
-                    className="text-xs font-bold text-blue-600 hover:underline flex items-center gap-1"
-                  >
-                    Change Template ({currentTemplateName})
-                  </button>
-                </div>
-
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Full Name</label>
-                    <input
-                      type="text"
-                      value={resumeData.fullName}
-                      onChange={(e) => setResumeData({ ...resumeData, fullName: e.target.value })}
-                      placeholder="e.g. Amit Kumar"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Professional Headline</label>
-                    <input
-                      type="text"
-                      value={resumeData.headline}
-                      onChange={(e) => setResumeData({ ...resumeData, headline: e.target.value })}
-                      placeholder="e.g. ASIC & RTL Design Engineer | MS in Microelectronics"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Email</label>
-                      <input
-                        type="email"
-                        value={resumeData.email}
-                        onChange={(e) => setResumeData({ ...resumeData, email: e.target.value })}
-                        placeholder="e.g. amit@example.com"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Phone</label>
-                      <input
-                        type="text"
-                        value={resumeData.phone}
-                        onChange={(e) => setResumeData({ ...resumeData, phone: e.target.value })}
-                        placeholder="e.g. +91 98765 43210"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Location</label>
-                      <input
-                        type="text"
-                        value={resumeData.location}
-                        onChange={(e) => setResumeData({ ...resumeData, location: e.target.value })}
-                        placeholder="e.g. Bengaluru, India"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">LinkedIn</label>
-                      <input
-                        type="text"
-                        value={resumeData.linkedin}
-                        onChange={(e) => setResumeData({ ...resumeData, linkedin: e.target.value })}
-                        placeholder="linkedin.com/in/..."
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">GitHub</label>
-                      <input
-                        type="text"
-                        value={resumeData.github}
-                        onChange={(e) => setResumeData({ ...resumeData, github: e.target.value })}
-                        placeholder="github.com/..."
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex items-center justify-between mb-1">
-                      <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
-                        Professional Summary
-                      </label>
-                      <button
-                        onClick={() =>
-                          handleRequestAIImprovement("summary", {
-                            name: resumeData.fullName,
-                            headline: resumeData.headline,
-                            skills: resumeData.skills,
-                            location: resumeData.location,
-                          })
-                        }
-                        className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1"
-                      >
-                        <Sparkles className="w-3.5 h-3.5" /> AI Polish
-                      </button>
-                    </div>
-                    <textarea
-                      rows={4}
-                      value={resumeData.summary}
-                      onChange={(e) => setResumeData({ ...resumeData, summary: e.target.value })}
-                      placeholder="Write a concise 2-4 sentence summary of your semiconductor experience, core strengths, and engineering passion..."
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 leading-relaxed resize-none font-medium"
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* TAB: Experience */}
-            {activeTab === "experience" && (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-sm text-slate-900">Work &amp; Internship Experience</h3>
-                  <button
-                    onClick={() =>
-                      setResumeData({
-                        ...resumeData,
-                        experience: [
-                          ...resumeData.experience,
-                          { id: `exp-${Date.now()}`, role: "", org: "", period: "", detail: "" },
-                        ],
-                      })
-                    }
-                    className="text-xs font-bold text-blue-600 hover:text-blue-700 bg-blue-50 px-2.5 py-1.5 rounded-xl transition flex items-center gap-1"
-                  >
-                    <Plus className="w-3.5 h-3.5" /> Add Experience
-                  </button>
-                </div>
-
-                <div className="space-y-4">
-                  {resumeData.experience.map((exp, i) => (
-                    <div key={exp.id || i} className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 relative">
-                      <button
-                        onClick={() =>
-                          setResumeData({
-                            ...resumeData,
-                            experience: resumeData.experience.filter((_, idx) => idx !== i),
-                          })
-                        }
-                        className="absolute top-3 right-3 text-slate-400 hover:text-red-600 transition p-1"
-                        aria-label="Remove experience entry"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-8">
-                        <div>
-                          <label className="block text-[11px] font-bold text-slate-600 mb-1">Job Title / Role</label>
-                          <input
-                            type="text"
-                            value={exp.role}
-                            onChange={(e) => {
-                              const updated = [...resumeData.experience];
-                              updated[i].role = e.target.value;
-                              setResumeData({ ...resumeData, experience: updated });
-                            }}
-                            placeholder="e.g. RTL Design Engineer"
-                            className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[11px] font-bold text-slate-600 mb-1">Company / Organization</label>
-                          <input
-                            type="text"
-                            value={exp.org}
-                            onChange={(e) => {
-                              const updated = [...resumeData.experience];
-                              updated[i].org = e.target.value;
-                              setResumeData({ ...resumeData, experience: updated });
-                            }}
-                            placeholder="e.g. Qualcomm / C-DAC"
-                            className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-[11px] font-bold text-slate-600 mb-1">Employment Period</label>
-                        <input
-                          type="text"
-                          value={exp.period}
-                          onChange={(e) => {
-                            const updated = [...resumeData.experience];
-                            updated[i].period = e.target.value;
-                            setResumeData({ ...resumeData, experience: updated });
-                          }}
-                          placeholder="e.g. Jul 2023 - Present"
-                          className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
-                        />
-                      </div>
-
-                      <div>
-                        <div className="flex items-center justify-between mb-1">
-                          <label className="block text-[11px] font-bold text-slate-600">Responsibilities &amp; Achievements</label>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              handleRequestAIImprovement("experience", {
-                                id: exp.id,
-                                role: exp.role,
-                                org: exp.org,
-                                detail: exp.detail,
-                              })
-                            }
-                            className="text-[11px] font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1"
-                          >
-                            <Sparkles className="w-3 h-3" /> AI Bullet Polish
-                          </button>
-                        </div>
-                        <textarea
-                          rows={3}
-                          value={exp.detail}
-                          onChange={(e) => {
-                            const updated = [...resumeData.experience];
-                            updated[i].detail = e.target.value;
-                            setResumeData({ ...resumeData, experience: updated });
-                          }}
-                          placeholder="• Architected FSM controller for memory interface...\n• Closed STA timing on 28nm node..."
-                          className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 leading-relaxed font-medium"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* TAB: Education */}
-            {activeTab === "education" && (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-sm text-slate-900">Education &amp; Qualifications</h3>
-                  <button
-                    onClick={() =>
-                      setResumeData({
-                        ...resumeData,
-                        education: [
-                          ...resumeData.education,
-                          { id: `edu-${Date.now()}`, school: "", degree: "", year: "", cgpa: "" },
-                        ],
-                      })
-                    }
-                    className="text-xs font-bold text-blue-600 hover:text-blue-700 bg-blue-50 px-2.5 py-1.5 rounded-xl transition flex items-center gap-1"
-                  >
-                    <Plus className="w-3.5 h-3.5" /> Add Education
-                  </button>
-                </div>
-
-                <div className="space-y-4">
-                  {resumeData.education.map((edu, i) => (
-                    <div key={edu.id || i} className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 relative">
-                      <button
-                        onClick={() =>
-                          setResumeData({
-                            ...resumeData,
-                            education: resumeData.education.filter((_, idx) => idx !== i),
-                          })
-                        }
-                        className="absolute top-3 right-3 text-slate-400 hover:text-red-600 transition p-1"
-                        aria-label="Remove education entry"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-
-                      <div className="pr-8">
-                        <label className="block text-[11px] font-bold text-slate-600 mb-1">School / University</label>
-                        <input
-                          type="text"
-                          value={edu.school}
-                          onChange={(e) => {
-                            const updated = [...resumeData.education];
-                            updated[i].school = e.target.value;
-                            setResumeData({ ...resumeData, education: updated });
-                          }}
-                          placeholder="e.g. Indian Institute of Technology (IIT)"
-                          className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
-                        />
-                      </div>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <div className="sm:col-span-2">
-                          <label className="block text-[11px] font-bold text-slate-600 mb-1">Degree / Branch</label>
-                          <input
-                            type="text"
-                            value={edu.degree}
-                            onChange={(e) => {
-                              const updated = [...resumeData.education];
-                              updated[i].degree = e.target.value;
-                              setResumeData({ ...resumeData, education: updated });
-                            }}
-                            placeholder="e.g. B.Tech in Electronics & Communication"
-                            className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[11px] font-bold text-slate-600 mb-1">Year / Period</label>
-                          <input
-                            type="text"
-                            value={edu.year}
-                            onChange={(e) => {
-                              const updated = [...resumeData.education];
-                              updated[i].year = e.target.value;
-                              setResumeData({ ...resumeData, education: updated });
-                            }}
-                            placeholder="e.g. 2020 - 2024"
-                            className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* TAB: Skills */}
-            {activeTab === "skills" && (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-sm text-slate-900">Technical Skills &amp; EDA Tools</h3>
-                  <span className="text-xs text-slate-500">{resumeData.skills.length} skills added</span>
-                </div>
-
-                {/* Tag Cloud */}
-                <div className="flex flex-wrap gap-2 p-3.5 bg-slate-50 border border-slate-200 rounded-2xl min-h-[80px]">
-                  {resumeData.skills.map((skill) => (
-                    <span
-                      key={skill}
-                      className="inline-flex items-center gap-1.5 px-3 py-1 bg-white border border-slate-300 text-slate-800 text-xs font-semibold rounded-xl shadow-2xs"
-                    >
-                      {skill}
-                      <button
-                        onClick={() =>
-                          setResumeData({
-                            ...resumeData,
-                            skills: resumeData.skills.filter((s) => s !== skill),
-                          })
-                        }
-                        className="text-slate-400 hover:text-red-600"
-                        aria-label={`Remove skill ${skill}`}
-                      >
-                        ×
-                      </button>
-                    </span>
-                  ))}
-                </div>
-
-                {/* Add Skill Input */}
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={skillInput}
-                    onChange={(e) => setSkillInput(e.target.value)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        e.preventDefault();
-                        const val = skillInput.trim();
-                        if (val && !resumeData.skills.includes(val)) {
-                          setResumeData({ ...resumeData, skills: [...resumeData.skills, val] });
-                        }
-                        setSkillInput("");
-                      }
-                    }}
-                    placeholder="Type skill (e.g. SystemVerilog, UVM, Innovus, Vivado) and press Enter"
-                    className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
-                  />
-                  <button
-                    onClick={() => {
-                      const val = skillInput.trim();
-                      if (val && !resumeData.skills.includes(val)) {
-                        setResumeData({ ...resumeData, skills: [...resumeData.skills, val] });
-                      }
-                      setSkillInput("");
-                    }}
-                    className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl transition"
-                  >
-                    Add
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* TAB: Projects */}
-            {activeTab === "projects" && (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-bold text-sm text-slate-900">Technical &amp; Silicon Projects</h3>
-                  <button
-                    onClick={() =>
-                      setResumeData({
-                        ...resumeData,
-                        projects: [
-                          ...resumeData.projects,
-                          { id: `proj-${Date.now()}`, name: "", technologies: "", detail: "" },
-                        ],
-                      })
-                    }
-                    className="text-xs font-bold text-blue-600 hover:text-blue-700 bg-blue-50 px-2.5 py-1.5 rounded-xl transition flex items-center gap-1"
-                  >
-                    <Plus className="w-3.5 h-3.5" /> Add Project
-                  </button>
-                </div>
-
-                <div className="space-y-4">
-                  {resumeData.projects.map((proj, i) => (
-                    <div key={proj.id || i} className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 relative">
-                      <button
-                        onClick={() =>
-                          setResumeData({
-                            ...resumeData,
-                            projects: resumeData.projects.filter((_, idx) => idx !== i),
-                          })
-                        }
-                        className="absolute top-3 right-3 text-slate-400 hover:text-red-600 transition p-1"
-                        aria-label="Remove project"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pr-8">
-                        <div>
-                          <label className="block text-[11px] font-bold text-slate-600 mb-1">Project Name</label>
-                          <input
-                            type="text"
-                            value={proj.name}
-                            onChange={(e) => {
-                              const updated = [...resumeData.projects];
-                              updated[i].name = e.target.value;
-                              setResumeData({ ...resumeData, projects: updated });
-                            }}
-                            placeholder="e.g. RISC-V RV32I Processor"
-                            className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-[11px] font-bold text-slate-600 mb-1">Technologies / EDA Tools</label>
-                          <input
-                            type="text"
-                            value={proj.technologies || ""}
-                            onChange={(e) => {
-                              const updated = [...resumeData.projects];
-                              updated[i].technologies = e.target.value;
-                              setResumeData({ ...resumeData, projects: updated });
-                            }}
-                            placeholder="e.g. Verilog, Vivado, ModelSim"
-                            className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 font-medium"
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <div className="flex items-center justify-between mb-1">
-                          <label className="block text-[11px] font-bold text-slate-600">Description &amp; Outcomes</label>
-                          <button
-                            type="button"
-                            onClick={() =>
-                              handleRequestAIImprovement("projects", {
-                                id: proj.id,
-                                name: proj.name,
-                                technologies: proj.technologies,
-                                detail: proj.detail,
-                              })
-                            }
-                            className="text-[11px] font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1"
-                          >
-                            <Sparkles className="w-3 h-3" /> AI Project Polish
-                          </button>
-                        </div>
-                        <textarea
-                          rows={3}
-                          value={proj.detail}
-                          onChange={(e) => {
-                            const updated = [...resumeData.projects];
-                            updated[i].detail = e.target.value;
-                            setResumeData({ ...resumeData, projects: updated });
-                          }}
-                          placeholder="Explain architecture, testbench methodology, coverage, and results..."
-                          className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 leading-relaxed font-medium"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* TAB: Extras (Certifications & Publications) */}
-            {activeTab === "extras" && (
-              <div className="space-y-6">
-                {/* Certifications */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-bold text-sm text-slate-900">Certifications</h3>
-                    <button
-                      onClick={() =>
-                        setResumeData({
-                          ...resumeData,
-                          certifications: [
-                            ...resumeData.certifications,
-                            { id: `cert-${Date.now()}`, name: "", year: "" },
-                          ],
-                        })
-                      }
-                      className="text-xs font-bold text-blue-600 hover:text-blue-700 bg-blue-50 px-2.5 py-1 rounded-xl"
-                    >
-                      <Plus className="w-3.5 h-3.5" /> Add
-                    </button>
-                  </div>
-                  {resumeData.certifications.map((c, i) => (
-                    <div key={c.id || i} className="flex items-center gap-2">
-                      <input
-                        type="text"
-                        value={c.name}
-                        onChange={(e) => {
-                          const updated = [...resumeData.certifications];
-                          updated[i].name = e.target.value;
-                          setResumeData({ ...resumeData, certifications: updated });
-                        }}
-                        placeholder="e.g. Certified ASIC Verification Engineer"
-                        className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-medium"
-                      />
-                      <input
-                        type="text"
-                        value={c.year || ""}
-                        onChange={(e) => {
-                          const updated = [...resumeData.certifications];
-                          updated[i].year = e.target.value;
-                          setResumeData({ ...resumeData, certifications: updated });
-                        }}
-                        placeholder="Year"
-                        className="w-20 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-medium"
-                      />
-                      <button
-                        onClick={() =>
-                          setResumeData({
-                            ...resumeData,
-                            certifications: resumeData.certifications.filter((_, idx) => idx !== i),
-                          })
-                        }
-                        className="text-slate-400 hover:text-red-600 p-1"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Publications */}
-                <div className="space-y-3 pt-4 border-t border-slate-100">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-bold text-sm text-slate-900">Publications &amp; Papers</h3>
-                    <button
-                      onClick={() =>
-                        setResumeData({
-                          ...resumeData,
-                          publications: [
-                            ...resumeData.publications,
-                            { id: `pub-${Date.now()}`, title: "", venue: "", year: "" },
-                          ],
-                        })
-                      }
-                      className="text-xs font-bold text-blue-600 hover:text-blue-700 bg-blue-50 px-2.5 py-1 rounded-xl"
-                    >
-                      <Plus className="w-3.5 h-3.5" /> Add
-                    </button>
-                  </div>
-                  {resumeData.publications.map((p, i) => (
-                    <div key={p.id || i} className="space-y-2 p-3 bg-slate-50 border border-slate-200 rounded-xl relative">
-                      <button
-                        onClick={() =>
-                          setResumeData({
-                            ...resumeData,
-                            publications: resumeData.publications.filter((_, idx) => idx !== i),
-                          })
-                        }
-                        className="absolute top-2 right-2 text-slate-400 hover:text-red-600 p-1"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                      <input
-                        type="text"
-                        value={p.title}
-                        onChange={(e) => {
-                          const updated = [...resumeData.publications];
-                          updated[i].title = e.target.value;
-                          setResumeData({ ...resumeData, publications: updated });
-                        }}
-                        placeholder="Paper / Publication Title"
-                        className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs font-medium"
-                      />
-                      <div className="grid grid-cols-2 gap-2">
-                        <input
-                          type="text"
-                          value={p.venue || ""}
-                          onChange={(e) => {
-                            const updated = [...resumeData.publications];
-                            updated[i].venue = e.target.value;
-                            setResumeData({ ...resumeData, publications: updated });
-                          }}
-                          placeholder="Journal / Conference"
-                          className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs font-medium"
-                        />
-                        <input
-                          type="text"
-                          value={p.year || ""}
-                          onChange={(e) => {
-                            const updated = [...resumeData.publications];
-                            updated[i].year = e.target.value;
-                            setResumeData({ ...resumeData, publications: updated });
-                          }}
-                          placeholder="Year"
-                          className="w-full bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs font-medium"
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* TAB: Styling Customizer */}
-            {activeTab === "styling" && (
-              <StyleCustomizer style={styleConfig} onChange={setStyleConfig} />
-            )}
-
-            {/* TAB: AI ATS Advisor */}
-            {activeTab === "ai" && (
-              <AIResumeAdvisor
-                data={resumeData}
-                targetRole={targetRole}
-                onTargetRoleChange={setTargetRole}
-                onRequestImprovement={handleRequestAIImprovement}
-                isAiLoading={aiLoading}
-              />
-            )}
           </div>
         </div>
 
-        {/* RIGHT PANE: Live A4 Preview (50%) */}
-        <div
-          className={`w-full lg:w-1/2 bg-slate-200/80 p-4 sm:p-6 overflow-y-auto flex flex-col items-center justify-start relative print:w-full print:p-0 print:bg-white ${
-            mobileMode === "editor" ? "hidden lg:flex" : "flex"
-          }`}
-        >
-          {/* Zoom Controls Bar */}
-          <div className="sticky top-2 z-10 bg-white/90 backdrop-blur-sm border border-slate-300 px-3 py-1.5 rounded-full shadow-sm flex items-center gap-3 text-xs mb-4 print:hidden">
-            <span className="font-bold text-slate-700">Preview: {currentTemplateName}</span>
-            <div className="flex items-center gap-1 pl-2 border-l border-slate-200">
-              <button
-                onClick={() => setZoomScale((prev) => Math.max(0.6, prev - 0.1))}
-                className="p-1 hover:bg-slate-100 rounded text-slate-600"
-                title="Zoom Out"
-                aria-label="Zoom out"
-              >
-                <ZoomOut className="w-3.5 h-3.5" />
-              </button>
-              <span className="font-mono text-[11px] text-slate-600 w-10 text-center">
-                {Math.round(zoomScale * 100)}%
-              </span>
-              <button
-                onClick={() => setZoomScale((prev) => Math.min(1.3, prev + 0.1))}
-                className="p-1 hover:bg-slate-100 rounded text-slate-600"
-                title="Zoom In"
-                aria-label="Zoom in"
-              >
-                <ZoomIn className="w-3.5 h-3.5" />
-              </button>
+        {/* RIGHT PANEL: Live Preview */}
+        <div className={`w-full lg:w-[45%] xl:w-[42%] bg-slate-200/60 overflow-y-auto flex flex-col items-center relative print:w-full print:p-0 print:bg-white ${mobileMode === "editor" ? "hidden lg:flex" : "flex"}`}>
+          <div className="sticky top-0 z-10 w-full bg-slate-200/80 backdrop-blur-sm border-b border-slate-300/50 px-4 py-2 flex items-center justify-between print:hidden">
+            <span className="text-[11px] font-semibold text-slate-500">{currentTemplateName}</span>
+            <div className="flex items-center gap-1">
+              <button onClick={() => setZoomScale((prev) => Math.max(0.5, prev - 0.1))} className="p-1 hover:bg-white/80 rounded text-slate-500 transition"><ZoomOut className="w-3.5 h-3.5" /></button>
+              <span className="text-[11px] font-mono text-slate-500 w-10 text-center">{Math.round(zoomScale * 100)}%</span>
+              <button onClick={() => setZoomScale((prev) => Math.min(1.5, prev + 0.1))} className="p-1 hover:bg-white/80 rounded text-slate-500 transition"><ZoomIn className="w-3.5 h-3.5" /></button>
             </div>
           </div>
-
-          {/* Master Printable Resume Canvas */}
-          <div className="w-full flex justify-center print:w-full">
-            <ResumePreview
-              ref={previewContainerRef}
-              data={resumeData}
-              style={styleConfig}
-              scale={zoomScale}
-            />
+          <div className="flex-1 w-full flex justify-center p-4 sm:p-6 print:p-0">
+            <ResumePreview ref={previewContainerRef} data={resumeData} style={styleConfig} scale={zoomScale} />
           </div>
         </div>
       </div>
 
-      {/* ═══ MODALS & DRAWERS ═══ */}
-      {/* 1. Template Selector Gallery */}
+      {/* MODALS & DRAWERS */}
       <TemplateSelector
         isOpen={templateModalOpen}
         onClose={() => setTemplateModalOpen(false)}
@@ -1288,7 +559,6 @@ export default function ResumeBuilderPage() {
         onSelectTemplate={(id) => setStyleConfig({ ...styleConfig, templateId: id })}
       />
 
-      {/* 2. My Resumes Drawer */}
       <MyResumesDrawer
         isOpen={myResumesOpen}
         onClose={() => setMyResumesOpen(false)}
@@ -1384,7 +654,6 @@ export default function ResumeBuilderPage() {
         }}
       />
 
-      {/* 3. Import Review Modal */}
       {parsedDataForReview && (
         <ImportReviewModal
           isOpen={importReviewOpen}
@@ -1395,7 +664,6 @@ export default function ResumeBuilderPage() {
         />
       )}
 
-      {/* 4. AI Improvement Side-by-Side Diff Modal */}
       <AIImproveDiffModal
         isOpen={aiDiffModalOpen}
         onClose={() => setAiDiffModalOpen(false)}
