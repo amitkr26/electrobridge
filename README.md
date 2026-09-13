@@ -1,30 +1,35 @@
-# electrobridge
+# ElectroBridge
 
-**Verified Opportunity Engine for the Semiconductor & VLSI Industry**
+**Free AI Career Platform for Semiconductor & VLSI Engineers**
 
-electrobridge is a pure opportunity aggregator for the semiconductor, VLSI, and electronics engineering community in India. It centralizes JRF positions, PhD admissions, government jobs (DRDO, ISRO, CSIR), fellowships, and private sector roles into a single searchable platform.
+ElectroBridge is an all-in-one career operating system for India's electronics and semiconductor community. Build professional resumes, get AI-powered career guidance, optimize for ATS systems, generate cover letters, and discover live research opportunities — all for free.
 
 ## Features
 
-- **Live Ingestion** — Automated scrapers pull opportunities and news daily from official sources (DRDO, ISRO, CSIR, IITs, international programs) via Vercel Cron.
-- **Verified Listings** — Auto-scraped rows are filtered, tagged, and marked verified; broken/expired links are re-checked and archived.
-- **Fast Search & Filtering** — Search by keyword, category, eligibility, location, and deadline with card/grid view toggling.
-- **Structured Content** — Detailed opportunity pages with deadlines, stipends, eligibility, calendars (ICS export), share buttons, and similar-opportunity suggestions.
-- **Weekly Digest** — Optional email digest of new opportunities for subscribers.
+- **Resume Builder** — 10 professional templates with real-time preview, PDF export, section reordering, custom labels, and multi-resume management. No login required.
+- **AI Career Assistant** — Grounded chat assistant specialized in Indian semiconductor careers, VLSI design, JRF research positions, and ISRO/DRDO exams.
+- **ATS Resume Checker** — Upload your resume for instant ATS scoring with keyword extraction, JD matching, and tailored improvement suggestions.
+- **Cover Letter Generator** — AI-generated cover letters that match your resume design and style.
+- **Opportunity Discovery** — Search live research and semiconductor vacancies from DRDO, ISRO, CSIR, IITs, and IISc.
+- **SEO Landing Pages** — ATS Resume Checker and AI Resume Builder landing pages for organic discovery.
 
 ## Tech Stack
 
-- **Frontend**: Next.js 14 (App Router, React 18), TypeScript, Tailwind CSS, Lucide Icons.
-- **Data**: Supabase (opportunities, news, organizations), Neon (analytics).
-- **Scraping**: Custom scrapers using Cheerio and RSS parser.
-- **Deployment**: Vercel (with cron schedules).
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 14 (App Router) |
+| UI | React 18, Tailwind CSS, Lucide Icons |
+| AI | Groq / OpenAI via provider abstraction |
+| Database | Supabase (opportunities, news grounding) |
+| PDF Export | html2pdf.js (client-side) |
+| Deployment | Vercel |
+| Shared API | `@electrobridge/api` (rate limiting, error handling) |
 
 ## Repository Layout
 
 ```
-backend/api          Shared API utilities (response helpers, validation, rate limiting)
-frontend/            Next.js app (pages, API routes, scrapers, components)
-neon/                Neon analytics schema
+frontend/             Next.js app (pages, API routes, components, templates)
+backend/api/          Shared API utilities (rate limiting, error helpers, validation)
 ```
 
 ## Local Setup
@@ -39,8 +44,8 @@ neon/                Neon analytics schema
    NEXT_PUBLIC_SUPABASE_URL=
    NEXT_PUBLIC_SUPABASE_ANON_KEY=
    SUPABASE_SERVICE_ROLE_KEY=
-   RESEND_API_KEY=          # optional, for the weekly digest
-   CRON_SECRET=             # protects cron endpoints
+   GROQ_API_KEY=            # for AI chat
+   OPENAI_API_KEY=          # optional fallback
    ```
 
 3. **Run the development server:**
@@ -49,26 +54,42 @@ neon/                Neon analytics schema
    ```
    Navigate to `http://localhost:3000`.
 
+## Routes
+
+| Route | Description |
+|-------|------------|
+| `/` | Landing page with product overview |
+| `/resume` | Resume builder with 10 templates |
+| `/cover-letter` | AI cover letter generator |
+| `/resume-review` | ATS resume scoring and review |
+| `/ask-ai` | AI career assistant chat |
+| `/templates` | Resume template gallery |
+| `/resources` | Career resources for VLSI engineers |
+| `/ats-resume-checker` | SEO landing page |
+| `/ai-resume-builder` | SEO landing page |
+| `/about` | About ElectroBridge |
+| `/contact` | Contact page |
+
+## API Routes
+
+| Route | Method | Description |
+|-------|--------|-------------|
+| `/api/ai/chat` | POST | AI career assistant (grounded in Supabase) |
+| `/api/ai/enhance` | POST | AI resume enhancement |
+| `/api/resume` | POST | Resume PDF parsing |
+| `/api/resume/ai-suggest` | POST | AI resume suggestions |
+| `/api/profile/parse-resume` | POST | Resume text extraction |
+
 ## Scripts
 
-| Command          | Description                          |
-| ---------------- | ------------------------------------ |
-| `npm run dev`    | Start the Next.js dev server         |
-| `npm run build`  | Production build                     |
-| `npm test`       | Run the test suite                   |
-| `npm run lint`   | Lint the workspace                   |
-| `make env-check` | Verify required environment keys     |
-
-## Deployment
-
-Vercel Cron Jobs handle scheduled ingestion:
-
-- `0 0 * * *` — `/api/cron/scrape-india`
-- `0 4 * * *` — `/api/cron/scrape-global`
-- `0 6 * * *` — `/api/cron/scrape-news`
-- `0 8 * * *` — `/api/cron/digest`
-- `0 2 * * 0` — `/api/cron/cleanup`
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Production build |
+| `npm test` | Run test suite |
+| `npm run lint` | Lint the workspace |
+| `npm run typecheck` | Type-check the workspace |
 
 ## License
 
-MIT.
+MIT

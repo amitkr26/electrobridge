@@ -4,5 +4,5 @@ export { getUser, requireAuth, requireAdmin, requireCron, requireCronOrAdmin, ty
 export { validate, validatePartial, parseQueryParams, paginationSchema, cursorSchema, filterSchema, applyPagination, applyCursor, buildCursorResult, applySort, applyFilters, opportunitySchema, opportunityListQuerySchema, type OpportunityListQuery } from "./validation";
 export { createRateLimiter, rateLimiters, applyRateLimit, rateLimitHeaders, type RateLimitConfig } from "./rate-limit";
 export { cacheHeaders, noCache, etag, checkETag, generateETag, conditionalResponse } from "./cache";
-export { zodToSchema, generateOpenAPISpec, type OpenAPISpec, type OperationObject, type SchemaObject } from "./openapi";
+// ponytail: openapi module removed — BDW-era spec describing non-existent endpoints
 export type { ApiSuccessResponse, ApiListResponse, ApiCursorResponse, ApiErrorResponse, ApiResponse, HttpStatusCode, PaginationParams, CursorParams, FilterParams, RequestContext } from "./types";

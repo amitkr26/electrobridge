@@ -3,7 +3,6 @@ import { success, created, noContent, list, badRequest, unauthorized, forbidden,
 import { handleError, ValidationError, AuthError, ForbiddenError, NotFoundError } from "../src/error";
 import { createRateLimiter, rateLimitHeaders } from "../src/rate-limit";
 import { cacheHeaders, noCache as noCacheHeaders, generateETag, checkETag } from "../src/cache";
-import { generateOpenAPISpec } from "../src/openapi";
 
 describe("Response helpers", () => {
   it("success() returns 200 with data", async () => {
@@ -144,47 +143,4 @@ describe("Cache helpers", () => {
   });
 });
 
-describe("OpenAPI spec", () => {
-  it("generates valid spec", () => {
-    const spec = generateOpenAPISpec();
-    expect(spec.openapi).toBe("3.1.0");
-    expect(spec.info.title).toBe("electrobridge API");
-    expect(Object.keys(spec.paths).length).toBeGreaterThan(30);
-    expect(spec.components.schemas.Opportunity).toBeDefined();
-    expect(spec.components.schemas.Organization).toBeDefined();
-    expect(spec.components.schemas.OpportunityListResponse).toBeDefined();
-    expect(spec.components.securitySchemes.BearerAuth).toBeDefined();
-    expect(spec.components.securitySchemes.AdminAuth).toBeDefined();
-    expect(spec.components.securitySchemes.CronAuth).toBeDefined();
-    expect(spec.tags.length).toBeGreaterThan(10);
-  });
 
-  it("all paths have at least one operation", () => {
-    const spec = generateOpenAPISpec();
-    for (const [path, item] of Object.entries(spec.paths)) {
-      const ops = ["get", "post", "put", "patch", "delete"] as const;
-      const hasOp = ops.some((op) => item[op] !== undefined);
-      expect(hasOp).toBe(true);
-    }
-  });
-
-  it("refs point to valid schemas", () => {
-    const spec = generateOpenAPISpec();
-    const schemaNames = new Set(Object.keys(spec.components.schemas));
-
-    function checkRef(obj: any) {
-      if (!obj || typeof obj !== "object") return;
-      if (obj.$ref) {
-        const refName = obj.$ref.replace("#/components/schemas/", "");
-        expect(schemaNames.has(refName)).toBe(true);
-      }
-      for (const val of Object.values(obj)) {
-        checkRef(val);
-      }
-    }
-
-    for (const pathItem of Object.values(spec.paths)) {
-      checkRef(pathItem);
-    }
-  });
-});
