@@ -118,23 +118,34 @@ export function AlertsManager() {
     setMatchedOpportunities([]);
 
     try {
-      const queryParams = new URLSearchParams();
-      if (alert.role && alert.role !== "All Research Positions") queryParams.set("role", alert.role);
-      if (alert.organization && alert.organization !== "All Premier Institutes") queryParams.set("org", alert.organization);
-      queryParams.set("limit", "10");
+      // ponytail: use existing /api/ai/chat endpoint (the old /api/opportunities route never existed — 404 in prod)
+      const searchQuery = [
+        alert.role !== "All Research Positions" ? alert.role : "",
+        alert.organization !== "All Premier Institutes" ? alert.organization : "",
+        alert.domain,
+        "opportunities",
+      ]
+        .filter(Boolean)
+        .join(" ");
 
-      const res = await fetch(`/api/opportunities?${queryParams.toString()}`);
+      const res = await fetch("/api/ai/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [{ role: "user", content: searchQuery }],
+        }),
+      });
+
       const data = await res.json();
-      
-      const opps = data.opportunities || [];
+      const opps = Array.isArray(data.opportunities) ? data.opportunities : [];
       setMatchedOpportunities(opps);
-      
+
       if (opps.length > 0) {
         toast.success(`Found ${opps.length} live matching opportunities for "${alert.name}"!`);
       } else {
         toast.info(`No active vacancies currently match "${alert.name}". Check back soon.`);
       }
-    } catch (err) {
+    } catch {
       toast.error("Failed to query live database.");
     } finally {
       setIsScanning(false);

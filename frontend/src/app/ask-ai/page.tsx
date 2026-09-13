@@ -79,10 +79,16 @@ export default function OpportunityIntelligencePage() {
   // Speech Synthesis (TTS) Hook
   const tts = useSpeechSynthesis();
 
+  // Derived state — must be before any useEffect that references `messages`
+  const messages = activeSession?.messages ?? [];
+  const isInitialEmpty =
+    messages.length <= 1 &&
+    messages[0]?.role === "assistant";
+
   // Trigger auto-scroll on new messages or loading change
   useEffect(() => {
     triggerAutoScroll();
-  }, [activeSession.messages, loading, triggerAutoScroll]);
+  }, [messages, loading, triggerAutoScroll]);
 
   const toggleSaveOpportunity = (id: string) => {
     setSavedOpportunityIds((prev) => {
@@ -114,7 +120,7 @@ export default function OpportunityIntelligencePage() {
       timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     };
 
-    const updatedMessages = [...activeSession.messages, userMsg];
+    const updatedMessages = [...messages, userMsg];
     updateActiveMessages(updatedMessages);
 
     if (!textToSend) setInput("");
@@ -173,10 +179,6 @@ export default function OpportunityIntelligencePage() {
     setInput(promptText);
     handleSend(promptText);
   };
-
-  const isInitialEmpty =
-    activeSession.messages.length <= 1 &&
-    activeSession.messages[0]?.role === "assistant";
 
   return (
     <div className="flex h-[calc(100vh-4rem)] w-full overflow-hidden bg-slate-50 font-sans">
@@ -282,7 +284,7 @@ export default function OpportunityIntelligencePage() {
                 {isInitialEmpty ? (
                   <EmptyState onSelectSuggestion={handleSelectPrompt} />
                 ) : (
-                  activeSession.messages.map((msg) => (
+                  messages.map((msg) => (
                     <ChatMessage
                       key={msg.id}
                       message={msg}

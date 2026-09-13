@@ -83,18 +83,18 @@ export function ChatMessage({
               <MarkdownContent content={message.content} />
 
               {/* Structured Opportunity Cards if present */}
-              {message.opportunities && message.opportunities.length > 0 && (
+              {(message.opportunities ?? []).length > 0 && (
                 <div className="pt-3 border-t border-slate-100 space-y-3">
                   <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
                     <Sparkles className="w-3.5 h-3.5 text-blue-600" />
-                    <span>Verified Opportunity Records ({message.opportunities.length})</span>
+                    <span>Verified Opportunity Records ({(message.opportunities ?? []).length})</span>
                   </div>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {message.opportunities.map((opp) => (
+                    {(message.opportunities ?? []).map((opp) => (
                       <OpportunityCard
                         key={opp.id || opp.slug || opp.title}
                         opportunity={opp}
-                        isSaved={savedIds.includes(opp.id || "")}
+                        isSaved={(savedIds ?? []).includes(opp.id || "")}
                         onToggleSave={onToggleSave}
                       />
                     ))}
@@ -103,12 +103,12 @@ export function ChatMessage({
               )}
 
               {/* Official Sources List if present */}
-              {message.sources && message.sources.length > 0 && (
+              {(message.sources ?? []).length > 0 && (
                 <div className="pt-2 border-t border-slate-100 flex items-center gap-2 flex-wrap text-xs">
                   <span className="font-bold text-slate-500 text-[11px] uppercase tracking-wider flex items-center gap-1">
                     <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> Sources:
                   </span>
-                  {message.sources.map((src, idx) => (
+                  {(message.sources ?? []).map((src, idx) => (
                     <a
                       key={idx}
                       href={src.url}

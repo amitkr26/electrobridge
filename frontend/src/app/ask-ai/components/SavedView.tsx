@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Bookmark, Search, Trash2, ExternalLink, Sparkles } from "lucide-react";
+import { Bookmark, Search, Trash2, ExternalLink, Sparkles, Loader2 } from "lucide-react";
 import { OpportunityCard } from "./OpportunityCard";
 import { GroundedRecord } from "@/lib/ai/grounding";
 
@@ -25,7 +25,6 @@ export function SavedView({
       }
       setLoading(true);
       try {
-        // Query /api/ai/chat or search to retrieve saved ids
         const res = await fetch("/api/ai/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -34,9 +33,12 @@ export function SavedView({
           }),
         });
         const data = await res.json();
-        const records: GroundedRecord[] = data.opportunities || [];
+        const records: GroundedRecord[] = Array.isArray(data.opportunities) ? data.opportunities : [];
         setSavedOpportunities(records.filter((r) => r.id && savedIds.includes(r.id)));
-      } catch {}
+      } catch {
+        // ponytail: silently fail — saved IDs are in localStorage, just show empty state
+        setSavedOpportunities([]);
+      }
       setLoading(false);
     };
     fetchSaved();
@@ -68,6 +70,22 @@ export function SavedView({
           <h3 className="font-bold text-sm text-slate-900">No saved opportunities yet</h3>
           <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
             Click the bookmark icon on any opportunity card in the Discover or Ask AI tab to save it here.
+          </p>
+        </div>
+      ) : loading ? (
+        <div className="p-10 bg-white border border-slate-200/90 rounded-2xl text-center">
+          <Loader2 className="w-5 h-5 text-blue-600 animate-spin mx-auto" />
+          <p className="text-xs text-slate-500 mt-2 font-medium">Loading saved opportunities...</p>
+        </div>
+      ) : savedOpportunities.length === 0 ? (
+        <div className="p-12 bg-white border border-slate-200/90 rounded-3xl text-center space-y-3">
+          <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto">
+            <Bookmark className="w-6 h-6" />
+          </div>
+          <h3 className="font-bold text-sm text-slate-900">Saved items not found in live database</h3>
+          <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
+            These {savedIds.length} saved items may no longer be available in the current database.
+            Try the Discover tab to find current opportunities.
           </p>
         </div>
       ) : (
