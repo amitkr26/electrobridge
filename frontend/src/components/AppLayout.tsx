@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -11,6 +12,7 @@ import {
   Info,
   Pen,
   Mail,
+  X,
 } from "lucide-react";
 
 const navLinks = [
@@ -34,8 +36,8 @@ const productLinks = [
 
 const resourceLinks = [
   { href: "/resources", label: "Career Resources" },
-  { href: "/ask-ai", label: "Interview Tips" },
-  { href: "/resources", label: "VLSI Career Guide" },
+  { href: "/ask-ai", label: "AI Career Coach" },
+  { href: "/templates", label: "Resume Templates" },
 ];
 
 const companyLinks = [
@@ -45,6 +47,7 @@ const companyLinks = [
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
@@ -68,13 +71,53 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
               </Link>
             ))}
           </nav>
-          <button className="md:hidden p-2 rounded-lg hover:bg-bg-secondary text-text-secondary">
+          <button
+            className="md:hidden p-2 rounded-lg hover:bg-bg-secondary text-text-secondary"
+            onClick={() => setMobileOpen(true)}
+            aria-label="Open navigation"
+          >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
         </div>
       </header>
+
+      {/* Mobile navigation drawer */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-[60] md:hidden">
+          <div className="absolute inset-0 bg-black/20" onClick={() => setMobileOpen(false)} />
+          <div className="absolute right-0 top-0 h-full w-72 bg-white shadow-xl flex flex-col">
+            <div className="flex items-center justify-between px-4 h-16 border-b border-border">
+              <span className="text-lg font-bold text-gradient-primary tracking-tight">ElectroBridge</span>
+              <button
+                className="p-2 rounded-lg hover:bg-bg-secondary text-text-secondary"
+                onClick={() => setMobileOpen(false)}
+                aria-label="Close navigation"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <nav className="flex-1 overflow-y-auto py-2">
+              {navLinks.map(({ href, label, icon: Icon }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors ${
+                    pathname === href
+                      ? "text-blue-600 bg-blue-50"
+                      : "text-text-secondary hover:text-text-primary hover:bg-bg-secondary"
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  {label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+        </div>
+      )}
 
       <main className="flex-1">{children}</main>
 

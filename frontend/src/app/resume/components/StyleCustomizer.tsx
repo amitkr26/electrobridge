@@ -1,6 +1,6 @@
 import React from "react";
 import { ResumeStyleConfig, SectionKey } from "../types";
-import { Palette, Type, Layout, Eye, ArrowUp, ArrowDown, Tag, Calendar, FileText } from "lucide-react";
+import { Palette, Type, Layout, ArrowUp, ArrowDown, Tag, Calendar, FileText } from "lucide-react";
 
 interface StyleCustomizerProps {
   style: ResumeStyleConfig;
@@ -243,29 +243,6 @@ export function StyleCustomizer({ style, onChange }: StyleCustomizerProps) {
                 />
               </label>
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* 7. Section Visibility Toggles (simplified) */}
-      <div className="space-y-2 pt-2 border-t border-slate-100">
-        <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-          <Eye className="w-3.5 h-3.5 text-slate-400" /> Quick Toggle
-        </label>
-        <div className="grid grid-cols-2 gap-2 text-xs">
-          {Object.entries(style.visibleSections).map(([key, visible]) => (
-            <label
-              key={key}
-              className="flex items-center gap-2 text-slate-700 cursor-pointer text-[11px] font-medium"
-            >
-              <input
-                type="checkbox"
-                checked={visible}
-                onChange={() => toggleSection(key as any)}
-                className="w-3.5 h-3.5 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
-              />
-              <span className="capitalize">{key}</span>
-            </label>
           ))}
         </div>
       </div>

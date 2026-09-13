@@ -117,7 +117,9 @@ export default function ResumeBuilderPage() {
   const [styleConfig, setStyleConfig] = useState<ResumeStyleConfig>(DEFAULT_STYLE_CONFIG);
   const [activeTab, setActiveTab] = useState<ActiveEditorTab>("personal");
   const [zoomScale, setZoomScale] = useState(1.0);
+  const [fitToWidth, setFitToWidth] = useState(true);
   const [mobileMode, setMobileMode] = useState<"editor" | "preview">("editor");
+  const previewPanelRef = useRef<HTMLDivElement>(null);
 
   // Multi-resume state
   const [savedResumes, setSavedResumes] = useState<SavedResumeMeta[]>([
@@ -204,6 +206,24 @@ export default function ResumeBuilderPage() {
       localStorage.setItem("eb_resume_list_v1", JSON.stringify(savedResumes));
     } catch {}
   }, [resumeData, styleConfig, activeResumeId, savedResumes]);
+
+  // 3. Fit-to-width: auto-calculate zoom to fill the preview panel
+  useEffect(() => {
+    if (!fitToWidth || !previewPanelRef.current) return;
+    const panel = previewPanelRef.current;
+    const observer = new ResizeObserver((entries) => {
+      const width = entries[0]?.contentRect?.width;
+      if (width && width > 0) {
+        const a4WidthPx = 800; // max-w-[800px] on the canvas
+        const padding = 48; // p-6 on each side
+        const available = width - padding;
+        const scale = Math.min(1.2, Math.max(0.4, available / a4WidthPx));
+        setZoomScale(Math.round(scale * 100) / 100);
+      }
+    });
+    observer.observe(panel);
+    return () => observer.disconnect();
+  }, [fitToWidth]);
 
   // File Upload Handler (PDF, DOCX, TXT)
   const handleFileUpload = async (file: File) => {
@@ -536,13 +556,40 @@ export default function ResumeBuilderPage() {
         </div>
 
         {/* RIGHT PANEL: Live Preview */}
-        <div className={`w-full lg:w-[45%] xl:w-[42%] bg-slate-200/60 overflow-y-auto flex flex-col items-center relative print:w-full print:p-0 print:bg-white ${mobileMode === "editor" ? "hidden lg:flex" : "flex"}`}>
+        <div ref={previewPanelRef} className={`w-full lg:w-[45%] xl:w-[42%] bg-slate-200/60 overflow-y-auto flex flex-col items-center relative print:w-full print:p-0 print:bg-white ${mobileMode === "editor" ? "hidden lg:flex" : "flex"}`}>
           <div className="sticky top-0 z-10 w-full bg-slate-200/80 backdrop-blur-sm border-b border-slate-300/50 px-4 py-2 flex items-center justify-between print:hidden">
             <span className="text-[11px] font-semibold text-slate-500">{currentTemplateName}</span>
-            <div className="flex items-center gap-1">
-              <button onClick={() => setZoomScale((prev) => Math.max(0.5, prev - 0.1))} className="p-1 hover:bg-white/80 rounded text-slate-500 transition"><ZoomOut className="w-3.5 h-3.5" /></button>
-              <span className="text-[11px] font-mono text-slate-500 w-10 text-center">{Math.round(zoomScale * 100)}%</span>
-              <button onClick={() => setZoomScale((prev) => Math.min(1.5, prev + 0.1))} className="p-1 hover:bg-white/80 rounded text-slate-500 transition"><ZoomIn className="w-3.5 h-3.5" /></button>
+            <div className="flex items-center gap-2">
+              {/* Fit to width toggle */}
+              <button
+                onClick={() => setFitToWidth((prev) => !prev)}
+                className={`text-[10px] font-bold px-2 py-1 rounded transition ${
+                  fitToWidth ? "bg-blue-100 text-blue-700" : "text-slate-500 hover:bg-white/60"
+                }`}
+                title={fitToWidth ? "Fit to width (auto-zoom)" : "Manual zoom"}
+              >
+                Fit
+              </button>
+              {/* Zoom controls */}
+              <button
+                onClick={() => { setFitToWidth(false); setZoomScale((prev) => Math.max(0.5, prev - 0.1)); }}
+                className="p-1 hover:bg-white/80 rounded text-slate-500 transition"
+              >
+                <ZoomOut className="w-3.5 h-3.5" />
+              </button>
+              <button
+                onClick={() => { setFitToWidth(false); }}
+                className="text-[11px] font-mono text-slate-500 w-10 text-center hover:text-blue-600 transition cursor-pointer"
+                title="Click to reset to 100%"
+              >
+                {Math.round(zoomScale * 100)}%
+              </button>
+              <button
+                onClick={() => { setFitToWidth(false); setZoomScale((prev) => Math.min(1.5, prev + 0.1)); }}
+                className="p-1 hover:bg-white/80 rounded text-slate-500 transition"
+              >
+                <ZoomIn className="w-3.5 h-3.5" />
+              </button>
             </div>
           </div>
           <div className="flex-1 w-full flex justify-center p-4 sm:p-6 print:p-0">
