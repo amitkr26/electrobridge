@@ -38,9 +38,16 @@ export default function SummarySection({ data, onChange, onRequestAI, isAILoadin
           onChange={(e) => onChange({ ...data, summary: e.target.value })}
           placeholder="Write a concise 2-4 sentence summary..."
         />
-        <p className="text-xs text-slate-400 mt-1">
-          Tip: Mention your domain expertise, years of experience, and key technical strengths.
-        </p>
+        {!data.summary && (
+          <p className="text-xs text-slate-400 mt-1 italic">
+            Write 2-4 sentences about your professional background and key strengths.
+          </p>
+        )}
+        {data.summary && (
+          <p className="text-xs text-slate-400 mt-1">
+            Tip: Mention your domain expertise, years of experience, and key technical strengths.
+          </p>
+        )}
       </div>
     </div>
   );

@@ -52,6 +52,12 @@ export default function ProjectsSection({ data, onChange, onRequestAI, isAILoadi
       </div>
 
       <div className="space-y-2">
+        {data.projects.length === 0 && (
+          <div className="text-center py-6 text-slate-400">
+            <p className="text-sm">No projects added yet</p>
+            <p className="text-xs mt-1">Click the button below to add your first project</p>
+          </div>
+        )}
         {data.projects.map((item, index) => {
           const isExpanded = expandedIndex === index;
           return (

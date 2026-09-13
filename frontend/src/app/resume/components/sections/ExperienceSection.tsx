@@ -52,6 +52,12 @@ export default function ExperienceSection({ data, onChange, onRequestAI, isAILoa
       </div>
 
       <div className="space-y-2">
+        {data.experience.length === 0 && (
+          <div className="text-center py-6 text-slate-400">
+            <p className="text-sm">No experience added yet</p>
+            <p className="text-xs mt-1">Click the button below to add your first experience</p>
+          </div>
+        )}
         {data.experience.map((item, index) => {
           const isExpanded = expandedIndex === index;
           return (

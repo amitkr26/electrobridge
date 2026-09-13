@@ -1,4 +1,10 @@
 import { FileText, Sparkles, BarChart3, Users, Zap, Target, ArrowRight, Briefcase } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About",
+  description: "Learn about ElectroBridge - a free career platform for engineers.",
+};
 
 const OFFERINGS = [
   {

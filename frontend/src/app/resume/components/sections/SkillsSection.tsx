@@ -47,6 +47,13 @@ export default function SkillsSection({ data, onChange }: SkillsSectionProps) {
         )}
       </div>
 
+      {data.skills.length === 0 && (
+        <div className="text-center py-4 text-slate-400">
+          <p className="text-sm">No skills added yet</p>
+          <p className="text-xs mt-1">Type a skill and press Enter to add it.</p>
+        </div>
+      )}
+
       {data.skills.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {data.skills.map((skill, index) => (
