@@ -9,6 +9,10 @@ const DEFAULT_LABELS: Record<SectionKey, string> = {
   projects: "Projects",
   certifications: "Certifications",
   publications: "Publications",
+  languages: "Languages",
+  volunteer: "Volunteer Experience",
+  awards: "Awards & Achievements",
+  interests: "Interests",
 };
 
 export function getSectionLabel(style: ResumeStyleConfig, key: SectionKey): string {
@@ -179,6 +183,67 @@ function renderSectionContent(key: SectionKey, data: ResumeData, style: ResumeSt
               {p.year && <span className="text-slate-400"> ({p.year})</span>}
               {p.doi && <span className="text-slate-400 block text-[10px]">DOI: {p.doi}</span>}
             </div>
+          ))}
+        </div>
+      );
+
+    case "languages":
+      if (!data.languages?.length) return null;
+      return (
+        <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-700">
+          {data.languages.map((l, i) => (
+            <span key={i}>
+              <span className="font-semibold">{l.name}</span>
+              {l.proficiency && <span className="text-slate-500"> — {l.proficiency}</span>}
+            </span>
+          ))}
+        </div>
+      );
+
+    case "volunteer":
+      if (!data.volunteer?.length) return null;
+      return (
+        <div className="space-y-3">
+          {data.volunteer.map((v, i) => (
+            <div key={i} className="text-xs break-inside-avoid">
+              <div className="flex justify-between items-baseline font-bold text-slate-900">
+                <span>
+                  {v.role || "Role"} •{" "}
+                  <span className="font-semibold text-slate-700">{v.org}</span>
+                </span>
+                <span className="text-[11px] font-normal text-slate-500">{v.period}</span>
+              </div>
+              {v.detail && (
+                <p className="text-slate-600 mt-1 leading-relaxed whitespace-pre-line">{v.detail}</p>
+              )}
+            </div>
+          ))}
+        </div>
+      );
+
+    case "awards":
+      if (!data.awards?.length) return null;
+      return (
+        <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-700">
+          {data.awards.map((a, i) => (
+            <span key={i}>
+              • {a.name} {a.issuer ? `— ${a.issuer}` : ""} {a.year ? `(${a.year})` : ""}
+            </span>
+          ))}
+        </div>
+      );
+
+    case "interests":
+      if (!data.interests?.length) return null;
+      return (
+        <div className="flex flex-wrap gap-1.5">
+          {data.interests.map((interest, i) => (
+            <span
+              key={i}
+              className="px-2.5 py-1 bg-slate-100 text-slate-800 text-[10.5px] font-semibold rounded-md border border-slate-200/80"
+            >
+              {interest}
+            </span>
           ))}
         </div>
       );

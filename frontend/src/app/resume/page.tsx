@@ -87,6 +87,10 @@ const DEFAULT_RESUME_DATA: ResumeData = {
   ],
   certifications: [],
   publications: [],
+  languages: [],
+  volunteer: [],
+  awards: [],
+  interests: [],
 };
 
 const DEFAULT_STYLE_CONFIG: ResumeStyleConfig = {
@@ -95,7 +99,7 @@ const DEFAULT_STYLE_CONFIG: ResumeStyleConfig = {
   fontFamily: "font-sans",
   marginSize: "normal",
   sectionSpacing: "normal",
-  sectionOrder: ["summary", "experience", "education", "skills", "projects", "certifications", "publications"],
+  sectionOrder: ["summary", "experience", "education", "skills", "projects", "certifications", "publications", "languages", "volunteer", "awards", "interests"],
   sectionLabels: {},
   dateFormat: "MMM YYYY",
   pageSize: "A4",
@@ -107,6 +111,10 @@ const DEFAULT_STYLE_CONFIG: ResumeStyleConfig = {
     skills: true,
     certifications: true,
     publications: true,
+    languages: true,
+    volunteer: true,
+    awards: true,
+    interests: true,
   },
 };
 

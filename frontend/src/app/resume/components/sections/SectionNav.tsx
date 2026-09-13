@@ -1,6 +1,6 @@
 "use client";
 
-import { User, FileText, Briefcase, GraduationCap, Code, FolderGit2, Award, BookOpen } from "lucide-react";
+import { User, FileText, Briefcase, GraduationCap, Code, FolderGit2, Award, BookOpen, Globe, Heart, Trophy, Sparkles } from "lucide-react";
 import type { ResumeData } from "../../types";
 
 interface SectionNavProps {
@@ -16,8 +16,7 @@ const sections = [
   { key: "education", label: "Education", icon: GraduationCap, countKey: "education" as const },
   { key: "skills", label: "Skills", icon: Code },
   { key: "projects", label: "Projects", icon: FolderGit2, countKey: "projects" as const },
-  { key: "certifications", label: "Certifications", icon: Award, countKey: "certifications" as const },
-  { key: "publications", label: "Publications", icon: BookOpen, countKey: "publications" as const },
+  { key: "extras", label: "More Sections", icon: Award, countKey: "certifications" as const },
 ];
 
 function hasData(resumeData: ResumeData, key: string): boolean {
@@ -34,10 +33,8 @@ function hasData(resumeData: ResumeData, key: string): boolean {
       return resumeData.skills.length > 0;
     case "projects":
       return resumeData.projects.length > 0;
-    case "certifications":
-      return resumeData.certifications.length > 0;
-    case "publications":
-      return resumeData.publications.length > 0;
+    case "extras":
+      return resumeData.certifications.length > 0 || resumeData.publications.length > 0 || resumeData.languages.length > 0 || resumeData.volunteer.length > 0 || resumeData.awards.length > 0 || resumeData.interests.length > 0;
     default:
       return false;
   }
@@ -45,6 +42,9 @@ function hasData(resumeData: ResumeData, key: string): boolean {
 
 function getCount(resumeData: ResumeData, key?: string): number {
   if (!key) return 0;
+  if (key === "extras") {
+    return resumeData.certifications.length + resumeData.publications.length + resumeData.languages.length + resumeData.volunteer.length + resumeData.awards.length + resumeData.interests.length;
+  }
   const val = resumeData[key as keyof ResumeData];
   return Array.isArray(val) ? val.length : 0;
 }

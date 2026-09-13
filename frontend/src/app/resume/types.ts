@@ -38,6 +38,27 @@ export interface PubItem {
   doi?: string;
 }
 
+export interface LangItem {
+  id?: string;
+  name: string;
+  proficiency: "Native" | "Fluent" | "Advanced" | "Intermediate" | "Basic";
+}
+
+export interface VolItem {
+  id?: string;
+  role: string;
+  org: string;
+  period: string;
+  detail: string;
+}
+
+export interface AwardItem {
+  id?: string;
+  name: string;
+  issuer?: string;
+  year?: string;
+}
+
 export interface ResumeData {
   id?: string;
   versionName?: string;
@@ -56,9 +77,13 @@ export interface ResumeData {
   skills: string[];
   certifications: CertItem[];
   publications: PubItem[];
+  languages: LangItem[];
+  volunteer: VolItem[];
+  awards: AwardItem[];
+  interests: string[];
 }
 
-export type SectionKey = "summary" | "experience" | "education" | "skills" | "projects" | "certifications" | "publications";
+export type SectionKey = "summary" | "experience" | "education" | "skills" | "projects" | "certifications" | "publications" | "languages" | "volunteer" | "awards" | "interests";
 
 export interface ResumeStyleConfig {
   templateId: string;
@@ -79,6 +104,10 @@ export interface ResumeStyleConfig {
     skills: boolean;
     certifications: boolean;
     publications: boolean;
+    languages: boolean;
+    volunteer: boolean;
+    awards: boolean;
+    interests: boolean;
   };
 }
 

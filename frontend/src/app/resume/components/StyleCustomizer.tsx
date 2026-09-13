@@ -26,6 +26,10 @@ const DEFAULT_LABELS: Record<SectionKey, string> = {
   projects: "Projects",
   certifications: "Certifications",
   publications: "Publications",
+  languages: "Languages",
+  volunteer: "Volunteer Experience",
+  awards: "Awards & Achievements",
+  interests: "Interests",
 };
 
 const moveSection = (arr: SectionKey[], from: number, to: number) => {
