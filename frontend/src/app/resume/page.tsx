@@ -2,12 +2,11 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import {
-  Download, Save, UploadCloud, Sparkles, LayoutTemplate,
-  Layers, User, GraduationCap, Briefcase,
-  Code, FolderGit2, Award, Loader2, ZoomIn, ZoomOut, FileText
+  Download, Save, UploadCloud, Sparkles,
+  Layers, Loader2, ZoomIn, ZoomOut
 } from "lucide-react";
 import { toast } from "sonner";
-import { ResumeData, ResumeStyleConfig, TemplateId, EduItem, ExpItem, ProjItem, CertItem, PubItem } from "./types";
+import { ResumeData, ResumeStyleConfig, TemplateId } from "./types";
 import { ParsedResumeProfile } from "@/lib/resume-text-parser";
 import { ResumePreview } from "./components/ResumePreview";
 import { TemplateSelector, TEMPLATE_OPTIONS } from "./components/TemplateSelector";

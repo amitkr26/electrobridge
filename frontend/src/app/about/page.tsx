@@ -1,4 +1,4 @@
-import { FileText, Sparkles, BarChart3, Users, Zap, Target, ArrowRight, Briefcase } from "lucide-react";
+import { FileText, Sparkles, BarChart3, Users, Zap, Target, ArrowRight } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

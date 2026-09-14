@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Bookmark, Search, Trash2, ExternalLink, Sparkles, Loader2 } from "lucide-react";
+import { Bookmark, Loader2 } from "lucide-react";
 import { OpportunityCard } from "./OpportunityCard";
 import { GroundedRecord } from "@/lib/ai/grounding";
 
@@ -16,6 +16,7 @@ export function SavedView({
 }: SavedViewProps) {
   const [savedOpportunities, setSavedOpportunities] = useState<GroundedRecord[]>([]);
   const [loading, setLoading] = useState(false);
+  const [fetchError, setFetchError] = useState(false);
 
   useEffect(() => {
     const fetchSaved = async () => {
@@ -24,6 +25,7 @@ export function SavedView({
         return;
       }
       setLoading(true);
+      setFetchError(false);
       try {
         const res = await fetch("/api/ai/chat", {
           method: "POST",
@@ -36,7 +38,7 @@ export function SavedView({
         const records: GroundedRecord[] = Array.isArray(data.opportunities) ? data.opportunities : [];
         setSavedOpportunities(records.filter((r) => r.id && savedIds.includes(r.id)));
       } catch {
-        // ponytail: silently fail — saved IDs are in localStorage, just show empty state
+        setFetchError(true);
         setSavedOpportunities([]);
       }
       setLoading(false);
@@ -82,10 +84,13 @@ export function SavedView({
           <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto">
             <Bookmark className="w-6 h-6" />
           </div>
-          <h3 className="font-bold text-sm text-slate-900">Saved items not found in live database</h3>
+          <h3 className="font-bold text-sm text-slate-900">
+            {fetchError ? "Failed to load opportunities" : "Saved items not found in live database"}
+          </h3>
           <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
-            These {savedIds.length} saved items may no longer be available in the current database.
-            Try the Discover tab to find current opportunities.
+            {fetchError
+              ? "There was a problem connecting to the database. Please try again later."
+              : `These ${savedIds.length} saved items may no longer be available in the current database. Try the Discover tab to find current opportunities.`}
           </p>
         </div>
       ) : (

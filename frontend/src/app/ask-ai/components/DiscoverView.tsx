@@ -1,13 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import {
   Search,
-  Filter,
-  Building2,
-  GraduationCap,
   Sparkles,
   Loader2,
   ShieldCheck,
-  Calendar,
   AlertCircle,
 } from "lucide-react";
 import { OpportunityCard } from "./OpportunityCard";

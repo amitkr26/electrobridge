@@ -49,7 +49,10 @@ function csrfGuard(request: NextRequest): Response | null {
 
   const origin = request.headers.get('origin');
   const referer = request.headers.get('referer');
-  const source = origin || (referer ? new URL(referer).origin : null);
+  let source = origin;
+  if (!source && referer) {
+    try { source = new URL(referer).origin; } catch { /* malformed Referer — treat as missing */ }
+  }
   if (!source) return null;
   if (ALLOWED_ORIGINS.includes(source)) return null;
 

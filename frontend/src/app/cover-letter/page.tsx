@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
   Download, Sparkles, Loader2, LayoutTemplate, User,
-  Building2, Mail, Phone, Pen
+  Building2, Pen
 } from "lucide-react";
 import { toast } from "sonner";
 

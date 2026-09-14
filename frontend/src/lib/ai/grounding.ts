@@ -12,7 +12,7 @@ const STOPWORDS = new Set([
   "please", "need", "want", "know", "list", "me", "my", "our", "this", "that",
 ]);
 
-import { evaluateOpportunityFreshness, FreshnessMeta } from "../opportunity-freshness";
+import { evaluateOpportunityFreshness } from "../opportunity-freshness";
 
 export interface GroundedRecord {
   id?: string | null;

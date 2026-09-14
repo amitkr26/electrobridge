@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Bell, Plus, Trash2, CheckCircle2, ShieldCheck, Sparkles, Search, Mail, Loader2, ExternalLink } from "lucide-react";
+import { Bell, Plus, Trash2, CheckCircle2, Sparkles, Search, Mail, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { INSTITUTIONAL_SOURCES } from "@/lib/sources/source-registry";
 import { OpportunityCard } from "./OpportunityCard";
@@ -51,10 +51,8 @@ export function AlertsManager() {
   const [subscribing, setSubscribing] = useState(false);
   const [subscribed, setSubscribed] = useState(false);
 
-  // Live scanner state for active alert
   const [scanningAlertId, setScanningAlertId] = useState<string | null>(null);
   const [matchedOpportunities, setMatchedOpportunities] = useState<any[]>([]);
-  const [isScanning, setIsScanning] = useState(false);
 
   useEffect(() => {
     try {
@@ -114,7 +112,6 @@ export function AlertsManager() {
 
   const handleScanMatches = async (alert: OpportunityAlert) => {
     setScanningAlertId(alert.id);
-    setIsScanning(true);
     setMatchedOpportunities([]);
 
     try {
@@ -148,7 +145,7 @@ export function AlertsManager() {
     } catch {
       toast.error("Failed to query live database.");
     } finally {
-      setIsScanning(false);
+      setScanningAlertId(null);
     }
   };
 
@@ -359,7 +356,7 @@ export function AlertsManager() {
         </p>
 
         {alerts.map((alert) => {
-          const isScanningThis = isScanning && scanningAlertId === alert.id;
+          const isScanningThis = scanningAlertId === alert.id;
           const isViewingMatches = scanningAlertId === alert.id && matchedOpportunities.length > 0;
 
           return (
