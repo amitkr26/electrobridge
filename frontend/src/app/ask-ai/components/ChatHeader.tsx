@@ -9,7 +9,7 @@ interface ChatHeaderProps {
 
 export function ChatHeader({ onOpenMobileSidebar, onNewChat }: ChatHeaderProps) {
   return (
-    <header className="h-14 border-b border-slate-200/90 bg-white/95 backdrop-blur-sm px-4 flex items-center justify-between shrink-0 z-10">
+    <>
       <div className="flex items-center gap-3">
         {/* Mobile Hamburger Toggle */}
         <button
@@ -59,6 +59,6 @@ export function ChatHeader({ onOpenMobileSidebar, onNewChat }: ChatHeaderProps) 
         <Plus className="w-3.5 h-3.5" />
         <span className="hidden sm:inline">New Chat</span>
       </button>
-    </header>
+    </>
   );
 }

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Bookmark, Loader2 } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Bookmark, Loader2, RefreshCw } from "lucide-react";
 import { OpportunityCard } from "./OpportunityCard";
 import { GroundedRecord } from "@/lib/ai/grounding";
 
@@ -17,34 +17,39 @@ export function SavedView({
   const [savedOpportunities, setSavedOpportunities] = useState<GroundedRecord[]>([]);
   const [loading, setLoading] = useState(false);
   const [fetchError, setFetchError] = useState(false);
+  const savedIdsRef = useRef(savedIds);
+  savedIdsRef.current = savedIds;
 
+  const fetchSaved = async () => {
+    if (savedIdsRef.current.length === 0) {
+      setSavedOpportunities([]);
+      return;
+    }
+    setLoading(true);
+    setFetchError(false);
+    try {
+      const res = await fetch("/api/ai/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: [{ role: "user", content: "all recent JRF semiconductor opportunities" }],
+        }),
+      });
+      const data = await res.json();
+      const records: GroundedRecord[] = Array.isArray(data.opportunities) ? data.opportunities : [];
+      setSavedOpportunities(records.filter((r) => r.id && savedIdsRef.current.includes(r.id)));
+    } catch {
+      setFetchError(true);
+      setSavedOpportunities([]);
+    }
+    setLoading(false);
+  };
+
+  // ponytail: fetch on mount only (component unmounts when tab switches, so this runs once per tab visit)
   useEffect(() => {
-    const fetchSaved = async () => {
-      if (savedIds.length === 0) {
-        setSavedOpportunities([]);
-        return;
-      }
-      setLoading(true);
-      setFetchError(false);
-      try {
-        const res = await fetch("/api/ai/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            messages: [{ role: "user", content: "all recent JRF semiconductor opportunities" }],
-          }),
-        });
-        const data = await res.json();
-        const records: GroundedRecord[] = Array.isArray(data.opportunities) ? data.opportunities : [];
-        setSavedOpportunities(records.filter((r) => r.id && savedIds.includes(r.id)));
-      } catch {
-        setFetchError(true);
-        setSavedOpportunities([]);
-      }
-      setLoading(false);
-    };
     fetchSaved();
-  }, [savedIds]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="max-w-5xl mx-auto p-4 sm:p-6 space-y-6">
@@ -62,6 +67,14 @@ export function SavedView({
             Track and prepare application dossiers for your shortlisted positions.
           </p>
         </div>
+        <button
+          onClick={fetchSaved}
+          disabled={loading}
+          className="flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-blue-600 bg-slate-100 hover:bg-slate-200/70 px-3 py-1.5 rounded-lg transition disabled:opacity-50"
+        >
+          <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+          Refresh
+        </button>
       </div>
 
       {savedIds.length === 0 ? (

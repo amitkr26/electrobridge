@@ -10,6 +10,7 @@ import { TwoColumnGrid } from "../templates/TwoColumnGrid";
 import { Executive } from "../templates/Executive";
 import { FresherCampus } from "../templates/FresherCampus";
 import { SiliconTech } from "../templates/SiliconTech";
+import { getMarginClass } from "../templates/SectionContent";
 
 interface ResumePreviewProps {
   data: ResumeData;
@@ -55,7 +56,7 @@ export const ResumePreview = forwardRef<HTMLDivElement, ResumePreviewProps>(
             transform: scale !== 1.0 ? `scale(${scale})` : undefined,
             transformOrigin: "top center",
           }}
-          className={`w-full max-w-[800px] min-h-[1130px] bg-white shadow-xl border border-slate-200/90 rounded-none print:shadow-none print:border-none print:max-w-none print:min-h-0 print:w-full print:m-0 ${style.fontFamily} transition-transform duration-150`}
+          className={`w-full max-w-[800px] min-h-[1130px] bg-white shadow-xl border border-slate-200/90 rounded-none print:shadow-none print:border-none print:max-w-none print:min-h-0 print:w-full print:m-0 ${getMarginClass(style)} ${style.fontFamily} transition-transform duration-150`}
         >
           {renderTemplate()}
         </div>

@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.1.1] - 2026-09-14
+
+### Fixed
+- **Customize dead features wired up**: marginSize, sectionSpacing, dateFormat, pageSize now actually affect resume rendering
+  - `getMarginClass()` maps compact/normal/relaxed to padding classes on the A4 canvas
+  - `getSectionSpacingClass()` maps section spacing config to section margin-bottom
+  - `formatDate()` utility parses common date formats (Jan 2024, 01/2024, YYYY) and respects dateFormat setting
+  - PDF export uses `styleConfig.pageSize` (A4/Letter) instead of hardcoded "a4"
+  - All 11 date-rendering spots in SectionContent + ModernSidebar now use `formatDate()`
+  - SiliconTech template: removed hardcoded `mb-5` on SectionBlock to inherit sectionSpacing
+- **useSpeechRecognition re-creation bug**: callback ref pattern prevents recognition object from being destroyed/recreated on every render (was causing voice input to break)
+- **SavedView rate limit waste**: fetch now runs on mount only (component unmounts on tab switch, so each tab visit = one fetch), plus manual Refresh button added
+- **DiscoverView rate limit burn**: removed auto-fetch on filter change; users now click "Search" or "Apply Filters" to trigger API calls, preventing accidental quota exhaustion
+- **resume/route.ts crash**: added try/catch around PATCH/POST handlers to catch malformed JSON (SyntaxError) and validation errors
+- **ask-ai/error.tsx**: now displays error.message to help debug production failures
+- **ChatHeader nested `<header>`**: changed to `<div>` to avoid invalid HTML nesting inside page's `<header>`
+
+### Removed (dead code cleanup)
+- `useSpeechSynthesis`: removed `pause`, `resume`, `isPaused` (never consumed by any component)
+- `useChatSessions`: removed `clearAllSessions`, `allSessions` (exported but never used)
+- `DiscoverView`: removed auto-fetch `useEffect` (replaced with explicit Search button)
+- 5 dead imports across ask-ai components (cleared in prior commit, verified clean)
+
 ## [1.1.0] - 2026-09-13
 
 ### Added

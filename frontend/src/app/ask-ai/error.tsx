@@ -22,8 +22,13 @@ export default function AskAiError({
         </div>
         <h2 className="text-lg font-bold text-slate-900">Something went wrong</h2>
         <p className="text-sm text-slate-500">
-          The AI assistant encountered an unexpected error. Please try again.
+          The AI assistant encountered an unexpected error.
         </p>
+        {error.message && (
+          <p className="text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2 font-mono break-all">
+            {error.message}
+          </p>
+        )}
         <button
           onClick={reset}
           className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl transition"

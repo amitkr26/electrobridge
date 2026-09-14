@@ -3,11 +3,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 export interface SpeechSynthesisHook {
   isSupported: boolean;
   speakingMsgId: string | null;
-  isPaused: boolean;
   speak: (id: string, text: string) => void;
   stop: () => void;
-  pause: () => void;
-  resume: () => void;
 }
 
 function cleanTextForSpeech(markdown: string): string {
@@ -24,7 +21,6 @@ function cleanTextForSpeech(markdown: string): string {
 export function useSpeechSynthesis(): SpeechSynthesisHook {
   const [isSupported, setIsSupported] = useState(false);
   const [speakingMsgId, setSpeakingMsgId] = useState<string | null>(null);
-  const [isPaused, setIsPaused] = useState(false);
   const synthRef = useRef<SpeechSynthesis | null>(null);
 
   useEffect(() => {
@@ -51,25 +47,6 @@ export function useSpeechSynthesis(): SpeechSynthesisHook {
       } catch {}
     }
     setSpeakingMsgId(null);
-    setIsPaused(false);
-  }, []);
-
-  const pause = useCallback(() => {
-    if (synthRef.current && synthRef.current.speaking) {
-      try {
-        synthRef.current.pause();
-        setIsPaused(true);
-      } catch {}
-    }
-  }, []);
-
-  const resume = useCallback(() => {
-    if (synthRef.current && synthRef.current.paused) {
-      try {
-        synthRef.current.resume();
-        setIsPaused(false);
-      } catch {}
-    }
   }, []);
 
   const speak = useCallback(
@@ -92,12 +69,10 @@ export function useSpeechSynthesis(): SpeechSynthesisHook {
 
       utterance.onstart = () => {
         setSpeakingMsgId(id);
-        setIsPaused(false);
       };
 
       utterance.onend = () => {
         setSpeakingMsgId(null);
-        setIsPaused(false);
       };
 
       utterance.onerror = (e) => {
@@ -106,7 +81,6 @@ export function useSpeechSynthesis(): SpeechSynthesisHook {
           console.warn("[TTS] Utterance error:", e.error);
         }
         setSpeakingMsgId(null);
-        setIsPaused(false);
       };
 
       try {
@@ -122,10 +96,7 @@ export function useSpeechSynthesis(): SpeechSynthesisHook {
   return {
     isSupported,
     speakingMsgId,
-    isPaused,
     speak,
     stop,
-    pause,
-    resume,
   };
 }

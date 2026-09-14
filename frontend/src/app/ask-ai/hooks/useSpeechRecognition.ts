@@ -19,6 +19,9 @@ export function useSpeechRecognition(onFinalResult?: (text: string) => void): Sp
   const [error, setError] = useState<string | null>(null);
 
   const recognitionRef = useRef<any>(null);
+  // ponytail: ref to hold latest callback so recognition doesn't get recreated on every render
+  const onFinalResultRef = useRef(onFinalResult);
+  onFinalResultRef.current = onFinalResult;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -56,7 +59,7 @@ export function useSpeechRecognition(onFinalResult?: (text: string) => void): Sp
         if (finalStr) {
           setTranscript((prev) => (prev ? `${prev} ${finalStr}` : finalStr));
           setInterimTranscript("");
-          if (onFinalResult) onFinalResult(finalStr.trim());
+          if (onFinalResultRef.current) onFinalResultRef.current(finalStr.trim());
         }
       };
 
@@ -98,7 +101,8 @@ export function useSpeechRecognition(onFinalResult?: (text: string) => void): Sp
         } catch {}
       }
     };
-  }, [onFinalResult]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const startListening = useCallback(() => {
     if (!recognitionRef.current) {

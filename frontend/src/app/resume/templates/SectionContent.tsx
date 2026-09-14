@@ -26,6 +26,99 @@ export function getOrderedSections(style: ResumeStyleConfig): SectionKey[] {
   );
 }
 
+/** Maps marginSize config to Tailwind padding classes. */
+export function getMarginClass(style: ResumeStyleConfig): string {
+  switch (style.marginSize) {
+    case "compact": return "p-4";
+    case "relaxed": return "p-8";
+    case "normal":
+    default: return "p-6";
+  }
+}
+
+/** Maps sectionSpacing config to Tailwind margin-bottom classes for sections. */
+export function getSectionSpacingClass(style: ResumeStyleConfig): string {
+  switch (style.sectionSpacing) {
+    case "compact": return "mb-3";
+    case "relaxed": return "mb-7";
+    case "normal":
+    default: return "mb-5";
+  }
+}
+
+/** Formats a date string according to the configured dateFormat. */
+export function formatDate(dateStr: string | undefined | null, format: ResumeStyleConfig["dateFormat"]): string {
+  if (!dateStr) return "";
+  const trimmed = dateStr.trim();
+  // Already simple year or "YYYY" format — return as-is
+  if (/^\d{4}$/.test(trimmed)) {
+    if (format === "YYYY") return trimmed;
+    // For other formats, we can't split a bare year further
+    return trimmed;
+  }
+  // Try to extract month and year from common patterns like "Jan 2024", "01/2024", "January 2024"
+  const monthNames = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+  const fullMonthNames = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+  const shortMonthMap: Record<string, number> = {};
+  monthNames.forEach((m, i) => shortMonthMap[m] = i);
+  fullMonthNames.forEach((m, i) => shortMonthMap[m] = i);
+  const numMonthMap: Record<string, number> = {};
+  for (let i = 1; i <= 12; i++) numMonthMap[String(i).padStart(2, "0")] = i - 1;
+  numMonthMap["1"] = 0; numMonthMap["2"] = 1; numMonthMap["3"] = 2; numMonthMap["4"] = 3;
+  numMonthMap["5"] = 4; numMonthMap["6"] = 5; numMonthMap["7"] = 6; numMonthMap["8"] = 7;
+  numMonthMap["9"] = 8; numMonthMap["10"] = 9; numMonthMap["11"] = 10; numMonthMap["12"] = 11;
+
+  let monthIdx: number | null = null;
+  let year: string | null = null;
+
+  // Pattern: "Jan 2024" or "January 2024"
+  const abbrMatch = trimmed.match(/^(\w+)\s+(\d{4})/);
+  if (abbrMatch) {
+    const m = abbrMatch[1].toLowerCase();
+    monthIdx = shortMonthMap[m] ?? null;
+    year = abbrMatch[2];
+  }
+  // Pattern: "01/2024" or "1/2024"
+  if (monthIdx === null) {
+    const numMatch = trimmed.match(/^(\d{1,2})\s*[/\-]\s*(\d{4})/);
+    if (numMatch) {
+      monthIdx = numMonthMap[numMatch[1]] ?? null;
+      year = numMatch[2];
+    }
+  }
+  // Pattern: "2024-01" (ISO-ish)
+  if (monthIdx === null) {
+    const isoMatch = trimmed.match(/^(\d{4})\s*[/\-]\s*(\d{1,2})/);
+    if (isoMatch) {
+      year = isoMatch[1];
+      monthIdx = numMonthMap[isoMatch[2]] ?? null;
+    }
+  }
+  // Pattern: range like "Jan 2023 - Present" or "01/2023 - 06/2024"
+  // We only format the first date in the range
+  if (trimmed.includes("-") || trimmed.includes("–")) {
+    const parts = trimmed.split(/[-–]/);
+    if (parts.length >= 2) {
+      return formatDate(parts[0].trim(), format) + " – " + formatDate(parts.slice(1).join("-").trim(), format);
+    }
+  }
+
+  if (monthIdx === null || year === null) {
+    // Cannot parse — return as-is
+    return trimmed;
+  }
+
+  const shortMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const paddedMonth = String(monthIdx + 1).padStart(2, "0");
+
+  switch (format) {
+    case "MMM YYYY": return `${shortMonths[monthIdx]} ${year}`;
+    case "MM/YYYY": return `${paddedMonth}/${year}`;
+    case "YYYY": return year;
+    default: return `${shortMonths[monthIdx]} ${year}`;
+  }
+}
+
 interface SectionBlockProps {
   sectionKey: SectionKey;
   data: ResumeData;
@@ -44,7 +137,9 @@ interface SectionBlockProps {
  * Generic section renderer. Each template can use this or render sections directly.
  * It handles visibility, label lookup, and empty-data checks.
  */
-export function SectionBlock({ sectionKey, data, style, className = "mb-5", headerClassName = "", renderTitle, renderSection }: SectionBlockProps) {
+export function SectionBlock({ sectionKey, data, style, className, headerClassName = "", renderTitle, renderSection }: SectionBlockProps) {
+  // ponytail: lazy default derived from styleConfig instead of hardcoded
+  const resolvedClassName = className ?? getSectionSpacingClass(style);
   if (!style.visibleSections[sectionKey]) return null;
   const label = getSectionLabel(style, sectionKey);
   const { accentColor } = style;
@@ -68,7 +163,7 @@ export function SectionBlock({ sectionKey, data, style, className = "mb-5", head
   }
 
   return (
-    <section className={className}>
+    <section className={resolvedClassName}>
       {header}
       {content}
     </section>
@@ -94,7 +189,7 @@ function renderSectionContent(key: SectionKey, data: ResumeData, style: ResumeSt
                   {exp.role || "Role"} •{" "}
                   <span className="font-semibold text-slate-700">{exp.org}</span>
                 </span>
-                <span className="text-[11px] font-normal text-slate-500">{exp.period}</span>
+                <span className="text-[11px] font-normal text-slate-500">{formatDate(exp.period, style.dateFormat)}</span>
               </div>
               {exp.detail && (
                 <p className="text-slate-600 mt-1 leading-relaxed whitespace-pre-line">{exp.detail}</p>
@@ -117,7 +212,7 @@ function renderSectionContent(key: SectionKey, data: ResumeData, style: ResumeSt
                 <p className="text-slate-600 text-[11px]">{edu.school}</p>
               </div>
               <div className="text-right">
-                <span className="text-slate-500 text-[11px]">{edu.year}</span>
+                <span className="text-slate-500 text-[11px]">{formatDate(edu.year, style.dateFormat)}</span>
                 {edu.cgpa && <p className="text-slate-700 font-semibold text-[10px]">CGPA: {edu.cgpa}</p>}
               </div>
             </div>
@@ -166,7 +261,7 @@ function renderSectionContent(key: SectionKey, data: ResumeData, style: ResumeSt
         <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-700">
           {data.certifications.map((c, i) => (
             <span key={i}>
-              • {c.name} {c.year ? `(${c.year})` : ""}
+              • {c.name} {c.year ? `(${formatDate(c.year, style.dateFormat)})` : ""}
             </span>
           ))}
         </div>
@@ -180,7 +275,7 @@ function renderSectionContent(key: SectionKey, data: ResumeData, style: ResumeSt
             <div key={i} className="break-inside-avoid">
               <span className="font-semibold">{p.title}</span>
               {p.venue && <span className="text-slate-500"> — {p.venue}</span>}
-              {p.year && <span className="text-slate-400"> ({p.year})</span>}
+              {p.year && <span className="text-slate-400"> ({formatDate(p.year, style.dateFormat)})</span>}
               {p.doi && <span className="text-slate-400 block text-[10px]">DOI: {p.doi}</span>}
             </div>
           ))}
@@ -211,7 +306,7 @@ function renderSectionContent(key: SectionKey, data: ResumeData, style: ResumeSt
                   {v.role || "Role"} •{" "}
                   <span className="font-semibold text-slate-700">{v.org}</span>
                 </span>
-                <span className="text-[11px] font-normal text-slate-500">{v.period}</span>
+                <span className="text-[11px] font-normal text-slate-500">{formatDate(v.period, style.dateFormat)}</span>
               </div>
               {v.detail && (
                 <p className="text-slate-600 mt-1 leading-relaxed whitespace-pre-line">{v.detail}</p>
@@ -227,7 +322,7 @@ function renderSectionContent(key: SectionKey, data: ResumeData, style: ResumeSt
         <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-700">
           {data.awards.map((a, i) => (
             <span key={i}>
-              • {a.name} {a.issuer ? `— ${a.issuer}` : ""} {a.year ? `(${a.year})` : ""}
+              • {a.name} {a.issuer ? `— ${a.issuer}` : ""} {a.year ? `(${formatDate(a.year, style.dateFormat)})` : ""}
             </span>
           ))}
         </div>

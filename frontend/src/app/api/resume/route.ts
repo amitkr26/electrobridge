@@ -69,18 +69,25 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
-  const body = await request.json();
-  const updates = validateOrThrow(resumeSchema, body);
-  const { score, feedback } = calculateAtsScore(updates);
+  try {
+    const body = await request.json();
+    const updates = validateOrThrow(resumeSchema, body);
+    const { score, feedback } = calculateAtsScore(updates);
 
-  // Without auth, just return success with ATS score (data lives in localStorage)
-  return NextResponse.json({
-    success: true,
-    resume: updates,
-    version: null,
-    ats_score: score,
-    ats_feedback: feedback,
-  });
+    // Without auth, just return success with ATS score (data lives in localStorage)
+    return NextResponse.json({
+      success: true,
+      resume: updates,
+      version: null,
+      ats_score: score,
+      ats_feedback: feedback,
+    });
+  } catch (err: any) {
+    if (err instanceof SyntaxError) {
+      return NextResponse.json({ error: "Invalid JSON in request body" }, { status: 400 });
+    }
+    return NextResponse.json({ error: err.message || "Failed to process resume" }, { status: 500 });
+  }
 }
 
 export async function DELETE(request: NextRequest) {

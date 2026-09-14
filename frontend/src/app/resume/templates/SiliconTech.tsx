@@ -39,14 +39,13 @@ export function SiliconTech({ data, style }: { data: ResumeData; style: ResumeSt
           sectionKey={key}
           data={data}
           style={style}
-          className="mb-5"
           renderTitle={() => (
             <h2 className="text-xs font-black uppercase text-slate-900 border-b border-slate-300 pb-1 mb-3">
               {SECTION_HEADERS[key] || key}
             </h2>
           )}
           renderSection={key === "skills" ? (header, content) => (
-            <section className="mb-5 bg-slate-900 text-slate-100 p-3.5 rounded-xl border border-slate-800">
+            <section className="bg-slate-900 text-slate-100 p-3.5 rounded-xl border border-slate-800">
               {header}
               {content}
             </section>

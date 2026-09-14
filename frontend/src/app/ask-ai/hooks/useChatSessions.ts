@@ -132,22 +132,12 @@ export function useChatSessions() {
     });
   }, [activeSessionId]);
 
-  const clearAllSessions = useCallback(() => {
-    const fresh = createDefaultSession();
-    setSessions([fresh]);
-    setActiveSessionId(fresh.id);
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-    } catch {}
-  }, []);
-
   const filteredSessions = sessions.filter((s) =>
     s.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return {
     sessions: filteredSessions,
-    allSessions: sessions,
     activeSession,
     activeSessionId,
     setActiveSessionId,
@@ -155,7 +145,6 @@ export function useChatSessions() {
     updateActiveMessages,
     renameSession,
     deleteSession,
-    clearAllSessions,
     searchQuery,
     setSearchQuery,
     isLoaded,

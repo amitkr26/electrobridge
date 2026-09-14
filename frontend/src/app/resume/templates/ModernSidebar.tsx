@@ -1,7 +1,7 @@
 import React from "react";
 import { ResumeData, ResumeStyleConfig } from "../types";
 import { Mail, Phone, MapPin, Linkedin, Github } from "lucide-react";
-import { getOrderedSections, SectionBlock } from "./SectionContent";
+import { getOrderedSections, SectionBlock, formatDate } from "./SectionContent";
 
 export function ModernSidebar({ data, style }: { data: ResumeData; style: ResumeStyleConfig }) {
   const { accentColor, visibleSections } = style;
@@ -36,7 +36,7 @@ export function ModernSidebar({ data, style }: { data: ResumeData; style: Resume
           <div className="border-t border-slate-200 pt-3 space-y-1.5">
             <p className="font-bold text-slate-800 text-[10px] uppercase tracking-wider">Certifications</p>
             {data.certifications.map((c, i) => (
-              <p key={i} className="text-[11px] text-slate-700 font-medium">• {c.name} {c.year ? `(${c.year})` : ""}</p>
+              <p key={i} className="text-[11px] text-slate-700 font-medium">• {c.name} {c.year ? `(${formatDate(c.year, style.dateFormat)})` : ""}</p>
             ))}
           </div>
         )}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import {
   Search,
   Sparkles,
@@ -30,26 +30,36 @@ export function DiscoverView({
   const [opportunities, setOpportunities] = useState<GroundedRecord[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hasSearched, setHasSearched] = useState(false);
+  // ponytail: track last query params to avoid duplicate API calls on mount
+  const lastQueryRef = useRef<string>("");
 
-  const fetchOpportunities = useCallback(async () => {
+  const fetchOpportunities = useCallback(async (forceQuery?: string) => {
+    // Build search query combining selected filters
+    const searchTerms = [
+      forceQuery ?? query,
+      selectedRole !== "all" ? selectedRole : "",
+      selectedOrg !== "all" ? selectedOrg : "",
+      selectedDomain !== "all" ? selectedDomain : "",
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+    const finalQuery = searchTerms || "JRF semiconductor VLSI electronics opportunities";
+
+    // ponytail: skip if same query as last fetch
+    if (lastQueryRef.current === finalQuery && !forceQuery) return;
+    lastQueryRef.current = finalQuery;
+
     setLoading(true);
     setError(null);
+    setHasSearched(true);
     try {
-      // Build search query combining selected filters
-      const searchTerms = [
-        query,
-        selectedRole !== "all" ? selectedRole : "",
-        selectedOrg !== "all" ? selectedOrg : "",
-        selectedDomain !== "all" ? selectedDomain : "",
-      ]
-        .filter(Boolean)
-        .join(" ");
-
       const res = await fetch("/api/ai/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          messages: [{ role: "user", content: searchTerms || "JRF semiconductor VLSI electronics opportunities" }],
+          messages: [{ role: "user", content: finalQuery }],
         }),
       });
 
@@ -69,13 +79,6 @@ export function DiscoverView({
       setLoading(false);
     }
   }, [query, selectedRole, selectedOrg, selectedDomain, freshnessFilter]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchOpportunities();
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [fetchOpportunities]);
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto p-4 sm:p-6">
@@ -102,10 +105,18 @@ export function DiscoverView({
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && fetchOpportunities()}
               placeholder="Search by keywords (e.g. SystemVerilog, GaN, Neuromorphic, DRDO, IIT Delhi)..."
               className="w-full bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-slate-400 text-xs rounded-2xl pl-10 pr-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-400 font-medium"
             />
           </div>
+          <button
+            onClick={() => fetchOpportunities()}
+            disabled={loading}
+            className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-3 rounded-2xl transition disabled:opacity-50 shrink-0"
+          >
+            {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : "Search"}
+          </button>
         </div>
       </div>
 
@@ -155,17 +166,26 @@ export function DiscoverView({
             </select>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mr-1">Freshness:</span>
-            <select
-              value={freshnessFilter}
-              onChange={(e) => setFreshnessFilter(e.target.value as any)}
-              className="bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-3 py-1.5 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mr-1">Freshness:</span>
+              <select
+                value={freshnessFilter}
+                onChange={(e) => setFreshnessFilter(e.target.value as any)}
+                className="bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-3 py-1.5 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="all">Active Only (Non-Expired)</option>
+                <option value="expiring_soon">Expiring Soon (≤ 7 Days)</option>
+                <option value="include_expired">Include Historical / Expired</option>
+              </select>
+            </div>
+            <button
+              onClick={() => fetchOpportunities()}
+              disabled={loading}
+              className="text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-3 py-1.5 rounded-xl transition disabled:opacity-50"
             >
-              <option value="all">Active Only (Non-Expired)</option>
-              <option value="expiring_soon">Expiring Soon (≤ 7 Days)</option>
-              <option value="include_expired">Include Historical / Expired</option>
-            </select>
+              Apply Filters
+            </button>
           </div>
         </div>
       </div>
@@ -188,11 +208,23 @@ export function DiscoverView({
             <AlertCircle className="w-6 h-6 text-red-600 mx-auto" />
             <p className="text-xs font-bold text-red-900">{error}</p>
             <button
-              onClick={fetchOpportunities}
+              onClick={() => fetchOpportunities()}
               className="text-xs font-bold text-red-700 bg-white border border-red-200 px-3 py-1.5 rounded-xl hover:bg-red-50"
             >
               Retry Search
             </button>
+          </div>
+        ) : !hasSearched ? (
+          <div className="p-10 bg-white border border-slate-200/90 rounded-2xl text-center space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mx-auto">
+              <Search className="w-6 h-6" />
+            </div>
+            <h3 className="font-bold text-sm text-slate-900">
+              Search for Live Opportunities
+            </h3>
+            <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
+              Use the search bar above or select filters, then click Search to find active JRF, PhD, and VLSI engineering roles from verified institutional sources.
+            </p>
           </div>
         ) : opportunities.length === 0 && !loading ? (
           <div className="p-10 bg-white border border-slate-200/90 rounded-2xl text-center space-y-3">
