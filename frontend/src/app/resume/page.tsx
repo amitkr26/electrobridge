@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import {
   Download, Save, UploadCloud, Sparkles,
-  Layers, Loader2, ZoomIn, ZoomOut
+  Layers, Loader2, ZoomIn, ZoomOut, Briefcase
 } from "lucide-react";
 import { toast } from "sonner";
 import { ResumeData, ResumeStyleConfig, TemplateId } from "./types";
@@ -524,6 +525,13 @@ export default function ResumeBuilderPage() {
               if (file) handleFileUpload(file);
             }}
           />
+          <Link
+            href="/resume/tailor"
+            className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 px-3 py-1.5 rounded-lg transition shadow-sm"
+          >
+            <Briefcase className="w-3.5 h-3.5" />
+            <span>Tailor to Job</span>
+          </Link>
           <button
             onClick={handleSaveToBackend}
             disabled={saving}

@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.2.0] - 2026-09-14
+
+### Added
+- **Job-Tailored Resume feature** (`/resume/tailor`): full pipeline for matching resume to job descriptions
+  - JD analysis: extracts keywords, skills, tools, responsibilities, seniority, domain
+  - Gap analysis: compares resume against JD with matched/partial/missing keyword breakdown
+  - Resume optimization: AI rewrites summary, reorders skills, improves bullets — never fabricates
+  - ATS score before/after with transparent methodology
+  - Change tracking: shows before/after with explanations for every change
+  - Versioning: tailored resume saved as new version, original preserved
+  - File upload: supports PDF/DOCX/TXT for both resume and job description
+  - Deep-link from Opportunity cards ("Tailor Resume" button)
+  - CTA in Resume Builder toolbar ("Tailor to Job" button)
+  - Layout metadata (openGraph/twitter) for social sharing
+
+### Changed
+- OpportunityCard: added "Tailor Resume" link in footer actions
+- Resume builder toolbar: added "Tailor to Job" gradient button
+- Sitemap: added `/resume/tailor` route
+
 ## [1.1.1] - 2026-09-14
 
 ### Fixed
