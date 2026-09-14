@@ -4,6 +4,17 @@ export const metadata: Metadata = {
   title: "Resources",
   description:
     "Free career resources for engineers - resume guides, interview prep, salary info, and career roadmaps.",
+  openGraph: {
+    title: "Resources",
+    description:
+      "Free career resources for engineers - resume guides, interview prep, salary info, and career roadmaps.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Resources",
+    description:
+      "Free career resources for engineers - resume guides, interview prep, salary info, and career roadmaps.",
+  },
 };
 
 export default function ResourcesLayout({

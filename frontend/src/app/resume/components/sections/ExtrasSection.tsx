@@ -103,7 +103,7 @@ export default function ExtrasSection({ data, onChange }: ExtrasSectionProps) {
                       {item.year && <span className="text-xs text-slate-500 truncate block">{item.year}</span>}
                     </div>
                   </div>
-                  <button onClick={(e) => { e.stopPropagation(); removeCert(index); }} className="text-slate-400 hover:text-red-500 transition p-1 rounded-lg hover:bg-red-50 shrink-0"><Trash2 size={14} /></button>
+                  <button onClick={(e) => { e.stopPropagation(); removeCert(index); }} className="text-slate-400 hover:text-red-500 transition p-1 rounded-lg hover:bg-red-50 shrink-0" aria-label="Remove certification"><Trash2 size={14} /></button>
                 </div>
                 {isExpanded && (
                   <div className="p-4 space-y-3 border-t border-slate-100">
@@ -141,7 +141,7 @@ export default function ExtrasSection({ data, onChange }: ExtrasSectionProps) {
                       {item.venue && <span className="text-xs text-slate-500 truncate block">{item.venue}</span>}
                     </div>
                   </div>
-                  <button onClick={(e) => { e.stopPropagation(); removePub(index); }} className="text-slate-400 hover:text-red-500 transition p-1 rounded-lg hover:bg-red-50 shrink-0"><Trash2 size={14} /></button>
+                  <button onClick={(e) => { e.stopPropagation(); removePub(index); }} className="text-slate-400 hover:text-red-500 transition p-1 rounded-lg hover:bg-red-50 shrink-0" aria-label="Remove publication"><Trash2 size={14} /></button>
                 </div>
                 {isExpanded && (
                   <div className="p-4 space-y-3 border-t border-slate-100">
@@ -174,7 +174,7 @@ export default function ExtrasSection({ data, onChange }: ExtrasSectionProps) {
               <select className="text-xs bg-white border border-slate-200 rounded-lg px-2 py-1 text-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/20" value={item.proficiency} onChange={(e) => updateLang(index, "proficiency", e.target.value)}>
                 {PROFICIENCY_OPTIONS.map((p) => <option key={p} value={p}>{p}</option>)}
               </select>
-              <button onClick={() => removeLang(index)} className="text-slate-400 hover:text-red-500 transition p-1 rounded-lg hover:bg-red-50 shrink-0"><Trash2 size={14} /></button>
+              <button onClick={() => removeLang(index)} className="text-slate-400 hover:text-red-500 transition p-1 rounded-lg hover:bg-red-50 shrink-0" aria-label="Remove language"><Trash2 size={14} /></button>
             </div>
           ))}
         </div>
@@ -201,7 +201,7 @@ export default function ExtrasSection({ data, onChange }: ExtrasSectionProps) {
                       <span className="text-xs text-slate-500 truncate block">{item.org}{item.period ? ` · ${item.period}` : ""}</span>
                     </div>
                   </div>
-                  <button onClick={(e) => { e.stopPropagation(); removeVol(index); }} className="text-slate-400 hover:text-red-500 transition p-1 rounded-lg hover:bg-red-50 shrink-0"><Trash2 size={14} /></button>
+                  <button onClick={(e) => { e.stopPropagation(); removeVol(index); }} className="text-slate-400 hover:text-red-500 transition p-1 rounded-lg hover:bg-red-50 shrink-0" aria-label="Remove volunteer experience"><Trash2 size={14} /></button>
                 </div>
                 {isExpanded && (
                   <div className="p-4 space-y-3 border-t border-slate-100">
@@ -233,7 +233,7 @@ export default function ExtrasSection({ data, onChange }: ExtrasSectionProps) {
               <input type="text" className="flex-1 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:outline-none text-sm font-medium text-slate-900 px-1" value={item.name} onChange={(e) => updateAward(index, "name", e.target.value)} placeholder="Award name" />
               <input type="text" className="w-28 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:outline-none text-xs text-slate-500 px-1" value={item.issuer ?? ""} onChange={(e) => updateAward(index, "issuer", e.target.value)} placeholder="Issuer" />
               <input type="text" className="w-16 bg-transparent border-b border-transparent hover:border-slate-300 focus:border-blue-500 focus:outline-none text-xs text-slate-500 px-1" value={item.year ?? ""} onChange={(e) => updateAward(index, "year", e.target.value)} placeholder="Year" />
-              <button onClick={() => removeAward(index)} className="text-slate-400 hover:text-red-500 transition p-1 rounded-lg hover:bg-red-50 shrink-0"><Trash2 size={14} /></button>
+              <button onClick={() => removeAward(index)} className="text-slate-400 hover:text-red-500 transition p-1 rounded-lg hover:bg-red-50 shrink-0" aria-label="Remove award"><Trash2 size={14} /></button>
             </div>
           ))}
         </div>
@@ -251,7 +251,7 @@ export default function ExtrasSection({ data, onChange }: ExtrasSectionProps) {
             {data.interests.map((interest, index) => (
               <span key={`${interest}-${index}`} className="bg-blue-50 text-blue-700 border border-blue-200 rounded-lg px-2.5 py-1 text-xs font-medium flex items-center gap-1">
                 {interest}
-                <button onClick={() => removeInterest(index)} className="text-blue-400 hover:text-red-500 transition ml-0.5"><X size={12} /></button>
+                <button onClick={() => removeInterest(index)} className="text-blue-400 hover:text-red-500 transition ml-0.5" aria-label="Remove interest"><X size={12} /></button>
               </span>
             ))}
           </div>

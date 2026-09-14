@@ -199,7 +199,7 @@ Make it specific to semiconductor/VLSI engineering. Use active voice. Be concise
             className="flex items-center gap-1.5 text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 px-4 py-2 rounded-xl transition shadow-sm"
           >
             {aiLoading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
-            <span>{aiLoading ? "Generating..." : "Generate with AI"}</span>
+            <span className="hidden sm:inline">{aiLoading ? "Generating..." : "Generate with AI"}</span>
           </button>
 
           <button
@@ -208,7 +208,7 @@ Make it specific to semiconductor/VLSI engineering. Use active voice. Be concise
             className="flex items-center gap-1.5 text-xs font-bold text-slate-300 bg-slate-800 border border-slate-700 hover:bg-slate-700 px-3.5 py-2 rounded-xl transition shadow-sm"
           >
             {exporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
-            <span>{exporting ? "Exporting..." : "Download PDF"}</span>
+            <span className="hidden sm:inline">{exporting ? "Exporting..." : "Download PDF"}</span>
           </button>
         </div>
       </header>
@@ -227,7 +227,7 @@ Make it specific to semiconductor/VLSI engineering. Use active voice. Be concise
               <h3 className="font-bold text-sm text-white mb-3 flex items-center gap-2">
                 <LayoutTemplate className="w-4 h-4 text-blue-400" /> Template
               </h3>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 {TEMPLATES.map((t) => (
                   <button
                     key={t.id}

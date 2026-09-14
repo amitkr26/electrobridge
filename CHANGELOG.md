@@ -17,6 +17,11 @@
 - **ask-ai/error.tsx**: now displays error.message to help debug production failures
 - **ChatHeader nested `<header>`**: changed to `<div>` to avoid invalid HTML nesting inside page's `<header>`
 
+### Changed
+- **StyleCustomizer**: added Section Spacing control (Tight/Balanced/Airy) with visual segmented buttons
+- **AI EmptyState redesigned**: "Career Copilot" with 4 task cards (Find Jobs, Improve Resume, Plan Career, Research & Government) + quick question pills
+- **handleSelectPrompt**: clears input field after sending (was setting input to prompt text redundantly)
+
 ### Removed (dead code cleanup)
 - `useSpeechSynthesis`: removed `pause`, `resume`, `isPaused` (never consumed by any component)
 - `useChatSessions`: removed `clearAllSessions`, `allSessions` (exported but never used)

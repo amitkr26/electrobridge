@@ -155,7 +155,7 @@ export function OpportunityCard({
               href={opportunity.source_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-bold text-slate-700 hover:text-blue-600 bg-slate-100 hover:bg-slate-200/70 px-3 py-1.5 rounded-xl transition flex items-center gap-1"
+              className="text-xs font-bold text-slate-700 hover:text-blue-600 bg-slate-100 hover:bg-slate-200/70 px-3 py-2 sm:py-1.5 rounded-xl transition flex items-center gap-1"
             >
               <span>Official Notification</span>
               <ExternalLink className="w-3 h-3" />
@@ -166,7 +166,7 @@ export function OpportunityCard({
               href={opportunity.apply_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-3.5 py-1.5 rounded-xl shadow-xs transition flex items-center gap-1"
+              className="text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-3.5 py-2 sm:py-1.5 rounded-xl shadow-xs transition flex items-center gap-1"
             >
               <span>Apply</span>
               <ExternalLink className="w-3 h-3" />

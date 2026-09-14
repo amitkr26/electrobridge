@@ -54,14 +54,14 @@ export default function SectionNav({ activeSection, onSectionChange, resumeData 
   const progress = Math.round((completedCount / sections.length) * 100);
 
   return (
-    <nav className="w-[200px] min-w-[200px] bg-white border-r border-slate-200 h-full overflow-y-auto py-4">
+    <nav className="hidden lg:block w-[200px] min-w-[200px] bg-white border-r border-slate-200 h-full overflow-y-auto py-4">
       {/* Completion progress */}
       <div className="px-4 mb-4">
         <div className="flex items-center justify-between mb-1">
           <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Progress</span>
           <span className="text-[10px] font-bold text-slate-600">{completedCount}/{sections.length}</span>
         </div>
-        <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+        <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100} aria-label="Resume completion progress">
           <div
             className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-500"
             style={{ width: `${progress}%` }}

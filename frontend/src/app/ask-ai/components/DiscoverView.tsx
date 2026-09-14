@@ -156,6 +156,7 @@ export function DiscoverView({
               value={selectedOrg}
               onChange={(e) => setSelectedOrg(e.target.value)}
               className="bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-3 py-1.5 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-label="Filter by organization"
             >
               <option value="all">All Institutions (DRDO, ISRO, IITs, IISc...)</option>
               {INSTITUTIONAL_SOURCES.map((s) => (
@@ -172,7 +173,8 @@ export function DiscoverView({
               <select
                 value={freshnessFilter}
                 onChange={(e) => setFreshnessFilter(e.target.value as any)}
-                className="bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-3 py-1.5 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="bg-slate-50 border border-slate-200 text-slate-800 text-xs rounded-xl px-3 py-1.5 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-full"
+              aria-label="Filter by freshness"
               >
                 <option value="all">Active Only (Non-Expired)</option>
                 <option value="expiring_soon">Expiring Soon (≤ 7 Days)</option>

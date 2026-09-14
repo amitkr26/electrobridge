@@ -219,7 +219,7 @@ export default function OpportunityIntelligencePage() {
           </div>
 
           {/* Intelligence Mode Tabs */}
-          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs">
+          <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs" role="tablist" aria-label="AI assistant mode">
             {[
               { id: "ask_ai", label: "Ask AI", icon: Sparkles },
               { id: "discover", label: "Discover", icon: Compass },
@@ -231,6 +231,8 @@ export default function OpportunityIntelligencePage() {
               return (
                 <button
                   key={tab.id}
+                  role="tab"
+                  aria-selected={isActive}
                   onClick={() => setActiveMode(tab.id as IntelligenceMode)}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-bold transition ${
                     isActive

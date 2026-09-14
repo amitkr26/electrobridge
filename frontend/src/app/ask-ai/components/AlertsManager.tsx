@@ -234,7 +234,7 @@ export function AlertsManager() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={subscribed}
-              className="bg-white/10 border border-white/20 text-white placeholder:text-slate-400 text-xs px-3.5 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 min-w-[240px]"
+              className="bg-white/10 border border-white/20 text-white placeholder:text-slate-400 text-xs px-3.5 py-2.5 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 w-full sm:min-w-[240px]"
             />
             <button
               type="submit"

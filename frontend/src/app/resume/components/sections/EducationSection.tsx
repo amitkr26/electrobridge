@@ -81,6 +81,7 @@ export default function EducationSection({ data, onChange }: EducationSectionPro
                 <button
                   onClick={(e) => { e.stopPropagation(); removeItem(index); }}
                   className="text-slate-400 hover:text-red-500 transition p-1 rounded-lg hover:bg-red-50 shrink-0"
+                  aria-label="Remove education"
                 >
                   <Trash2 size={14} />
                 </button>

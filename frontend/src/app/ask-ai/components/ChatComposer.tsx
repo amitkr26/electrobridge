@@ -67,6 +67,7 @@ export function ChatComposer({
             <button
               onClick={speech.resetTranscript}
               className="text-amber-700 hover:text-amber-900 font-bold ml-1 text-xs"
+              aria-label="Dismiss error"
             >
               ✕
             </button>

@@ -65,6 +65,7 @@ export default function SkillsSection({ data, onChange }: SkillsSectionProps) {
               <button
                 onClick={() => removeSkill(index)}
                 className="text-blue-400 hover:text-red-500 transition ml-0.5"
+                aria-label="Remove skill"
               >
                 <X size={12} />
               </button>

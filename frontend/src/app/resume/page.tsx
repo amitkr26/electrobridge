@@ -440,8 +440,10 @@ export default function ResumeBuilderPage() {
             <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-sm font-black text-[10px]">EB</div>
             <span className="font-bold text-sm text-slate-900 hidden sm:block">Resume Builder</span>
           </div>
-          <div className="flex items-center gap-0.5 bg-slate-100 p-0.5 rounded-lg ml-2">
+          <div className="flex items-center gap-0.5 bg-slate-100 p-0.5 rounded-lg ml-2" role="tablist" aria-label="Resume editor mode">
             <button
+              role="tab"
+              aria-selected={activeTab !== "styling" && activeTab !== "ai"}
               onClick={() => setActiveTab("personal")}
               className={`px-3 py-1 rounded-md text-xs font-bold transition ${
                 activeTab !== "styling" && activeTab !== "ai"
@@ -452,6 +454,8 @@ export default function ResumeBuilderPage() {
               Content
             </button>
             <button
+              role="tab"
+              aria-selected={activeTab === "styling"}
               onClick={() => setActiveTab("styling")}
               className={`px-3 py-1 rounded-md text-xs font-bold transition ${
                 activeTab === "styling"
@@ -462,6 +466,8 @@ export default function ResumeBuilderPage() {
               Customize
             </button>
             <button
+              role="tab"
+              aria-selected={activeTab === "ai"}
               onClick={() => setActiveTab("ai")}
               className={`px-3 py-1 rounded-md text-xs font-bold transition flex items-center gap-1 ${
                 activeTab === "ai"
@@ -532,7 +538,7 @@ export default function ResumeBuilderPage() {
             className="flex items-center gap-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 px-3.5 py-1.5 rounded-lg transition shadow-sm disabled:opacity-50"
           >
             {exporting ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
-            <span>{exporting ? "Exporting..." : "Download PDF"}</span>
+            <span className="hidden sm:inline">{exporting ? "Exporting..." : "Download PDF"}</span>
           </button>
         </div>
       </header>
@@ -574,6 +580,7 @@ export default function ResumeBuilderPage() {
                   fitToWidth ? "bg-blue-100 text-blue-700" : "text-slate-500 hover:bg-white/60"
                 }`}
                 title={fitToWidth ? "Fit to width (auto-zoom)" : "Manual zoom"}
+                aria-label="Toggle fit to width"
               >
                 Fit
               </button>
@@ -581,6 +588,7 @@ export default function ResumeBuilderPage() {
               <button
                 onClick={() => { setFitToWidth(false); setZoomScale((prev) => Math.max(0.5, prev - 0.1)); }}
                 className="p-1 hover:bg-white/80 rounded text-slate-500 transition"
+                aria-label="Zoom out"
               >
                 <ZoomOut className="w-3.5 h-3.5" />
               </button>
@@ -594,6 +602,7 @@ export default function ResumeBuilderPage() {
               <button
                 onClick={() => { setFitToWidth(false); setZoomScale((prev) => Math.min(1.5, prev + 0.1)); }}
                 className="p-1 hover:bg-white/80 rounded text-slate-500 transition"
+                aria-label="Zoom in"
               >
                 <ZoomIn className="w-3.5 h-3.5" />
               </button>
