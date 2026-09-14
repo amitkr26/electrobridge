@@ -176,7 +176,7 @@ export default function OpportunityIntelligencePage() {
   };
 
   const handleSelectPrompt = (promptText: string) => {
-    setInput(promptText);
+    setInput("");
     handleSend(promptText);
   };
 

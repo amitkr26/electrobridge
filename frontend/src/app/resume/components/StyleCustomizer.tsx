@@ -1,6 +1,6 @@
 import React from "react";
 import { ResumeStyleConfig, SectionKey } from "../types";
-import { Palette, Type, Layout, ArrowUp, ArrowDown, Tag, Calendar, FileText } from "lucide-react";
+import { Palette, Type, Layout, ArrowUp, ArrowDown, Tag, Calendar, FileText, ChevronsUpDown } from "lucide-react";
 
 interface StyleCustomizerProps {
   style: ResumeStyleConfig;
@@ -50,6 +50,10 @@ export function StyleCustomizer({ style, onChange }: StyleCustomizerProps) {
 
   const setMarginSize = (margin: "compact" | "normal" | "relaxed") => {
     onChange({ ...style, marginSize: margin });
+  };
+
+  const setSectionSpacing = (spacing: "compact" | "normal" | "relaxed") => {
+    onChange({ ...style, sectionSpacing: spacing });
   };
 
   const toggleSection = (sectionKey: keyof ResumeStyleConfig["visibleSections"]) => {
@@ -161,6 +165,32 @@ export function StyleCustomizer({ style, onChange }: StyleCustomizerProps) {
               }`}
             >
               {m.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* 3b. Section Spacing */}
+      <div className="space-y-2">
+        <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+          <ChevronsUpDown className="w-3.5 h-3.5 text-slate-400" /> Section Spacing
+        </label>
+        <div className="grid grid-cols-3 gap-1.5 text-xs">
+          {[
+            { id: "compact", label: "Tight" },
+            { id: "normal", label: "Balanced" },
+            { id: "relaxed", label: "Airy" },
+          ].map((s) => (
+            <button
+              key={s.id}
+              onClick={() => setSectionSpacing(s.id as any)}
+              className={`py-1.5 px-2 rounded-xl text-xs font-semibold border transition ${
+                style.sectionSpacing === s.id
+                  ? "bg-blue-50 border-blue-500 text-blue-700"
+                  : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
+              }`}
+            >
+              {s.label}
             </button>
           ))}
         </div>
