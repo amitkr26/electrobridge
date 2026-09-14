@@ -31,6 +31,10 @@
 - CSS phantom classes restored: glass-premium, btn-glow, bg-grid-pattern
 - Footer duplicate link deduplication
 - Mobile hamburger button with slide-out drawer
+- middleware.ts: new URL(referer) crash on malformed headers (try/catch)
+- AlertsManager: isScanning race condition (single boolean shared across alerts)
+- SavedView: silent failure replaced with proper error state
+- ask-ai route: added error.tsx boundary and loading.tsx skeleton
 
 ### Changed
 - Landing page rewritten with clear product communication, feature comparison, workflow visualization
@@ -49,6 +53,10 @@
 - backend/api/src/openapi/ (BDW openapi generator)
 - frontend/supabase/seed/ (BDW organization seed data)
 - backend/api/__tests__/openapi.test.ts (BDW openapi tests)
+- frontend/src/lib/supabase/client.ts (dead file, unused)
+- frontend/src/lib/supabase/server.ts (dead file, unused)
+- frontend/src/types/index.ts (dead file, unused)
+- 24 dead imports across 7 files (about, cover-letter, resume, ask-ai components, grounding)
 
 ## [1.0.0] - 2026-08-02
 
