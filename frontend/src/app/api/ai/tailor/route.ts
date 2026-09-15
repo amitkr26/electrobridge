@@ -310,7 +310,9 @@ async function handleFull(resumeData: Record<string, unknown>, jdText: string) {
   return NextResponse.json({
     success: true,
     jobAnalysis: jdAnalysis,
-    gapAnalysis,
+    // Flatten gap analysis fields so the page can access result.scores, result.skillMatches directly
+    scores: gapAnalysis.scores,
+    skillMatches: gapAnalysis.skillMatches,
     ...optimization,
   });
 }

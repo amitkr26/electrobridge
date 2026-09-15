@@ -98,7 +98,11 @@ export default function TailorResumePage() {
       const stored = localStorage.getItem(RESUME_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
-        setResumeData(parsed);
+        // eb_resume_draft_v1 stores { data: ResumeData, style: ... } wrapper
+        const resume = parsed.data || parsed;
+        if (resume.fullName || resume.experience || resume.skills) {
+          setResumeData(resume as ResumeData);
+        }
       }
     } catch { /* ignore */ }
   }, []);
@@ -276,22 +280,23 @@ export default function TailorResumePage() {
       const versionId = `tailored-${Date.now()}`;
       const versionName = `${currentResume.fullName || "Resume"} — Tailored for ${result.jobAnalysis?.jobTitle || "Job"}`;
 
-      // Save the tailored version
+      // Save the tailored version to the versions list (Resume Builder format)
       const versions = JSON.parse(localStorage.getItem("eb_resume_list_v1") || "[]");
       versions.push({
         id: versionId,
         name: versionName,
-        data: newResumeData,
-        createdAt: new Date().toISOString(),
+        templateId: "modern-professional",
+        updatedAt: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       });
       localStorage.setItem("eb_resume_list_v1", JSON.stringify(versions));
 
-      // Update the version map
-      versionsMap[versionId] = versionName;
+      // Update the versions map (Resume Builder reads data + style from here)
+      const existingDraft = JSON.parse(localStorage.getItem(RESUME_KEY) || "{}");
+      versionsMap[versionId] = { data: newResumeData, style: existingDraft.style || {} };
       localStorage.setItem("eb_resume_versions_map_v1", JSON.stringify(versionsMap));
 
       // Set as current draft
-      localStorage.setItem(RESUME_KEY, JSON.stringify(newResumeData));
+      localStorage.setItem(RESUME_KEY, JSON.stringify({ data: newResumeData, style: existingDraft.style || {} }));
 
       router.push("/resume");
     } catch (err: any) {
