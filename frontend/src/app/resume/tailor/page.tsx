@@ -239,7 +239,15 @@ export default function TailorResumePage() {
       }
 
       const data = await res.json();
-      setResult(data);
+      // Normalize: AI may return incomplete JSON, so provide safe defaults for every field
+      setResult({
+        jobAnalysis: data.jobAnalysis || { jobTitle: "", company: "", location: "", seniority: "", domain: "", technicalSkills: [], keywords: [] },
+        scores: data.scores || { overall: 0, technicalSkills: 0, experience: 0, education: 0, keywords: 0, roleAlignment: 0 },
+        skillMatches: Array.isArray(data.skillMatches) ? data.skillMatches : [],
+        changes: Array.isArray(data.changes) ? data.changes : [],
+        optimizedResume: data.optimizedResume || {},
+        aiExplanation: data.aiExplanation || "",
+      });
       setStep("results");
     } catch (err: any) {
       setError(err.message || "Analysis failed. Please try again.");
@@ -547,12 +555,12 @@ export default function TailorResumePage() {
             {/* Score Cards */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
               {[
-                { label: "Overall", value: result.scores.overall, color: "blue" },
-                { label: "Technical", value: result.scores.technicalSkills, color: "emerald" },
-                { label: "Experience", value: result.scores.experience, color: "amber" },
-                { label: "Education", value: result.scores.education, color: "purple" },
-                { label: "Keywords", value: result.scores.keywords, color: "cyan" },
-                { label: "Role Fit", value: result.scores.roleAlignment, color: "indigo" },
+                { label: "Overall", value: result.scores?.overall ?? 0, color: "blue" },
+                { label: "Technical", value: result.scores?.technicalSkills ?? 0, color: "emerald" },
+                { label: "Experience", value: result.scores?.experience ?? 0, color: "amber" },
+                { label: "Education", value: result.scores?.education ?? 0, color: "purple" },
+                { label: "Keywords", value: result.scores?.keywords ?? 0, color: "cyan" },
+                { label: "Role Fit", value: result.scores?.roleAlignment ?? 0, color: "indigo" },
               ].map((s) => (
                 <div key={s.label} className="bg-white rounded-2xl border border-slate-200/90 p-4 text-center shadow-sm">
                   <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">{s.label}</p>
@@ -582,7 +590,7 @@ export default function TailorResumePage() {
                 <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-700"
-                    style={{ width: `${result.scores.keywords}%` }}
+                    style={{ width: `${result.scores?.keywords ?? 0}%` }}
                   />
                 </div>
               </div>
