@@ -250,9 +250,14 @@ export default function ResumeBuilderPage() {
         method: "POST",
         body: formData,
       });
+      if (!res.ok) {
+        let errMsg = "Failed to extract resume data";
+        try { const e = await res.json(); errMsg = e.error || errMsg; } catch {}
+        throw new Error(errMsg);
+      }
       const result = await res.json();
 
-      if (!res.ok || !result.success) {
+      if (!result.success) {
         throw new Error(result.error || "Failed to extract resume data");
       }
 
@@ -325,8 +330,13 @@ export default function ResumeBuilderPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ section: type, context }),
       });
+      if (!res.ok) {
+        let errMsg = "AI generation failed";
+        try { const e = await res.json(); errMsg = e.error || errMsg; } catch {}
+        throw new Error(errMsg);
+      }
       const data = await res.json();
-      if (!res.ok || data.error) throw new Error(data.error || "AI generation failed");
+      if (data.error) throw new Error(data.error);
 
 
       let originalText = "";
@@ -376,6 +386,11 @@ export default function ResumeBuilderPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+      if (!res.ok) {
+        let errMsg = "Failed to save to cloud";
+        try { const e = await res.json(); errMsg = e.error || errMsg; } catch {}
+        throw new Error(errMsg);
+      }
       const result = await res.json();
 
       if (result.success) {

@@ -134,8 +134,12 @@ export default function TailorResumePage() {
       const formData = new FormData();
       formData.append("file", file);
       const res = await fetch("/api/profile/parse-resume", { method: "POST", body: formData });
+      if (!res.ok) {
+        let errMsg = "Failed to parse resume.";
+        try { const e = await res.json(); errMsg = e.error || errMsg; } catch {}
+        throw new Error(errMsg);
+      }
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to parse resume.");
       if (data.profile) {
         setResumeData({
           fullName: data.profile.full_name || "",
@@ -225,12 +229,16 @@ export default function TailorResumePage() {
         }),
       });
 
-      const data = await res.json();
-
       if (!res.ok) {
-        throw new Error(data.error || "Analysis failed.");
+        let errMsg = `Server error (${res.status}).`;
+        try {
+          const errData = await res.json();
+          errMsg = errData.error || errMsg;
+        } catch { /* non-JSON error page */ }
+        throw new Error(errMsg);
       }
 
+      const data = await res.json();
       setResult(data);
       setStep("results");
     } catch (err: any) {

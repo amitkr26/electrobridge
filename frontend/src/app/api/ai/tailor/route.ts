@@ -3,7 +3,8 @@ import { callAI } from "@/lib/ai/providers";
 import { apiError } from "@/lib/api-utils";
 import { logger } from "@/lib/logger";
 
-export const maxDuration = 60;
+// ponytail: full pipeline runs 3 sequential AI calls, needs generous timeout
+export const maxDuration = 300;
 
 /**
  * POST /api/ai/tailor

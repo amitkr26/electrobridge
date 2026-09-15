@@ -63,8 +63,12 @@ export function DiscoverView({
         }),
       });
 
+      if (!res.ok) {
+        let errMsg = "Failed to load opportunities";
+        try { const e = await res.json(); errMsg = e.error || errMsg; } catch {}
+        throw new Error(errMsg);
+      }
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to load opportunities");
 
       let results: GroundedRecord[] = data.opportunities || [];
 

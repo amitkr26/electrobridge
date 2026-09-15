@@ -135,11 +135,14 @@ export default function OpportunityIntelligencePage() {
         }),
       });
 
-      const data = await res.json();
-
-      if (res.status === 429) {
-        toast.error(data.error || "Rate limit exceeded. Please sign in.");
+      if (!res.ok) {
+        let errMsg = "AI request failed.";
+        try { const e = await res.json(); errMsg = e.error || errMsg; } catch {}
+        if (res.status === 429) toast.error(errMsg);
+        throw new Error(errMsg);
       }
+
+      const data = await res.json();
 
       const rawReply =
         data.answer ||

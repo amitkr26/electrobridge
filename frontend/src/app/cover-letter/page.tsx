@@ -100,6 +100,11 @@ Make it specific to semiconductor/VLSI engineering. Use active voice. Be concise
           ],
         }),
       });
+      if (!res.ok) {
+        let errMsg = "AI generation failed.";
+        try { const e = await res.json(); errMsg = e.error || errMsg; } catch {}
+        throw new Error(errMsg);
+      }
       const result = await res.json();
       const reply = result.answer || result.message || result.reply || "";
 

@@ -133,6 +133,7 @@ export function AlertsManager() {
         }),
       });
 
+      if (!res.ok) throw new Error("AI request failed");
       const data = await res.json();
       const opps = Array.isArray(data.opportunities) ? data.opportunities : [];
       setMatchedOpportunities(opps);
@@ -169,7 +170,8 @@ export function AlertsManager() {
         }),
       });
 
-      const data = await res.json();
+      let data: any = {};
+      try { data = await res.json(); } catch {}
       if (res.ok) {
         setSubscribed(true);
         toast.success("Subscribed! You will receive weekly verified intelligence digests.");

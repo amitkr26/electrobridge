@@ -35,6 +35,7 @@ export function SavedView({
           messages: [{ role: "user", content: "all recent JRF semiconductor opportunities" }],
         }),
       });
+      if (!res.ok) throw new Error("Failed to fetch");
       const data = await res.json();
       const records: GroundedRecord[] = Array.isArray(data.opportunities) ? data.opportunities : [];
       setSavedOpportunities(records.filter((r) => r.id && savedIdsRef.current.includes(r.id)));
